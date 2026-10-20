@@ -3,8 +3,9 @@
     python data/samples/screenshots/make_screenshots.py
 
 The guide's OCR test: "5 screenshots of dataset messages -> verdict matches the text version".
-English only, because Pillow's default font has no Tamil glyphs; add a Tamil font
-(e.g. Noto Sans Tamil) to also test `tam` OCR.
+English only: Pillow without its raqm text engine draws Tamil vowel signs in the wrong
+order, so OCR of a Pillow-drawn Tamil image tests nothing real. ta_s03.png (dataset message
+s03) was therefore rendered by a browser, which shapes Tamil correctly, and is kept as a file.
 """
 import json
 import textwrap

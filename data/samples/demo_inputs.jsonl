@@ -1,0 +1,5 @@
+{"id": "demo_kyc", "kind": "check", "use": "Demo step 2: forward on Lakshmi's phone", "text": "Dear SBI customer, your account will be blocked today. Update your KYC now at http://sbi-kyc-update.xyz/login and share the OTP to continue."}
+{"id": "demo_scheme", "kind": "bait", "use": "Bait Verifier: send as 'verify <post>'", "text": "verify PM Free Laptop Yojana 2026: every student gets a free laptop. Register now with your Aadhaar and bank details at http://pm-free-laptop-yojana.site and pay the Rs 199 processing fee. Share with 10 groups."}
+{"id": "demo_call_1", "kind": "check", "use": "Demo step 1: Member 2's customs-officer call (spoken)", "text": "sir this is customs, your parcel has drugs, press 1"}
+{"id": "demo_call_2", "kind": "check", "use": "Demo step 1: longer version of the call", "text": "hello i am calling from customs your courier parcel has been stopped there are illegal items inside you must speak to the officer now"}
+{"id": "demo_call_3", "kind": "check", "use": "Demo step 1: guide's script line", "text": "your parcel has illegal items, pay a fine or face arrest"}

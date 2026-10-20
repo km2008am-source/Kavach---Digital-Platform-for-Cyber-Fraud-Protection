@@ -107,7 +107,7 @@
   "links": [],
   "apk": null,
   "confidence": "lower",
-  "latency_ms": 0
+  "latency_ms": 1
  },
  "Main CBI officer bol raha hoon. Aapke naam par arrest warrant hai. Video call par bane rahiye, kisi ko mat batana. Turant Rs 80,000 transfer kijiye warna police case hoga.": {
   "request_id": "s04",
@@ -219,10 +219,10 @@
   "links": [],
   "apk": null,
   "confidence": "lower",
-  "latency_ms": 0
+  "latency_ms": 1
  },
  "Dear SBI customer, your account will be blocked today. Update your KYC now at http://sbi-kyc-update.xyz/login and share the OTP to continue.": {
-  "request_id": "s07",
+  "request_id": "demo_kyc",
   "risk_level": "high",
   "risk_score": 85,
   "scam_type": "kyc_update",
@@ -352,7 +352,7 @@
   ],
   "apk": null,
   "confidence": "lower",
-  "latency_ms": 0
+  "latency_ms": 1
  },
  "Your Paytm KYC has expired. Call our KYC executive on 9000011122 immediately and share the verification code sent to your phone to avoid account suspension.": {
   "request_id": "s10",
@@ -433,7 +433,7 @@
   ],
   "apk": null,
   "confidence": "lower",
-  "latency_ms": 0
+  "latency_ms": 1
  },
  "Electricity board: your power connection will be disconnected tonight at 9:30 pm because your last bill was not updated. Contact electricity officer 9000022233 immediately.": {
   "request_id": "s12",
@@ -720,7 +720,7 @@
   ],
   "apk": null,
   "confidence": "lower",
-  "latency_ms": 0
+  "latency_ms": 1
  },
  "Ghar baithe kaam karein aur roz Rs 2500 kamaayein. Registration fee sirf Rs 499. Aaj hi join karein, seats limited hain.": {
   "request_id": "s21",
@@ -840,7 +840,7 @@
   ],
   "apk": null,
   "confidence": "lower",
-  "latency_ms": 0
+  "latency_ms": 1
  },
  "உங்கள் பெயரில் அனுப்பப்பட்ட பார்சலில் போதைப்பொருள் இருப்பதாக சுங்கத்துறை கண்டுபிடித்துள்ளது. இப்போதே சுங்க அதிகாரியுடன் பேச 1 அழுத்தவும்.": {
   "request_id": "s24",
@@ -1115,7 +1115,7 @@
   ],
   "apk": null,
   "confidence": "lower",
-  "latency_ms": 0
+  "latency_ms": 1
  },
  "அரசு இலவச மிக்சி திட்டம்: பதிவு செய்ய உங்கள் ஆதார் எண் மற்றும் ஓடிபி அனுப்பவும். இன்று மட்டுமே வாய்ப்பு.": {
   "request_id": "s32",
@@ -1288,7 +1288,7 @@
   ],
   "apk": null,
   "confidence": "lower",
-  "latency_ms": 0
+  "latency_ms": 1
  },
  "Instant loan of Rs 50,000 approved without CIBIL check. Download the QuickCash app APK from this link and allow contacts and SMS permission to get money in 5 minutes.": {
   "request_id": "s37",
@@ -1318,7 +1318,7 @@
   "links": [],
   "apk": null,
   "confidence": "lower",
-  "latency_ms": 0
+  "latency_ms": 1
  },
  "Your loan is overdue. Pay Rs 8,000 today or we will send your morphed photos to all your contacts. Pay at repay.fast@okfake": {
   "request_id": "s38",
@@ -1401,7 +1401,7 @@
   ],
   "apk": null,
   "confidence": "lower",
-  "latency_ms": 0
+  "latency_ms": 1
  },
  "Your Netflix payment failed. Your membership will be suspended. Update your card details at https://netflix-billing-update.online/account": {
   "request_id": "s40",
@@ -1444,7 +1444,7 @@
   ],
   "apk": null,
   "confidence": "lower",
-  "latency_ms": 0
+  "latency_ms": 1
  },
  "123456 is your OTP for login to SBI YONO. Do not share it with anyone. SBI never asks for your OTP.": {
   "request_id": "l01",
@@ -1730,7 +1730,7 @@
   ],
   "apk": null,
   "confidence": "lower",
-  "latency_ms": 0
+  "latency_ms": 1
  },
  "Happy birthday Lakshmi aunty! Wishing you good health and happiness.": {
   "request_id": "l15",
@@ -1839,6 +1839,151 @@
   "red_flags": [],
   "explanation_en": "We did not find common scam signs in this message. If it asks for money, an OTP or to click a link, check with the official number first.",
   "recommended_action": "none",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "bait::verify PM Free Laptop Yojana 2026: every student gets a free laptop. Register now with your Aadhaar and bank details at http://pm-free-laptop-yojana.site and pay the Rs 199 processing fee. Share with 10 groups.": {
+  "request_id": "demo_scheme",
+  "risk_level": "high",
+  "risk_score": 90,
+  "scam_type": "fake_scheme",
+  "red_flags": [
+   {
+    "code": "suspicious_domain",
+    "label_en": "The link pm-free-laptop-yojana.site uses a cheap web address often used for scam sites."
+   },
+   {
+    "code": "ask_pay",
+    "label_en": "It asks you to pay money to get a benefit."
+   },
+   {
+    "code": "ask_register",
+    "label_en": "It asks you to register on an unofficial site."
+   },
+   {
+    "code": "ask_aadhaar",
+    "label_en": "It asks for Aadhaar or bank details."
+   }
+  ],
+  "explanation_en": "Be careful with this post. The link pm-free-laptop-yojana.site uses a cheap web address often used for scam sites. It asks you to pay money to get a benefit. Check it on PIB Fact Check (factcheck.pib.gov.in) or myScheme.gov.in before you do anything.",
+  "recommended_action": "verify_official",
+  "entities": {
+   "phones": [],
+   "urls": [
+    "http://pm-free-laptop-yojana.site"
+   ],
+   "upi_ids": [],
+   "amounts": [
+    "Rs 199"
+   ]
+  },
+  "links": [
+   {
+    "url": "http://pm-free-laptop-yojana.site",
+    "domain": "pm-free-laptop-yojana.site",
+    "blocklisted": false,
+    "sources": [],
+    "lookalike_of": null,
+    "domain_age_days": null
+   }
+  ],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 1
+ },
+ "sir this is customs, your parcel has drugs, press 1": {
+  "request_id": "demo_call_1",
+  "risk_level": "medium",
+  "risk_score": 60,
+  "scam_type": "courier_customs",
+  "red_flags": [
+   {
+    "code": "authority_claim",
+    "label_en": "It claims to be from police, customs or a government office to scare you."
+   },
+   {
+    "code": "contraband_claim",
+    "label_en": "It claims a parcel or account in your name is linked to drugs or illegal items. This is a scare tactic: customs and police do not phone you about it."
+   },
+   {
+    "code": "press_key",
+    "label_en": "Recorded calls asking you to press a key to talk to an 'officer' are a common scam start."
+   }
+  ],
+  "explanation_en": "This may be a fake courier or customs scam. It claims to be from police, customs or a government office to scare you. Do not pay, click links or share any code.",
+  "recommended_action": "verify_official",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "hello i am calling from customs your courier parcel has been stopped there are illegal items inside you must speak to the officer now": {
+  "request_id": "demo_call_2",
+  "risk_level": "medium",
+  "risk_score": 65,
+  "scam_type": "courier_customs",
+  "red_flags": [
+   {
+    "code": "authority_claim",
+    "label_en": "It claims to be from police, customs or a government office to scare you."
+   },
+   {
+    "code": "contraband_claim",
+    "label_en": "It claims a parcel or account in your name is linked to drugs or illegal items. This is a scare tactic: customs and police do not phone you about it."
+   },
+   {
+    "code": "parcel_seized",
+    "label_en": "It says a parcel in your name was stopped or seized. Fake 'customs' calls always start this way."
+   }
+  ],
+  "explanation_en": "This may be a fake courier or customs scam. It claims to be from police, customs or a government office to scare you. Do not pay, click links or share any code.",
+  "recommended_action": "verify_official",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "your parcel has illegal items, pay a fine or face arrest": {
+  "request_id": "demo_call_3",
+  "risk_level": "high",
+  "risk_score": 80,
+  "scam_type": "courier_customs",
+  "red_flags": [
+   {
+    "code": "threat_arrest",
+    "label_en": "It threatens you with arrest or a police case. Real police never do this on a call or message."
+   },
+   {
+    "code": "payment_request",
+    "label_en": "It asks you to pay or transfer money."
+   },
+   {
+    "code": "contraband_claim",
+    "label_en": "It claims a parcel or account in your name is linked to drugs or illegal items. This is a scare tactic: customs and police do not phone you about it."
+   }
+  ],
+  "explanation_en": "This looks like a fake courier or customs scam. It threatens you with arrest or a police case. Real police never do this on a call or message. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
   "entities": {
    "phones": [],
    "urls": [],
