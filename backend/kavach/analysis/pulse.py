@@ -28,7 +28,10 @@ from kavach.analysis.models import AnalysisResult, PulseAlert, ScamType
 MIN_REPORTS, MIN_REPORTERS = 5, 3
 # Cosine distance, average linkage. TF-IDF 0.78 sits between the widest distance inside one
 # seed campaign (0.75, reworded copies of a template) and the closest pair of different
-# campaigns (0.86, courier vs KYC). e5 0.15 is the guide's untuned starting value.
+# campaigns (0.86, courier vs KYC). e5 0.15 (measured on the seed): joins the Tamil and English
+# copies of one wave and keeps KYC and job separate, but the margin is thin (within-campaign
+# pairs reach 0.18, different campaigns come as close as 0.15; at 0.18 KYC merges into
+# courier), so TF-IDF stays the default.
 DISTANCE_THRESHOLD = {"tfidf": 0.78, "e5": 0.15}
 SEED_PATH = PROJECT_DIR / "data" / "samples" / "pulse_seed.jsonl"
 LANG_NAMES = {"ta": "Tamil", "en": "English", "hi": "Hindi"}

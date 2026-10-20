@@ -4,6 +4,7 @@ Targets any OpenAI-compatible `/chat/completions` endpoint. Callers always catch
 `LLMError` and fall back to a rules-only answer, so the LLM is never a single point
 of failure for a verdict.
 """
+import asyncio
 import json
 
 import httpx
@@ -17,13 +18,17 @@ class LLMError(Exception):
 
 
 _client: httpx.AsyncClient | None = None
+_client_loop: asyncio.AbstractEventLoop | None = None
 
 
 def _get_client() -> httpx.AsyncClient:
-    # One reused client (connection pooling). Member 1 can call `aclose()` from the app lifespan.
-    global _client
-    if _client is None or _client.is_closed:
-        _client = httpx.AsyncClient()
+    # One reused client per event loop (connection pooling). A client's connections belong to the
+    # loop that opened them, so a second asyncio.run() (CLI, evaluation) must not reuse it.
+    # Member 1 can call `aclose()` from the app lifespan.
+    global _client, _client_loop
+    loop = asyncio.get_running_loop()
+    if _client is None or _client.is_closed or _client_loop is not loop:
+        _client, _client_loop = httpx.AsyncClient(), loop
     return _client
 
 

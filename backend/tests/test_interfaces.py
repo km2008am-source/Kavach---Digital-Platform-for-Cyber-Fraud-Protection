@@ -50,6 +50,29 @@ def test_stub_was_removed_because_callers_use_the_real_pipeline():
 
 def test_demo_cache_holds_no_held_out_messages():
     cache = json.loads((SAMPLES / "demo_cache.json").read_text("utf-8"))
-    held = {json.loads(l)["text"] for name in ("heldout.jsonl", "heldout2.jsonl")
+    held = {json.loads(l)["text"] for name in ("heldout.jsonl", "heldout2.jsonl", "heldout3.jsonl", "heldout_calls.jsonl")
             for l in (SAMPLES / name).read_text("utf-8").splitlines() if l.strip()}
     assert cache and not held & set(cache)
+
+
+def test_demo_cache_covers_every_prepared_demo_input():
+    from kavach.analysis.scam_check import demo_cache_key
+    cache = json.loads((SAMPLES / "demo_cache.json").read_text("utf-8"))
+    for line in (SAMPLES / "demo_inputs.jsonl").read_text("utf-8").splitlines():
+        if line.strip():
+            row = json.loads(line)
+            key = demo_cache_key(row["text"], row["kind"])
+            assert key in cache, row["id"]
+            assert cache[key]["risk_level"] in ("medium", "high"), row["id"]
+
+
+async def test_demo_mode_serves_the_bait_post_from_cache(monkeypatch, request_factory):
+    from kavach.analysis import bait, scam_check
+    post = "verify PM Free Laptop Yojana 2026: register now"
+    monkeypatch.setattr(scam_check.settings, "DEMO_MODE", True)
+    monkeypatch.setattr(scam_check, "_demo_cache", lambda: {
+        scam_check.demo_cache_key(post, "bait"): {"request_id": "x", "risk_level": "high", "risk_score": 90,
+                                                  "scam_type": "fake_scheme", "explanation_en": "cached",
+                                                  "recommended_action": "verify_official"}})
+    r = await bait.verify(request_factory(post))
+    assert r.explanation_en == "cached"

@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from kavach.analysis import links, pulse
+from kavach.analysis import blocklist, links, pulse
 from kavach.analysis.settings import settings
 from kavach.analysis.models import AnalysisRequest
 
@@ -19,6 +19,8 @@ def offline(monkeypatch):
     monkeypatch.setattr(settings, "LLM_MODEL", "")
     monkeypatch.setattr(settings, "PULSE_EMBEDDINGS", "tfidf")
     monkeypatch.setattr(settings, "HASH_SALT", "test-only-salt-not-a-secret-0001")
+    monkeypatch.setattr(settings, "BLOCKLIST_PATH", str(Path(__file__).parent / "no-blocklist-in-tests.txt"))
+    blocklist.hosts.cache_clear()
     links._cache.clear()
 
 

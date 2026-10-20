@@ -72,7 +72,7 @@ def _tesseract_available() -> bool:
 async def test_screenshot_verdict_matches_text_verdict(request_factory):
     runpy.run_path(str(SHOTS / "make_screenshots.py"), run_name="__main__")
     rows = {r["id"]: r for r in load_jsonl("scams.jsonl") + load_jsonl("legit.jsonl")}
-    for shot in sorted(SHOTS.glob("*.png")):
+    for shot in sorted(p for p in SHOTS.glob("*.png") if p.stem in rows):   # skip ta_* (browser-rendered)
         text_r = await scam_check.analyze(request_factory(rows[shot.stem]["text"]))
         img_r = await scam_check.analyze(request_factory(input_type="image", file_path=str(shot)))
         assert img_r.risk_level == text_r.risk_level, shot.stem
@@ -83,3 +83,42 @@ def test_wrapped_link_from_ocr_is_rejoined():
     fixed = ocr.rejoin_wrapped_links(raw)
     assert "http://sbi-kyc-update.xyz/login" in fixed
     assert "OTP\nto continue" in fixed                 # ordinary line breaks are kept
+
+
+def test_oversized_image_is_not_decoded(monkeypatch, tmp_path):
+    from kavach.analysis import files
+    big = tmp_path / "huge.png"
+    big.write_bytes(b"x" * 4096)
+    monkeypatch.setattr(files.settings, "MAX_FILE_BYTES", 1024)
+    monkeypatch.setattr(ocr.Image, "open", lambda *a, **k: pytest.fail("oversized image must not be opened"))
+    with pytest.raises(files.FileTooLarge):
+        ocr.read(str(big))
+
+
+def test_default_upload_limit_is_20_mb():
+    from kavach.analysis.settings import Settings
+    assert Settings(_env_file=None).MAX_FILE_BYTES == 20 * 1024 * 1024
+
+
+def _tamil_ocr_available() -> bool:
+    try:
+        return "tam" in ocr._langs()
+    except Exception:
+        return False
+
+
+@pytest.mark.skipif(not _tamil_ocr_available(), reason="Tesseract Tamil language pack is not installed")
+async def test_tamil_screenshot_is_read_and_flagged(request_factory):
+    # ta_s03.png is dataset message s03 rendered by a browser (correct Tamil shaping; Pillow
+    # without raqm draws Tamil vowel signs in the wrong order, so it cannot make this fixture).
+    shot = SHOTS / "ta_s03.png"
+    text = ocr.read(str(shot))
+    assert "கைது" in text and "‌" not in text            # arrest; invisible joiners stripped
+    r = await scam_check.analyze(request_factory(input_type="image", file_path=str(shot)))
+    assert r.risk_level == "high" and "threat_arrest" in {f.code for f in r.red_flags}
+
+
+def test_invisible_joiners_do_not_hide_keywords():
+    from kavach.analysis import rules
+    _, codes = rules.rule_flags("நீங்கள் டிஜிட்டல்‌ கை‌து செய்யப்பட்டுள்ளீர்கள்")
+    assert "threat_arrest" in codes

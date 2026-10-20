@@ -6,8 +6,18 @@ suffixes (கைது -> கைது செய்யப்பட்டுள�
 speaker's review before the demo.
 """
 import re
+import unicodedata
 
 from kavach.analysis.models import RedFlag, ScamType
+
+# Zero-width joiners / non-joiners and the BOM: Tesseract inserts U+200C after many Tamil
+# words and phone keyboards add them too. Invisible to a reader, but they break matching.
+_INVISIBLE = dict.fromkeys(map(ord, "\u200b\u200c\u200d\u2060\ufeff"))
+
+
+def clean_text(text: str) -> str:
+    """NFC-normalise and drop invisible joiners so keywords match what a person sees."""
+    return unicodedata.normalize("NFC", text).translate(_INVISIBLE)
 
 PHONE = re.compile(r"(?<![\d+])(?:\+91[\s-]?)?[6-9]\d{9}(?!\d)")
 UPI = re.compile(r"\b[\w.\-]{2,}@[a-zA-Z]{2,}\b(?!\.[a-zA-Z])")       # skip e-mail addresses
@@ -111,6 +121,14 @@ PATTERNS: dict[str, list[re.Pattern]] = {code: [re.compile(p, re.I) for p in pat
     "otp_request": [r"\b(?:enter|type)\s+(?:your\s+)?(?:upi\s+)?pin\b"],
     "apk_link": [r"\binstall\b.{0,40}\b(?:link|apk)\b"],
     "press_key": [r"\bpress\s+\d\b", r"\d\s+dabaiye"],
+    # Text aimed at the checker, not at a person: our own prompt tags, chat role markers,
+    # our JSON field names, or "classify this as ..." wording. No genuine SMS contains these.
+    "prompt_injection": [r"</?\s*(?:message|post|receipt|article|system|assistant|user)\s*>",
+                         r"^\s*(?:system|assistant)\s*:",
+                         r"\b(?:risk_score|risk_level|scam_type|not_scam|red_flags|explanation_en)\b",
+                         r"\b(?:classify|label|mark|rate)\s+(?:it|this|the\s+message)\s+as\b",
+                         r"\b(?:note|message|instruction)s?\s+(?:to|for)\s+(?:the\s+)?(?:ai|model|checker|assistant)\b",
+                         r"\bignore\s+(?:all\s+)?(?:previous|prior|above|your)\s+(?:rules|instructions|prompts?)\b"],
     # "<parcel> ... stopped/seized" or "seized ... <parcel>", within a few words, either order.
     "parcel_seized": [r"\b(?:parcel|package|courier|shipment|consignment)\b(?:\W+\w+){0,6}?\W+"
                       r"(?:stopped|seized|held|intercepted|confiscated|caught)\b",
@@ -152,6 +170,7 @@ def extract_entities(text: str) -> dict[str, list[str]]:
 
 
 def rule_flags(text: str) -> tuple[int, list[str]]:
+    text = clean_text(text)
     t, score, codes = text.lower(), 0, []
     for code, (w, en, local, _label) in KEYWORDS.items():
         if any(_matches(k, t) for k in en) or any(k.lower() in t for k in local) \

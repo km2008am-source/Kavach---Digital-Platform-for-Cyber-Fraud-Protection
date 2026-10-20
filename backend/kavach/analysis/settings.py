@@ -40,6 +40,9 @@ class Settings(BaseSettings):
     DEMO_MODE: bool = False
     NETWORK_CHECKS: bool = True       # 0 = skip WHOIS/Safe Browsing/VirusTotal (offline tests)
     PULSE_EMBEDDINGS: str = "tfidf"   # "e5" = sentence-transformers, "tfidf" = no download
+    MAX_FILE_BYTES: int = 20 * 1024 * 1024   # guide section 11: max 20 MB per uploaded file
+    TESSERACT_CMD: str = ""           # path to tesseract(.exe); empty = PATH or the Windows default
+    BLOCKLIST_PATH: str = ""          # local URLhaus list (scripts/update_blocklist.py); empty = default
 
     @field_validator("APP_ENV", mode="before")
     @classmethod

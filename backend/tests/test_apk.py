@@ -53,7 +53,7 @@ def test_judge_virustotal_detection_dominates():
 async def test_oversized_apk_is_rejected_without_reading_it(request_factory, monkeypatch, tmp_path):
     big = tmp_path / "huge.apk"
     big.write_bytes(b"x" * 2048)
-    monkeypatch.setattr(apk, "MAX_APK_BYTES", 1024)      # 2 KB file stands in for a >100 MB one
+    monkeypatch.setattr(apk.settings, "MAX_FILE_BYTES", 1024)  # 2 KB file stands in for a >20 MB one
     opened = []
     real_open = open
     monkeypatch.setattr("builtins.open", lambda p, *a, **k: opened.append(str(p)) or real_open(p, *a, **k))

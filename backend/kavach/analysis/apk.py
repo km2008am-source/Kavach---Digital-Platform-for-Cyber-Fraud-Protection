@@ -7,10 +7,10 @@ claim check (an "RTO Challan" or "bank" app has no reason to read your SMS).
 import asyncio
 import hashlib
 import time
-from pathlib import Path
 
 import httpx
 
+from kavach.analysis import files
 from kavach.analysis.settings import settings
 from kavach.analysis.models import AnalysisRequest, AnalysisResult, ApkReport, RedFlag, ScamType
 
@@ -31,7 +31,6 @@ RISKY_EXTRA = {"android.permission.READ_CONTACTS", "android.permission.CALL_PHON
 # App names scammers use for fake APKs sent over WhatsApp.
 LURE_WORDS = ["rto", "challan", "pm kisan", "kisan", "bank", "invitation", "wedding", "kyc", "aadhaar",
               "electricity", "bill", "loan", "customer support", "income tax", "refund", "sbi", "yono"]
-MAX_APK_BYTES = 100 * 1024 * 1024
 
 
 class ApkParseError(Exception):
@@ -44,8 +43,10 @@ class ApkTooLarge(ApkParseError):
 
 def check_size(path: str) -> None:
     """Reject oversized files from their size on disk, before reading a single byte."""
-    if Path(path).stat().st_size > MAX_APK_BYTES:
-        raise ApkTooLarge(f"larger than {MAX_APK_BYTES // (1024 * 1024)} MB")
+    try:
+        files.check_size(path)
+    except files.FileTooLarge as e:
+        raise ApkTooLarge(str(e)) from e
 
 
 def sha256_of(path: str) -> str:

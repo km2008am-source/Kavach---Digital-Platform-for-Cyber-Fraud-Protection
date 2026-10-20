@@ -11,7 +11,7 @@ import time
 from pydantic import BaseModel, ValidationError, field_validator
 
 from kavach.analysis import links as linkmod, rules
-from kavach.analysis.scam_check import link_signal
+from kavach.analysis.scam_check import _demo_cached, link_signal
 from kavach.analysis.models import AnalysisRequest, AnalysisResult, Entities, RedFlag, ScamType
 from kavach.llm import LLMError, complete_json, quote_untrusted
 
@@ -96,6 +96,9 @@ class BaitLLM(BaseModel):
 
 
 async def verify(req: AnalysisRequest) -> AnalysisResult:
+    cached = _demo_cached(req, kind="bait")                 # DEMO_MODE=1 safety net for prepared posts
+    if cached:
+        return cached
     t0 = time.perf_counter()
     text = re.sub(r"^\s*(news|verify)\s+", "", req.text or "", flags=re.I)   # M1's "verify <post>" command
     ents = rules.extract_entities(text)

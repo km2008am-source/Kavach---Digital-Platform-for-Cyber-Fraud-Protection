@@ -69,3 +69,28 @@ async def test_receipt_screenshots_at_least_eight_correct_via_ocr():
         ev = await extract_evidence([str(RECEIPTS / f"{r['id']}.png")])
         correct += ev.transaction_id == r["expect"]["transaction_id"] and ev.amount == r["expect"]["amount"]
     assert correct >= 8
+
+
+def test_ocr_misread_rupee_sign_is_recovered():
+    from kavach.analysis.evidence import extract_regex
+    assert extract_regex("Paid to Ravi\n=15,000\n12 Oct 2026")["amount"] == "₹15,000"
+    assert extract_regex("PhonePe\n~12,000\nTransaction ID T1")["amount"] == "₹12,000"
+
+
+async def test_ambiguous_seven_is_reported_missing_not_guessed():
+    ev = await extract_from_text("Google Pay\nPaid to Manoj Traders\n7499\nUPI transaction ID 633322211100")
+    assert ev.amount is None and "amount" in ev.missing_fields
+
+
+@respx.mock
+async def test_llm_cannot_fill_amount_without_a_currency(llm_on, llm_reply):
+    respx.post(llm_on).mock(return_value=httpx.Response(200, json=llm_reply({"amount": "7499"})))
+    ev = await extract_from_text("Google Pay\nPaid to Manoj Traders\n7499\nUPI transaction ID 633322211100")
+    assert ev.amount is None
+
+
+@pytest.mark.skipif(not _tesseract_available(), reason="Tesseract OCR is not installed")
+async def test_receipt_amounts_are_never_wrong_only_missing():
+    for r in load_jsonl("receipts_ocr.jsonl"):
+        ev = await extract_evidence([str(RECEIPTS / f"{r['id']}.png")])
+        assert ev.amount in (None, r["expect"]["amount"]), (r["id"], ev.amount)

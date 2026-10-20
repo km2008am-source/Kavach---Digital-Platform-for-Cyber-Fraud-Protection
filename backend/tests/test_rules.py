@@ -1,4 +1,8 @@
-from hypothesis import given, strategies as st
+from hypothesis import HealthCheck, given, settings, strategies as st
+
+# Property tests check correctness, not speed. Building regex-shaped inputs gets slow when another
+# test has a large model loaded, which tripped Hypothesis's "too slow" health check, not the property.
+relaxed = settings(deadline=None, suppress_health_check=[HealthCheck.too_slow])
 
 from kavach.analysis import rules
 from kavach.analysis.pulse import normalize
@@ -59,6 +63,7 @@ upis = st.from_regex(r"\A[a-z][a-z0-9.]{2,10}@[a-z]{3,8}\Z")
 filler = st.text(alphabet=st.characters(whitelist_categories=("Ll", "Lu", "Zs")), max_size=30)
 
 
+@relaxed
 @given(prefix=filler, phone=phones, upi=upis, suffix=filler)
 def test_normalize_removes_phone_and_upi(prefix, phone, upi, suffix):
     out = normalize(f"{prefix} call {phone} pay {upi} {suffix}")
@@ -66,6 +71,7 @@ def test_normalize_removes_phone_and_upi(prefix, phone, upi, suffix):
     assert upi not in out
 
 
+@relaxed
 @given(st.text(max_size=200))
 def test_normalize_is_idempotent(text):
     once = normalize(text)

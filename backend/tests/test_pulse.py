@@ -1,3 +1,5 @@
+import pytest
+
 from kavach.analysis import pulse
 from kavach.analysis.models import AnalysisResult, ScamType
 
@@ -78,3 +80,19 @@ def test_matching_news_item_confirms_the_alert(pulse_db):
                      "scam_type TEXT, region TEXT, summary TEXT)")
         conn.execute("INSERT INTO news_item VALUES ('n1','u','t', datetime('now'), 'courier_customs','TN','s')")
     assert pulse.alerts()[0].confidence == "confirmed"
+
+
+def _e5_cached() -> bool:
+    from pathlib import Path
+    return (Path.home() / ".cache" / "huggingface" / "hub" / "models--intfloat--multilingual-e5-small").exists()
+
+
+@pytest.mark.skipif(not _e5_cached(), reason="multilingual-e5-small not downloaded (PULSE_EMBEDDINGS=e5 is optional)")
+def test_e5_joins_tamil_and_english_copies_into_one_wave(pulse_db, monkeypatch):
+    monkeypatch.setattr(pulse.settings, "PULSE_EMBEDDINGS", "e5")
+    pulse.replay()
+    alerts = pulse.alerts()
+    assert len(alerts) == 1
+    a = alerts[0]
+    assert (a.district, a.scam_type) == ("Coimbatore", ScamType.courier_customs)
+    assert a.report_count == 24 and "English" in a.label and "Tamil" in a.label

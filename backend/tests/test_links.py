@@ -58,3 +58,47 @@ async def test_failing_source_never_blocks_the_verdict(monkeypatch):
 
 async def _async(value):
     return value
+
+
+# ---- local URLhaus blocklist (hostnames only; fake values in tests) ----
+
+URLHAUS_SAMPLE = """################################################################
+# abuse.ch URLhaus Database Dump (CSV - online URLs only)       #
+################################################################
+# id,dateadded,url,url_status,last_online,threat,tags,urlhaus_link,reporter
+"1","2026-10-20 10:00:00","http://bad-payload.example-test.xyz/a.apk","online","2026-10-20","malware_download","apk","https://urlhaus.abuse.ch/url/1/","test"
+"2","2026-10-20 10:01:00","https://cdn.evil-files.example-test.top/x","online","2026-10-20","malware_download","","https://urlhaus.abuse.ch/url/2/","test"
+"3","2026-10-20 10:02:00","http://192.0.2.10/bin","online","2026-10-20","malware_download","","https://urlhaus.abuse.ch/url/3/","test"
+"""
+
+
+def test_parse_urlhaus_csv_keeps_hostnames_not_ips():
+    from kavach.analysis.blocklist import parse_urlhaus_csv
+    assert parse_urlhaus_csv(URLHAUS_SAMPLE) == {"bad-payload.example-test.xyz", "cdn.evil-files.example-test.top"}
+
+
+async def test_local_blocklist_marks_link_blocklisted_offline(monkeypatch, tmp_path):
+    from kavach.analysis import blocklist
+    listfile = tmp_path / "hosts.txt"
+    listfile.write_text("cdn.evil-files.example-test.top\n", encoding="utf-8")
+    monkeypatch.setattr(settings, "BLOCKLIST_PATH", str(listfile))
+    blocklist.hosts.cache_clear()
+    try:
+        [hit, sub, clean] = await links.check_links(["https://cdn.evil-files.example-test.top/x",
+                                                     "http://a.cdn.evil-files.example-test.top/y",
+                                                     "https://safe-site.example-test.org/"])
+    finally:
+        blocklist.hosts.cache_clear()
+    assert hit.blocklisted and hit.sources == ["urlhaus"]
+    assert sub.blocklisted                                   # subdomain of a listed host
+    assert not clean.blocklisted
+
+
+def test_missing_blocklist_file_is_skipped(monkeypatch, tmp_path):
+    from kavach.analysis import blocklist
+    monkeypatch.setattr(settings, "BLOCKLIST_PATH", str(tmp_path / "absent.txt"))
+    blocklist.hosts.cache_clear()
+    try:
+        assert not blocklist.is_blocklisted("anything.xyz")
+    finally:
+        blocklist.hosts.cache_clear()

@@ -44,3 +44,22 @@ async def test_401_is_not_retried(llm_on):
     with pytest.raises(LLMError):
         await complete_json("s", "u")
     assert route.call_count == 1
+
+
+def test_each_event_loop_gets_its_own_http_client():
+    # Regression: the evaluator calls asyncio.run() once per dataset; a client reused from a
+    # finished loop failed with "RuntimeError: Event loop is closed".
+    import asyncio
+    from kavach import llm
+    from kavach.analysis import links
+
+    async def grab():
+        return llm._get_client(), links._get_client()
+
+    first, second = asyncio.run(grab()), asyncio.run(grab())
+    assert first[0] is not second[0] and first[1] is not second[1]
+
+
+async def test_same_loop_reuses_the_client():
+    from kavach import llm
+    assert llm._get_client() is llm._get_client()

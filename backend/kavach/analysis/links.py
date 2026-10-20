@@ -14,6 +14,7 @@ import httpx
 import tldextract
 from rapidfuzz import fuzz
 
+from kavach.analysis import blocklist
 from kavach.analysis.settings import settings
 from kavach.analysis.models import LinkCheck
 
@@ -28,12 +29,15 @@ SUSPICIOUS_TLDS = {"xyz", "top", "online", "site", "link", "info", "click", "buz
 
 _cache: dict[str, LinkCheck] = {}          # session cache: VirusTotal's free tier is rate-limited
 _client: httpx.AsyncClient | None = None
+_client_loop: asyncio.AbstractEventLoop | None = None
 
 
 def _get_client() -> httpx.AsyncClient:
-    global _client
-    if _client is None or _client.is_closed:
-        _client = httpx.AsyncClient(timeout=httpx.Timeout(5.0))
+    # One client per event loop: its connections belong to the loop that opened them.
+    global _client, _client_loop
+    loop = asyncio.get_running_loop()
+    if _client is None or _client.is_closed or _client_loop is not loop:
+        _client, _client_loop = httpx.AsyncClient(timeout=httpx.Timeout(5.0)), loop
     return _client
 
 
@@ -138,7 +142,8 @@ async def check_links(urls: list[str]) -> list[LinkCheck]:
                                        *[t or _none(None) for t in age_tasks])
         sb_hits, vt_hits, ages = results[0], results[1:1 + len(todo)], results[1 + len(todo):]
         for u, d, vt, age in zip(todo, domains, vt_hits, ages, strict=True):
-            sources = (["safe_browsing"] if u in sb_hits else []) + (["virustotal"] if vt else [])
+            sources = (["safe_browsing"] if u in sb_hits else []) + (["virustotal"] if vt else []) \
+                + (["urlhaus"] if d and blocklist.is_blocklisted(d) else [])     # offline, local list
             _cache[u] = LinkCheck(url=u, domain=d, blocklisted=bool(sources), sources=sources,
                                   lookalike_of=lookalike(d), domain_age_days=age)
     return [_cache[u] for u in urls]

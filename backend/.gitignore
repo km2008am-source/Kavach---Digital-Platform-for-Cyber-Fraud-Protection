@@ -9,3 +9,4 @@ files/*
 !files/.gitkeep
 .hypothesis/
 .pytest_cache/
+data/blocklists/

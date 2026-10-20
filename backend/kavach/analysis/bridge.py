@@ -9,11 +9,12 @@ neither side has to change.
     from kavach.analysis.scam_check import analyze     # accepts the team request directly
     from kavach.analysis.bridge import verify_bait, evidence_summary
 """
+import asyncio
 import uuid
 from pathlib import Path
 
 from kavach import contracts as team
-from kavach.analysis import bait, evidence, scam_check
+from kavach.analysis import bait, evidence, pulse, scam_check
 from kavach.analysis.models import AnalysisRequest, AnalysisResult, EvidenceExtraction, InputType
 
 APK_MIME = "application/vnd.android.package-archive"
@@ -99,7 +100,25 @@ async def analyze_team(req: team.AnalysisRequest) -> team.AnalysisResult:
     if _is_voice_note_without_text(req):
         # Speech-to-text has not run yet: say so instead of judging an empty message as safe.
         return team.AnalysisResult(risk_level=team.RiskLevel.UNKNOWN, explanation=VOICE_NOTE_PENDING)
-    return to_team(await scam_check.analyze(to_engine(req)))
+    result = await scam_check.analyze(to_engine(req))
+    await _report_to_pulse(req, result)
+    return to_team(result)
+
+
+async def _report_to_pulse(req: team.AnalysisRequest, result: AnalysisResult) -> None:
+    """Integration point I4 (owned by Person 2): every risky verdict feeds Scam Pulse.
+
+    Needs a user-chosen district. The team request has no `district` field yet; once Person 1
+    adds one, reports flow in with no other change. Pulse stores only normalised text and an
+    HMAC of the user ID, and ignores low-risk verdicts. A Pulse failure never affects the reply.
+    """
+    district = getattr(req, "district", None)
+    if not (district and req.user_id and req.text.strip()):
+        return
+    try:
+        await asyncio.to_thread(pulse.ingest, result, req.text, district, req.user_id, req.source)
+    except Exception:
+        pass
 
 
 async def verify_bait(req: team.AnalysisRequest) -> team.AnalysisResult:

@@ -39,17 +39,31 @@ def _bank(text: str) -> str | None:
     return None
 
 
+# Tesseract's English model often reads the big "₹" on a receipt as "=" or "~" (and sometimes
+# as "7"). A standalone amount line starting with "=" or "~" is a misread rupee sign; a leading
+# "7" is ambiguous ("7499" vs "₹499"), so it is NOT guessed: the amount is reported missing
+# and the Golden Hour flow asks the user to type it.
+OCR_RUPEE_LINE = re.compile(r"^[ \t]*[=~][ \t]*(\d{1,3}(?:,\d{2,3})+(?:\.\d{2})?|\d+(?:\.\d{2})?)[ \t]*$", re.M)
+
+
+def _amount(text: str) -> str | None:
+    m = AMOUNT.search(text)
+    if m:
+        return m.group(0).strip()
+    m = OCR_RUPEE_LINE.search(text)
+    return f"₹{m.group(1)}" if m else None
+
+
 def extract_regex(text: str) -> dict[str, str | None]:
     labelled = TXN_LABELLED.search(text)
     ref = UPI_REF.search(text)
-    amount = AMOUNT.search(text)
     when = DATETIME.search(text)
     upi = UPI.search(text)
     phone = PHONE.search(text)
     name = PAYEE_NAME.search(text)
     return {
         "transaction_id": labelled.group(1) if labelled else (ref.group(0) if ref else None),
-        "amount": amount.group(0).strip() if amount else None,
+        "amount": _amount(text),
         "datetime": when.group(0).strip() if when else None,
         "payee_upi": upi.group(0) if upi else None,
         "payee_name": name.group(1).strip() if name else None,
@@ -73,7 +87,12 @@ async def extract_from_text(text: str) -> EvidenceExtraction:
             llm = await complete_json(SYSTEM, quote_untrusted(text[:4000], "receipt"))
             for key in FIELDS:
                 if fields[key] is None:
-                    fields[key] = _grounded(llm.get(key), text)
+                    value = _grounded(llm.get(key), text)
+                    # An amount must carry its currency in the text itself: "7499" from a misread
+                    # "₹499" is in the OCR text, but it is not evidence of what was paid.
+                    if key == "amount" and value and not AMOUNT.fullmatch(value):
+                        value = None
+                    fields[key] = value
         except LLMError:
             pass                                            # regex-only result; M1 asks the user for gaps
     missing = [k for k in FIELDS if not fields[k]]

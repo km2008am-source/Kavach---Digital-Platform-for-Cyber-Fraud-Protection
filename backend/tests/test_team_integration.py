@@ -91,3 +91,26 @@ def test_evidence_maps_to_person1_summary():
     assert (s.transaction_id, s.transaction_time, s.scammer_number) == ("612345678901", "12 Oct 2026, 10:42 AM",
                                                                         "9000000002")
     assert s.additional_details == {"payee_name": "Ravi Kumar", "missing_fields": "bank_name"}
+
+
+class _RequestWithDistrict(team.AnalysisRequest):
+    """What Person 1's request looks like once a user-chosen district is added."""
+    district: str | None = None
+
+
+async def test_risky_verdict_is_reported_to_pulse_when_district_is_known(pulse_db):
+    from kavach.analysis import pulse
+    await analyze(_RequestWithDistrict(text=KYC + " call 9000011122", user_id="919000000001", district="Coimbatore"))
+    with pulse._connect() as conn:
+        rows = conn.execute("SELECT district, normalized_text, reporter_hash, scam_type FROM report").fetchall()
+    [(district, text, reporter, scam_type)] = rows
+    assert district == "Coimbatore" and scam_type == "kyc_update"
+    assert "9000011122" not in text and "919000000001" not in reporter and reporter == pulse.reporter_key("919000000001")
+
+
+async def test_no_pulse_report_without_district_or_for_low_risk(pulse_db):
+    from kavach.analysis import pulse
+    await analyze(team.AnalysisRequest(text=KYC, user_id="919000000001"))                      # no district
+    await analyze(_RequestWithDistrict(text="Hi Amma, reached safely", user_id="919000000002", district="Salem"))
+    with pulse._connect() as conn:
+        assert conn.execute("SELECT COUNT(*) FROM report").fetchone()[0] == 0
