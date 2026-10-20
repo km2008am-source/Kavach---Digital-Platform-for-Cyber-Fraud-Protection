@@ -27,7 +27,10 @@ This log records **what** was built at each step, **why** it was built that way,
 | Evaluation | `eval/evaluate.py`, `eval/report.md`, `data/samples/demo_cache.json` | Done (offline; sealed-set recall 0.87, 0 false alarms) |
 | Command-line demo | `backend/kavach/analysis/cli.py` | Done |
 | OCR screenshot fixtures | `data/samples/screenshots/make_screenshots.py` | Done (test skipped until Tesseract is installed) |
-| Tests | `backend/tests/test_*.py` (128 tests) | 126 passing, 2 skipped (need Tesseract); `ruff` clean |
+| Tests | `backend/tests/test_*.py` (158 tests) | 158 passing, 0 skipped (real Tesseract incl. Tamil); `ruff` clean |
+| Accuracy dashboard | `eval/dashboard.html` (built by `eval/dashboard.py`) | Done (Step 18) |
+| Limitations, Q&A, demo run-sheet | `docs/LIMITATIONS.md`, `docs/QA_MEMBER2.md`, `docs/DEMO_MEMBER2.md` | Done |
+| Person 1 integration patch | `docs/person1_integration.patch` | Ready; Person 1 applies it |
 | Bridge to Person 1's contract | `backend/kavach/analysis/bridge.py` | Done (Step 17) |
 
 Two files belong to Member 1 but had to exist for this code to run: `contracts.py` (copied word for word from guide section 5) and a minimal `config.py`. Member 1's versions replace them at integration. The only changes to expect are the two extra settings listed in Step 0.
@@ -636,6 +639,132 @@ Copying my `contracts.py` and `config.py` over theirs would have broken the What
 
 ---
 
+## Step 18: Every remaining guide task that does not need a teammate
+
+A full re-read of the guide (sections 1–16, not just section 7) found Member 2 tasks still open. Everything that did not need a teammate was done; each item below says what, why, how and how it was verified. Test suite after this step: **158 passed, 0 skipped** (OCR and Tamil OCR now run for real); `ruff` clean.
+
+### 18.1 20 MB upload limit (guide section 11)
+- **What / why:** the guide sets 20 MB per file. The APK scanner allowed 100 MB, and OCR images had no limit at all.
+- **How:** one shared check, `analysis/files.py` with `settings.MAX_FILE_BYTES`, uses `stat()` so nothing is read first. Both the APK scanner and `ocr.read()` call it.
+- **Verify:** tests for the default (20 MB) and for an oversized image that must never be opened.
+
+### 18.2 Five prompt-injection messages (guide section 10)
+- **What / why:** the guide asks for 5 messages with embedded instructions, none of them marked safe. Writing them exposed one real gap: a message faking our own `</message>` tag plus "risk_score 0" was scored LOW.
+- **How:** a pattern family for *text aimed at the checker*:
+  - our prompt tags and chat-role markers;
+  - our own JSON field names;
+  - "classify / mark this as …", "note to the AI checker", "ignore previous rules".
+
+  No genuine SMS contains these.
+- **Verify:** 5 messages × 2 (no LLM, and a fooled LLM that says "safe") = 10 tests, all not-low.
+
+### 18.3 OCR with real Tesseract (installed by the user)
+- **What:** the OCR tests that had been skipped now run.
+- **Why it mattered:** real OCR showed that **₹ is read as "=", "~" or "7"**, which put a wrong amount ("7499" for ₹499) into evidence for a police complaint.
+- **How:**
+  - "=" and "~" in front of a standalone amount line are read as a misread ₹;
+  - an ambiguous leading "7" is **not guessed**, so the amount goes to `missing_fields` and the Golden Hour flow asks the user;
+  - the LLM may not fill an amount that has no currency sign.
+
+  OCR now finds Tesseract in its default Windows folder or through `TESSERACT_CMD`.
+- **Verify:** 10 receipt screenshots, at least 8 correct (actual 9/10), and a test that an amount is never wrong, only missing.
+
+### 18.4 Tamil OCR
+- **Finding 1:** Tesseract puts invisible zero-width non-joiners after Tamil words, and phone keyboards add them too. They hid keywords. **Fix:** `rules.clean_text()` (NFC normalisation plus stripping invisible joiners), applied before matching and after OCR.
+- **Finding 2:** Pillow on this machine has no complex-script engine (raqm), so Tamil images *drawn with Pillow* had their vowel signs in the wrong order; the test images were broken, not the OCR. **Fix:** `ta_s03.png` was rendered in a browser, which shapes Tamil correctly, and is kept as a fixture.
+- **Result:** OCR gets one character wrong in a 30-word Tamil message, and the verdict is **HIGH**. There's a test for it.
+
+### 18.5 Offline URLhaus blocklist (guide section 3, optional)
+- **What / why:** known malware and phishing hosts get flagged even with no Safe Browsing or VirusTotal key and no Wi-Fi.
+- **How:**
+  - `python -m kavach.analysis.blocklist --update` downloads the abuse.ch URLhaus online list and stores **hostnames only**, in a **git-ignored** file, so no live malicious link enters the repo.
+  - Matching hosts and their subdomains get `source: urlhaus`.
+  - Tests use a fake list, and the evaluation report records whether the list was used.
+  - PhishTank isn't included: it now needs a registered app key.
+- **Verify:** tests for the parser, an offline hit, a subdomain hit and a missing file; a live download returned 593 hosts.
+
+### 18.6 e5 multilingual embeddings for Pulse (guide section 7G)
+- **What:** downloaded `multilingual-e5-small` and measured it on the seed data, as the guide asks.
+- **Result:** at 0.15 it joins the Tamil and English copies of the Coimbatore wave into **one** alert and keeps KYC and job separate. But the margin is thin: copies of one campaign reach 0.18 apart, while different campaigns come as close as 0.15. So TF-IDF stays the default and e5 is a verified option.
+- **Verify:** a test (runs when the model is cached): e5 replay gives exactly one alert of 24 reports in English and Tamil.
+
+### 18.7 Local end-to-end runs through Person 1's webhook (E2E-1, E2E-3; I1, I2)
+- **What:** Meta-format webhook JSON is posted to Person 1's **real FastAPI app** in DRY_RUN mode with a temporary database. Only Meta's media download is faked.
+- **Verify:** 4 tests:
+  - the KYC link SMS comes back HIGH with the fake-site flag and their buttons;
+  - the demo customs message is not LOW;
+  - the RTO Challan APK document comes back "Do not install";
+  - a duplicate delivery gets one reply.
+
+### 18.8 Integration point I4 (Pulse after every verdict), owned by Member 2
+- **What:** `bridge.analyze_team()` records every risky verdict in Scam Pulse **as soon as Person 1's request carries a `district`**. Pulse stores only scrubbed text and the salted reporter hash, and a Pulse failure never affects the reply.
+- **Why not fully live:** Person 1's flow has no district anywhere, and the guide says it must be user-chosen, never GPS.
+- **Verify:** a report is stored when a district exists (with no phone number in it); nothing is stored without one, or for low risk.
+
+### 18.9 Ready patch for Person 1 (I3, I10, district)
+- **What:** `docs/person1_integration.patch` adds three things to their code:
+  - the `check_bait` intent calls `bridge.verify_bait`;
+  - Golden Hour reads the receipts through `bridge.evidence_summary`;
+  - `AnalysisRequest` gains `district`.
+- **How it was tested without touching their files:** editing Person 1's files in the shared repo, even temporarily, was blocked, rightly. So the patch was built and tested on a **separate scratch copy**: all 154 tests passed there, a "verify …" post came back HIGH, and two receipts were read. `git apply --check` confirms it applies cleanly to `main`.
+
+### 18.10 Demo readiness (guide section 14)
+- `data/samples/demo_inputs.jsonl`: the exact items prepared on the demo phone (KYC SMS, scheme post, three customs-call lines). All are medium or high offline.
+- `DEMO_MODE` now also covers the Bait Verifier, and `--write-demo-cache` adds the demo inputs (held-out sets stay excluded).
+- `docs/DEMO_MEMBER2.md`: your run-sheet, with setup commands, the customs-officer lines, the Pulse replay and fallbacks.
+
+### 18.11 Known limitations, Q&A prep, accuracy dashboard
+- `docs/LIMITATIONS.md`, linked from the README (the definition of done asks for it). Every item is measured.
+- `docs/QA_MEMBER2.md`: 20-second answers to the questions Member 2 takes (sections 13 and 15), with numbers.
+- `eval/dashboard.html` (the guide's P2 "accuracy dashboard"):
+  - a self-contained offline page, regenerated by `eval/evaluate.py`;
+  - shows recall and false alarms per set, and every message's score against the thresholds;
+  - has hover details, "×N" counts for stacked marks, and a table view;
+  - colours validated for colour-blind separation in light and dark mode;
+  - rendered once and checked visually (label collision and hidden counts fixed).
+- **Slides 6, 10, 11, 12** (section 13): a draft deck was made, then removed at the user's request. The slide content (numbers, talking points) is in `docs/QA_MEMBER2.md` and `eval/report.md`; the slides themselves are still to be made in the team deck.
+
+### Still open (needs the user's LLM key, or teammates)
+1. ~~LLM run~~: done in Step 19.
+2. **Person 1:** apply `docs/person1_integration.patch` (or copy its three changes).
+3. **Member 3:** call transcripts for the dataset; Call Shield → `analyze()`.
+4. **Team:** E2E on real phones and the VM; native Tamil and Hindi review of the keyword lists.
+
+---
+
+## Step 19: The first real LLM run, and calibrating it
+
+**What.** The Groq LLM was connected (`openai/gpt-oss-120b`, chosen by testing the three chat models the key can use; all returned valid JSON in about 1 s). The full evaluation then ran with the LLM and network checks on.
+
+**Run 1: an honest surprise.** Recall went up to 1.00 on both sealed sets, but **9 of 46 genuine messages were flagged** (`eval/report_llm_v1.md`). When asked, the model explained a delivery boy's call as "pretending to be Amazon to get your address", and an HDFC debit alert as "phishing". The prompt framed every message as suspect and never said what actually makes something a scam.
+
+**Fix: two principled changes, not phrase-tuning.**
+1. **Prompt calibration.** Most messages are genuine. Judge by what the sender wants the reader to *do*: share an OTP, PIN or card details, pay, approve a request, open a link, install an app, keep a secret, or act under a threat or an impossible reward. Messages that only inform are not scams. This is the same "Follow the Ask" principle as the Bait Verifier.
+2. **The LLM can never make a verdict HIGH on its own** (guide section 15: "the LLM is never the only safeguard"). With no rule or link evidence it is capped at medium ("may be a scam").
+
+**Discipline.** `heldout3.jsonl` (10 scams, 12 genuine, including sensitive-looking genuine messages) was **committed before** the change (`336750e`), then scored once.
+
+**Result** (`eval/report.md`, offline baseline in `eval/report_offline.md`):
+
+| | Rules only | LLM run 1 | **Calibrated LLM** |
+| --- | --- | --- | --- |
+| Sealed set 3 (never tuned on) | not run | not run | **10/10 scams, 0/12 false alarms** |
+| Sealed set 2 | 13/15, 0/10 | 15/15, 2/10 | 15/15, 0/10 |
+| Sealed calls | 8/10, 0/6 | 10/10, 4/6 | 10/10, 1/6 |
+| All sets | 0 of 46 genuine flagged | 9 of 46 | **90/90 scams; 2 of 58 genuine, both medium only** |
+| Reply time (laptop, Groq, network checks on) | < 1 ms | | median ≈ 1.2 s, p95 ≈ 4 s (budget 10 s) |
+
+Sealed set 2 and the call set informed the calibration (their false alarms were read), so set 3 is the number to quote.
+
+**Also fixed on the way:**
+- **Event-loop bug.** The shared HTTP client in `llm.py` and `links.py` was tied to the first event loop, so a second `asyncio.run()` (the evaluator, the CLI) crashed with "Event loop is closed". There is now one client per loop, with regression tests. The WhatsApp app runs on one loop and was not affected.
+- **`--pace SECONDS`** keeps the evaluation under the free tier's requests-per-minute limit.
+- **Dataset fingerprints ignore line endings.** The Windows checkout had changed them. `heldout2` now shows its original `f51be6e6…` again, which confirms the file was never edited.
+
+**Verify.** 162 tests pass offline: the LLM-only cap, LLM plus rule evidence can still be HIGH, the event-loop regression, and the updated LLM tests.
+
+---
+
 ## Security self-review (Trail of Bits checklist applied)
 
 | Risk | Mitigation in code |
@@ -644,7 +773,7 @@ Copying my `contracts.py` and `config.py` over theirs would have broken the What
 | LLM hallucinating evidence | Evidence values accepted only if present in the OCR text |
 | Malformed LLM JSON | Validated by Pydantic `LLMVerdict` before use |
 | Personal data in Pulse | Normalised before storage; low-risk messages never stored; reporter stored as a salted HMAC on every write path; district not GPS; `purge()` for retention; property-based tests |
-| Malware handling | APKs are never run; VirusTotal hash lookup only (no upload); 100 MB cap checked before reading; parse failure → "do not install" |
+| Malware handling | APKs are never run; VirusTotal hash lookup only (no upload); 20 MB cap on every upload, checked before reading; parse failure → "do not install"; offline URLhaus host list (hostnames only, not committed) |
 | SSRF / drive-by downloads | Kavach never fetches user URLs; only reputation APIs see them |
 | Secrets in logs | LLM errors carry only the exception type; keys only from `.env` |
 | Weak hashing salt | `APP_ENV=demo/prod` refuses a default or short `HASH_SALT` at startup; dev warns once |

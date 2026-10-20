@@ -1,0 +1,81 @@
+--- a/backend/kavach/contracts.py
++++ b/backend/kavach/contracts.py
+@@ -32,6 +32,7 @@
+     media_path: str | None = None
+     media_type: str | None = None
+     user_id: str | None = None
++    district: str | None = None  # user-chosen, never GPS; feeds Scam Pulse
+ 
+ 
+ class RedFlag(BaseModel):
+--- a/backend/kavach/flows/engine.py
++++ b/backend/kavach/flows/engine.py
+@@ -262,7 +262,9 @@
+             acknowledgement_number=acknowledgement,
+         )
+ 
+-        evidence = EvidenceSummary()
++        evidence = await _evidence_from_screenshots(
++            conversation.data.get("evidence_paths", [])
++        )
+         pdf_path = create_evidence_pdf(evidence, complaint_draft)
+ 
+         await _reply(
+@@ -279,6 +281,43 @@
+         )
+         return
+ 
++async def _handle_bait(message: IncomingMessage, language: str) -> None:
++    """Scam Bait Verifier (Person 2) for forwarded news and scheme posts."""
++    from kavach.analysis.bridge import verify_bait
++
++    request = AnalysisRequest(
++        text=message.text,
++        language=language,
++        source="whatsapp",
++        user_id=message.sender,
++    )
++    try:
++        result = await verify_bait(request)
++    except Exception:
++        await _reply(message.sender, messages.ANALYSIS_UNAVAILABLE, language)
++        return
++
++    await _reply_buttons(
++        message.sender,
++        _format_verdict(result),
++        [("report", "How to report"), ("menu", "Menu")],
++        language,
++    )
++
++
++async def _evidence_from_screenshots(paths: list[str]) -> EvidenceSummary:
++    """Read transaction details from the user's receipts (Person 2's OCR)."""
++    if not paths:
++        return EvidenceSummary()
++    try:
++        from kavach.analysis.bridge import evidence_summary
++
++        return await evidence_summary(paths)
++    except Exception:
++        # The PDF still goes out; the user adds any missing details by hand.
++        return EvidenceSummary()
++
++
+ async def _set_guardian(message: IncomingMessage, language: str) -> None:
+     match = re.fullmatch(
+         r"\s*guardian\s+(\+?\d{10,15})\s*",
+@@ -338,12 +377,7 @@
+             return
+ 
+         if intent == "check_bait":
+-            await _reply(
+-                message.sender,
+-                "Scam Bait verification is being connected. For now, send the "
+-                "link or message for a Scam Check.",
+-                language,
+-            )
++            await _handle_bait(message, language)
+             return
+ 
+         if intent == "check_apk" or intent == "check":

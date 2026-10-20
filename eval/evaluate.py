@@ -33,13 +33,15 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "backend"))
 
-from kavach.analysis import ocr, scam_check                # noqa: E402
+from kavach.analysis import bait, blocklist, ocr, scam_check   # noqa: E402
 from kavach.analysis.settings import settings                         # noqa: E402
 from kavach.analysis.models import AnalysisRequest               # noqa: E402
 
 SAMPLES = ROOT / "data" / "samples"
+sys.path.insert(0, str(ROOT / "eval"))
+import dashboard                                           # noqa: E402
 RESULTS = ROOT / "eval" / "results"
-SETS = {"sealed": ["heldout2.jsonl"], "sealed_calls": ["heldout_calls.jsonl"], "heldout1": ["heldout.jsonl"],
+SETS = {"sealed_v3": ["heldout3.jsonl"], "sealed": ["heldout2.jsonl"], "sealed_calls": ["heldout_calls.jsonl"], "heldout1": ["heldout.jsonl"],
         "development": ["scams.jsonl", "legit.jsonl"]}
 INPUT_TYPE = {"sealed_calls": "transcript"}               # spoken Call Shield transcripts; the rest are text
 
@@ -52,18 +54,34 @@ def load(names: list[str]) -> list[dict]:
 
 
 def sha256_file(name: str) -> str:
-    return hashlib.sha256((SAMPLES / name).read_bytes()).hexdigest()
+    # Line endings normalised: a Windows checkout (CRLF) and Linux (LF) give the same fingerprint.
+    return hashlib.sha256((SAMPLES / name).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+
+
+PACE_S = 0.0     # seconds between messages; --pace keeps a free-tier LLM under its requests-per-minute limit
 
 
 async def run(rows: list[dict], input_type: str = "text") -> list[dict]:
     out = []
     for row in rows:
+        if PACE_S and out:
+            await asyncio.sleep(PACE_S)                     # not counted in latency
         t0 = time.perf_counter()
         r = await scam_check.analyze(AnalysisRequest(request_id=row["id"], channel="web",
                                                      input_type=input_type, text=row["text"]))
         ms = (time.perf_counter() - t0) * 1000              # sub-millisecond precision
         out.append({**row, "score": r.risk_score, "level": r.risk_level, "pred_type": r.scam_type.value,
                     "latency_ms": ms, "confidence": r.confidence, "result": r.model_dump(mode="json")})
+    return out
+
+
+async def demo_input_results() -> dict[str, dict]:
+    """Verdicts for data/samples/demo_inputs.jsonl (the items prepared on the demo phone)."""
+    out = {}
+    for row in load(["demo_inputs.jsonl"]):
+        req = AnalysisRequest(request_id=row["id"], channel="whatsapp", input_type="text", text=row["text"])
+        r = await (bait.verify(req) if row["kind"] == "bait" else scam_check.analyze(req))
+        out[scam_check.demo_cache_key(row["text"], row["kind"])] = r.model_dump(mode="json")
     return out
 
 
@@ -153,6 +171,8 @@ def services() -> list[str]:
         f"| VirusTotal URL lookup | {on_off(online and bool(settings.VT_API_KEY))} |",
         f"| WHOIS domain age | {on_off(online)} |",
         "| Lookalike-domain and suspicious-TLD checks | **on** (offline, always) |",
+        f"| Local URLhaus blocklist | {on_off(bool(blocklist.hosts()))}"
+        + (f" ({len(blocklist.hosts())} hosts)" if blocklist.hosts() else " (not downloaded)") + " |",
         f"| Tesseract OCR | {ocr_state} |",
         "| `DEMO_MODE` cache | off (forced off by the evaluator) |",
         f"| Thresholds | high ≥ {scam_check.HIGH}, medium ≥ {scam_check.MEDIUM}; 'flagged' = medium or high |",
@@ -177,7 +197,11 @@ def main() -> None:
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument("--write-demo-cache", action="store_true",
                    help="rebuild data/samples/demo_cache.json from the development set only")
+    p.add_argument("--pace", type=float, default=0.0, metavar="SECONDS",
+                   help="wait between messages, e.g. 2.2 for a 30-requests-per-minute LLM tier")
     args = p.parse_args()
+    global PACE_S
+    PACE_S = args.pace
 
     settings.DEMO_MODE = False                               # cached answers would make the evaluation circular
     res = {name: asyncio.run(run(load(files), INPUT_TYPE.get(name, "text"))) for name, files in SETS.items()}
@@ -185,10 +209,14 @@ def main() -> None:
         "# Kavach Scam Check: evaluation report", "",
         f"Generated {datetime.now():%Y-%m-%d %H:%M} by `eval/evaluate.py`. Owner: Member 2. "
         "All phone numbers, UPI IDs and links in the datasets are fake.", "",
-        "**Quote the sealed-set numbers on the slide.** It was written before the last rule changes and was "
-        "never used for tuning. The other two sets were used to write the rules, so their numbers are optimistic.", "",
+        "**Quote the newest sealed set on the slide** (`heldout3.jsonl`): it was committed before the last "
+        "prompt and fusion changes and never used for tuning. Older sealed sets were seen by later changes "
+        "(heldout2 and the call set informed the LLM calibration), and the development sets were used to write "
+        "the rules, so their numbers are optimistic.", "",
         *services(),
-        *section("Sealed test set (`heldout2.jsonl`, never tuned on)", res["sealed"], sweep=False),
+        *section("Sealed test set 3 (`heldout3.jsonl`, committed before the LLM calibration)", res["sealed_v3"],
+                 sweep=False),
+        *section("Sealed test set 2 (`heldout2.jsonl`, never tuned on by the rules)", res["sealed"], sweep=False),
         *section("Sealed call transcripts (`heldout_calls.jsonl`, committed before the call-scam rules)",
                  res["sealed_calls"], sweep=False),
         "History: held-out set 1 scored recall **0.13** (2/15) on its first, honest run with the original "
@@ -208,9 +236,15 @@ def main() -> None:
     for name, r in res.items():
         write_results(name, r)
     (ROOT / "eval" / "report.md").write_text("\n".join(lines), encoding="utf-8")
+    llm_on = bool(settings.LLM_BASE_URL and settings.LLM_MODEL)
+    mode = (f"Mode: LLM ({settings.LLM_MODEL}) + rules + links" if llm_on else "Mode: rules + links, no LLM") \
+        + ("; network checks on" if settings.NETWORK_CHECKS else "; offline (no network checks)")
+    dashboard.build(scam_check.MEDIUM, scam_check.HIGH, mode)
     if args.write_demo_cache:
-        # Development samples only: a held-out text in the cache could leak into a DEMO_MODE run.
+        # Development samples and the prepared demo inputs only: a held-out text in the cache could
+        # leak into a DEMO_MODE run.
         cache = {x["text"]: x["result"] for x in res["development"]}
+        cache.update(asyncio.run(demo_input_results()))
         (SAMPLES / "demo_cache.json").write_text(json.dumps(cache, ensure_ascii=False, indent=1), encoding="utf-8")
     print("\n".join(lines))
 
