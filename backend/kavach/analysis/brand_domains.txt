@@ -1,0 +1,52 @@
+# Official domains of brands scammers impersonate. One registrable domain per line.
+# Banks
+sbi.co.in
+onlinesbi.sbi
+hdfcbank.com
+icicibank.com
+axisbank.com
+kotak.com
+pnbindia.in
+bankofbaroda.in
+indianbank.in
+canarabank.com
+paytm.com
+phonepe.com
+npci.org.in
+rbi.org.in
+# Government
+incometax.gov.in
+uidai.gov.in
+parivahan.gov.in
+indiapost.gov.in
+cybercrime.gov.in
+echallan.parivahan.gov.in
+myscheme.gov.in
+pib.gov.in
+sancharsaathi.gov.in
+# Couriers and shops
+fedex.com
+dhl.com
+bluedart.com
+amazon.in
+flipkart.com
+jio.com
+airtel.in
+netflix.com
+irctc.co.in
+# News outlets (Scam Bait Verifier)
+thehindu.com
+indianexpress.com
+timesofindia.com
+hindustantimes.com
+ndtv.com
+indiatoday.in
+dinamalar.com
+dailythanthi.com
+news18.com
+livemint.com
+thenewsminute.com
+bbc.com
+deccanherald.com
+theprint.in
+scroll.in

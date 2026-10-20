@@ -15,7 +15,23 @@ dependencies = [
     "deep-translator>=1.11",
     "langdetect>=1.0.9",
     "reportlab>=4.2",
+    # Person 2: analysis engine (kavach/analysis, kavach/llm.py)
+    "pydantic-settings>=2.4",
+    "tenacity>=8.5",
+    "rapidfuzz>=3.9",
+    "tldextract>=5.1",
+    "python-whois>=0.9",
+    "pillow>=10.0",
+    "pytesseract>=0.3.10",
+    "androguard>=4.1",
+    "scikit-learn>=1.5",
+    "numpy>=1.26",
 ]
+
+[project.optional-dependencies]
+test = ["pytest>=8", "pytest-asyncio>=0.24", "hypothesis>=6.100", "respx>=0.21", "ruff>=0.6"]
+# Optional multilingual Pulse embeddings (PULSE_EMBEDDINGS=e5); large model download.
+e5 = ["sentence-transformers>=3.0"]
 
 [tool.setuptools.packages.find]
 include = ["kavach*"]
