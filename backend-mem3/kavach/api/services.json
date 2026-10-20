@@ -1,0 +1,65 @@
+[
+  {
+    "name": "National Cybercrime Helpline 1930",
+    "situation": "I lost money",
+    "when_to_use": "Use first if money already left your account. Call within the golden hour.",
+    "what_it_does": "Helps report an online financial fraud so banks can try to freeze the amount.",
+    "official_url": "https://cybercrime.gov.in/"
+  },
+  {
+    "name": "National Cybercrime Reporting Portal",
+    "situation": "I lost money",
+    "when_to_use": "After calling 1930, file a written complaint with screenshots and UPI references.",
+    "what_it_does": "Takes a cyber fraud complaint and gives an acknowledgement number.",
+    "official_url": "https://cybercrime.gov.in/"
+  },
+  {
+    "name": "DoT Chakshu",
+    "situation": "I got a suspicious call or SMS",
+    "when_to_use": "When a phone number, SMS or WhatsApp message looks like a scam.",
+    "what_it_does": "Lets you report suspected fraud communications to the Department of Telecommunications.",
+    "official_url": "https://sancharsaathi.gov.in/sfc/"
+  },
+  {
+    "name": "Sanchar Saathi",
+    "situation": "I lost my phone",
+    "when_to_use": "If the handset is lost or stolen, or you see an unknown SIM in your name.",
+    "what_it_does": "Block a lost phone, check SIMs issued with your ID, and report fraud connections.",
+    "official_url": "https://sancharsaathi.gov.in/"
+  },
+  {
+    "name": "CEIR",
+    "situation": "I lost my phone",
+    "when_to_use": "Right after a phone is lost, with the IMEI number from the box or bill.",
+    "what_it_does": "Blocks the IMEI on Indian networks so the phone is harder to reuse.",
+    "official_url": "https://www.ceir.gov.in/"
+  },
+  {
+    "name": "UIDAI Aadhaar services",
+    "situation": "Someone is using my ID",
+    "when_to_use": "If someone asks for OTP, biometrics, or lock/unlock of Aadhaar.",
+    "what_it_does": "Lock biometrics, check usage history, and update contact details on the official site only.",
+    "official_url": "https://uidai.gov.in/"
+  },
+  {
+    "name": "RBI Sachet",
+    "situation": "An investment scheme looks illegal",
+    "when_to_use": "Before putting money into a scheme that promises unusually high returns.",
+    "what_it_does": "Lists unauthorised collection schemes and where to complain.",
+    "official_url": "https://sachet.rbi.org.in/"
+  },
+  {
+    "name": "PIB Fact Check",
+    "situation": "An investment scheme looks illegal",
+    "when_to_use": "When a post claims a new government benefit, laptop, or cash transfer.",
+    "what_it_does": "Official fact checks of viral government claims.",
+    "official_url": "https://pib.gov.in/factcheck.aspx"
+  },
+  {
+    "name": "myScheme",
+    "situation": "An investment scheme looks illegal",
+    "when_to_use": "To confirm whether a government scheme actually exists.",
+    "what_it_does": "Catalogue of genuine government schemes.",
+    "official_url": "https://www.myscheme.gov.in/"
+  }
+]
