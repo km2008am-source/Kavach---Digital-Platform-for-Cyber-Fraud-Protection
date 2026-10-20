@@ -1,0 +1,9 @@
+{"request_id": "demo-kyc", "risk_level": "high", "risk_score": 92, "scam_type": "kyc_update",
+ "red_flags": [
+  {"code": "lookalike_domain", "label_en": "The link pretends to be a bank website but is not the bank's real address."},
+  {"code": "urgency", "label_en": "It says your account will be blocked today, to rush you."},
+  {"code": "otp_request", "label_en": "It asks for a code that only you should ever see."}],
+ "explanation_en": "This message is trying to steal your bank login. Banks never ask you to update KYC through a link in a message.",
+ "recommended_action": "report_chakshu", "entities": {"phones": [], "urls": ["sbi-kyc-update.example"], "upi_ids": [], "amounts": []},
+ "links": [{"url": "sbi-kyc-update.example", "domain": "sbi-kyc-update.example", "blocklisted": false, "sources": [], "lookalike_of": "sbi.co.in", "domain_age_days": 3}],
+ "apk": null, "confidence": "normal", "latency_ms": 0}

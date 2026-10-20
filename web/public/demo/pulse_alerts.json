@@ -1,0 +1,6 @@
+[
+  {"cluster_id": "demo-cbe-1", "label": "courier-customs scam, Tamil", "scam_type": "courier_customs",
+   "district": "Coimbatore", "report_count": 38, "distinct_reporters": 11, "window_hours": 2,
+   "confidence": "emerging",
+   "sample_text": "Your <NUM> parcel is held by customs. Pay <AMOUNT> to <UPI> to release it."}
+]

@@ -1,0 +1,17 @@
+[
+  {"id": "helpline_1930", "situation": "lost_money", "name": "National Cyber Crime Helpline 1930",
+   "what": "Call as soon as money has left your account. The first hour matters most.",
+   "when": "You paid or shared an OTP because of a scam.", "link": "https://cybercrime.gov.in"},
+  {"id": "cybercrime_portal", "situation": "lost_money", "name": "National Cyber Crime Reporting Portal",
+   "what": "File the full complaint online after you have called 1930.",
+   "when": "You need a written complaint for your bank or the police.", "link": "https://cybercrime.gov.in"},
+  {"id": "chakshu", "situation": "suspicious", "name": "Chakshu on Sanchar Saathi",
+   "what": "Report a suspicious call, SMS or WhatsApp message to the telecom department.",
+   "when": "A message or call looks like fraud but you have not lost money.", "link": "https://sancharsaathi.gov.in"},
+  {"id": "lost_phone", "situation": "lost_phone", "name": "Sanchar Saathi",
+   "what": "Block a lost or stolen phone and check which mobile connections are in your name.",
+   "when": "Your phone is lost, or you suspect a SIM you did not take.", "link": "https://sancharsaathi.gov.in"},
+  {"id": "sachet", "situation": "investment", "name": "RBI Sachet",
+   "what": "Report an illegal deposit or investment scheme to the Reserve Bank.",
+   "when": "Someone promises very high returns or collects deposits without a licence.", "link": "https://sachet.rbi.org.in"}
+]
