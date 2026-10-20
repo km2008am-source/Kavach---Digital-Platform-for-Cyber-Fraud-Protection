@@ -1,0 +1,26 @@
+[
+  {
+    "name": "National Cyber Crime Helpline",
+    "situation": "I lost money to an online scam",
+    "description": "Call 1930 immediately. Then file or complete the complaint on the National Cyber Crime Reporting Portal.",
+    "official_url": "https://www.cybercrime.gov.in/"
+  },
+  {
+    "name": "Sanchar Saathi Chakshu",
+    "situation": "I received a suspicious call, SMS, or WhatsApp message",
+    "description": "Report suspected fraud communications such as fake KYC, impersonation, or threatening disconnection messages.",
+    "official_url": "https://www.sancharsaathi.gov.in/"
+  },
+  {
+    "name": "RBI Sachet",
+    "situation": "I found a suspicious deposit or investment scheme",
+    "description": "Check information about deposit-taking entities and report unauthorized deposit collection.",
+    "official_url": "https://sachet.rbi.org.in/"
+  },
+  {
+    "name": "CEIR lost or stolen phone service",
+    "situation": "My phone was lost or stolen",
+    "description": "Use the Government of India service to request blocking of a lost or stolen mobile handset.",
+    "official_url": "https://www.ceir.gov.in/"
+  }
+]

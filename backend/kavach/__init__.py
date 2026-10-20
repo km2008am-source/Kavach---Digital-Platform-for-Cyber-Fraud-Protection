@@ -1,0 +1,1 @@
+"""Kavach backend application package."""
