@@ -1,0 +1,16 @@
+{"id": "c01", "label": "scam", "scam_type": "courier_customs", "language": "en", "pred_type": "courier_customs", "score": 95, "level": "high", "confidence": "lower", "latency_ms": 0.609}
+{"id": "c02", "label": "scam", "scam_type": "courier_customs", "language": "en", "pred_type": "courier_customs", "score": 100, "level": "high", "confidence": "lower", "latency_ms": 0.45}
+{"id": "c03", "label": "scam", "scam_type": "digital_arrest", "language": "en", "pred_type": "digital_arrest", "score": 85, "level": "high", "confidence": "lower", "latency_ms": 0.452}
+{"id": "c04", "label": "scam", "scam_type": "kyc_update", "language": "en", "pred_type": "not_scam", "score": 15, "level": "low", "confidence": "lower", "latency_ms": 0.526}
+{"id": "c05", "label": "scam", "scam_type": "digital_arrest", "language": "en", "pred_type": "not_scam", "score": 15, "level": "low", "confidence": "lower", "latency_ms": 0.502}
+{"id": "c06", "label": "scam", "scam_type": "courier_customs", "language": "en", "pred_type": "courier_customs", "score": 45, "level": "medium", "confidence": "lower", "latency_ms": 0.526}
+{"id": "c07", "label": "scam", "scam_type": "kyc_update", "language": "en", "pred_type": "kyc_update", "score": 50, "level": "medium", "confidence": "lower", "latency_ms": 0.44}
+{"id": "c08", "label": "scam", "scam_type": "courier_customs", "language": "hi", "pred_type": "courier_customs", "score": 80, "level": "high", "confidence": "lower", "latency_ms": 0.411}
+{"id": "c09", "label": "scam", "scam_type": "courier_customs", "language": "ta", "pred_type": "courier_customs", "score": 65, "level": "medium", "confidence": "lower", "latency_ms": 0.559}
+{"id": "c10", "label": "scam", "scam_type": "upi_collect", "language": "en", "pred_type": "upi_collect", "score": 55, "level": "medium", "confidence": "lower", "latency_ms": 0.481}
+{"id": "d01", "label": "legit", "scam_type": "not_scam", "language": "en", "pred_type": "not_scam", "score": 0, "level": "low", "confidence": "lower", "latency_ms": 0.463}
+{"id": "d02", "label": "legit", "scam_type": "not_scam", "language": "en", "pred_type": "not_scam", "score": 0, "level": "low", "confidence": "lower", "latency_ms": 0.451}
+{"id": "d03", "label": "legit", "scam_type": "not_scam", "language": "en", "pred_type": "not_scam", "score": 0, "level": "low", "confidence": "lower", "latency_ms": 0.485}
+{"id": "d04", "label": "legit", "scam_type": "not_scam", "language": "en", "pred_type": "not_scam", "score": 0, "level": "low", "confidence": "lower", "latency_ms": 0.454}
+{"id": "d05", "label": "legit", "scam_type": "not_scam", "language": "en", "pred_type": "not_scam", "score": 15, "level": "low", "confidence": "lower", "latency_ms": 0.466}
+{"id": "d06", "label": "legit", "scam_type": "not_scam", "language": "ta", "pred_type": "not_scam", "score": 0, "level": "low", "confidence": "lower", "latency_ms": 0.458}
