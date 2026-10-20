@@ -1,0 +1,3 @@
+Record backup_demo.mp4 at H32 from a clean run of all six demo steps, under 4 minutes.
+
+Save copies on two laptops and a USB drive. This folder is the place for that file.
