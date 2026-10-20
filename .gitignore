@@ -1,0 +1,12 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+backend/.venv/
+kavach.db
+kavach_test.db
+web/node_modules/
+web/dist/
+.pytest_cache/
+files/
+claude-memory/
