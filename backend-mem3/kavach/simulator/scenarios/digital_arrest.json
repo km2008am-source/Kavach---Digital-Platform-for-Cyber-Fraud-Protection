@@ -1,0 +1,62 @@
+{
+  "id": "digital_arrest",
+  "persona": "Inspector R. Varma of the 'National Parcel Enforcement Bureau' (a FICTIONAL agency)",
+  "max_turns": 8,
+  "stages": [
+    {
+      "name": "hook",
+      "tactics": ["authority"],
+      "goal": "Say a parcel in the user's name contains illegal items",
+      "scripted": {
+        "en": "This is Inspector R. Varma, National Parcel Enforcement Bureau. A parcel in your name has been seized with illegal items.",
+        "ta": "நான் இன்ஸ்பெக்டர் ஆர். வர்மா, தேசிய பார்சல் அமலாக்கப் பணியகம். உங்கள் பெயரில் வந்த பார்சலில் சட்டவிரோதப் பொருட்கள் சிக்கியுள்ளன."
+      }
+    },
+    {
+      "name": "fear",
+      "tactics": ["fear", "authority"],
+      "goal": "Threaten an arrest warrant",
+      "scripted": {
+        "en": "An arrest warrant is ready in your name. You are now under investigation. Do not disconnect this call.",
+        "ta": "உங்கள் பெயரில் கைது வாரண்ட் தயாராக உள்ளது. நீங்கள் இப்போது விசாரணையில் இருக்கிறீர்கள். அழைப்பைத் துண்டிக்காதீர்கள்."
+      }
+    },
+    {
+      "name": "isolation",
+      "tactics": ["isolation", "secrecy"],
+      "goal": "Tell the user to stay on the call and tell nobody",
+      "scripted": {
+        "en": "This case is confidential. Stay on this call and tell nobody, not even your family, or it will get worse.",
+        "ta": "இந்த வழக்கு ரகசியமானது. இந்த அழைப்பிலேயே இருங்கள். குடும்பத்தினர் உட்பட யாரிடமும் சொல்லாதீர்கள், இல்லையெனில் நிலைமை மோசமாகும்."
+      }
+    },
+    {
+      "name": "urgency",
+      "tactics": ["urgency"],
+      "goal": "Say the case closes in 30 minutes",
+      "scripted": {
+        "en": "The case closes in thirty minutes. If we do not settle it now, officers will reach your home.",
+        "ta": "இந்த வழக்கு முப்பது நிமிடங்களில் முடிகிறது. இப்போதே தீர்க்காவிட்டால் அதிகாரிகள் உங்கள் வீட்டுக்கு வருவார்கள்."
+      }
+    },
+    {
+      "name": "payment",
+      "tactics": ["payment_push", "fear"],
+      "goal": "Ask for a 'verification deposit' to clear their name",
+      "scripted": {
+        "en": "To clear your name, pay a refundable verification deposit now. It will be returned after the check.",
+        "ta": "உங்கள் பெயரை விடுவிக்க, திருப்பித் தரப்படும் சரிபார்ப்பு வைப்புத்தொகையை இப்போதே செலுத்துங்கள். சோதனைக்குப் பிறகு திருப்பித் தரப்படும்."
+      }
+    }
+  ],
+  "pre_quiz": [
+    {"q": "Can police arrest you over a video call?",
+     "q_ta": "வீடியோ அழைப்பில் போலீஸ் உங்களை கைது செய்ய முடியுமா?", "a": "no"},
+    {"q": "Should you stay on a call if told not to tell your family?",
+     "q_ta": "குடும்பத்தினரிடம் சொல்லக்கூடாது என்று கூறினால், அழைப்பில் தொடர வேண்டுமா?", "a": "no"},
+    {"q": "Will a real officer ask you to transfer money to clear your name?",
+     "q_ta": "உங்கள் பெயரை விடுவிக்க உண்மையான அதிகாரி பணம் அனுப்பச் சொல்வாரா?", "a": "no"},
+    {"q": "If you are unsure, is it right to hang up and call the official number yourself?",
+     "q_ta": "சந்தேகம் இருந்தால், அழைப்பைத் துண்டித்து நீங்களே அதிகாரப்பூர்வ எண்ணை அழைப்பது சரியா?", "a": "yes"}
+  ]
+}

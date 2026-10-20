@@ -1,0 +1,12 @@
+# Member 3's dependencies (M1 merges these into the shared file with pinned versions via pip freeze)
+fastapi
+uvicorn[standard]
+pydantic
+sqlmodel
+httpx
+python-multipart
+python-dotenv
+twilio
+feedparser
+pytest
+pytest-asyncio
