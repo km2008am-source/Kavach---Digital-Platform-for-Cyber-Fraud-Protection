@@ -1,0 +1,1853 @@
+{
+ "This is Inspector Rao from CBI Mumbai. A parcel with drugs was booked on your Aadhaar. You are under digital arrest. Stay on the video call and do not tell anyone or you will be arrested today.": {
+  "request_id": "s01",
+  "risk_level": "high",
+  "risk_score": 100,
+  "scam_type": "digital_arrest",
+  "red_flags": [
+   {
+    "code": "threat_arrest",
+    "label_en": "It threatens you with arrest or a police case. Real police never do this on a call or message."
+   },
+   {
+    "code": "isolation",
+    "label_en": "It tells you to keep it secret or stay on the call, so nobody can warn you."
+   },
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "authority_claim",
+    "label_en": "It claims to be from police, customs or a government office to scare you."
+   }
+  ],
+  "explanation_en": "This looks like a fake police / 'digital arrest' scam. It threatens you with arrest or a police case. Real police never do this on a call or message. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Narcotics Control Bureau notice: an arrest warrant has been issued in your name for money laundering. To clear your name transfer Rs 1,50,000 to the RBI verification account immediately. This case is confidential.": {
+  "request_id": "s02",
+  "risk_level": "high",
+  "risk_score": 100,
+  "scam_type": "digital_arrest",
+  "red_flags": [
+   {
+    "code": "threat_arrest",
+    "label_en": "It threatens you with arrest or a police case. Real police never do this on a call or message."
+   },
+   {
+    "code": "isolation",
+    "label_en": "It tells you to keep it secret or stay on the call, so nobody can warn you."
+   },
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "payment_request",
+    "label_en": "It asks you to pay or transfer money."
+   }
+  ],
+  "explanation_en": "This looks like a fake police / 'digital arrest' scam. It threatens you with arrest or a police case. Real police never do this on a call or message. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": [
+    "Rs 1,50,000"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "நான் மும்பை போலீஸ் அதிகாரி. உங்கள் ஆதார் எண்ணில் சட்டவிரோத பார்சல் உள்ளது. நீங்கள் டிஜிட்டல் கைது செய்யப்பட்டுள்ளீர்கள். யாரிடமும் சொல்ல வேண்டாம், உடனே பணம் அனுப்புங்கள்.": {
+  "request_id": "s03",
+  "risk_level": "high",
+  "risk_score": 100,
+  "scam_type": "digital_arrest",
+  "red_flags": [
+   {
+    "code": "threat_arrest",
+    "label_en": "It threatens you with arrest or a police case. Real police never do this on a call or message."
+   },
+   {
+    "code": "isolation",
+    "label_en": "It tells you to keep it secret or stay on the call, so nobody can warn you."
+   },
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "payment_request",
+    "label_en": "It asks you to pay or transfer money."
+   }
+  ],
+  "explanation_en": "This looks like a fake police / 'digital arrest' scam. It threatens you with arrest or a police case. Real police never do this on a call or message. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Main CBI officer bol raha hoon. Aapke naam par arrest warrant hai. Video call par bane rahiye, kisi ko mat batana. Turant Rs 80,000 transfer kijiye warna police case hoga.": {
+  "request_id": "s04",
+  "risk_level": "high",
+  "risk_score": 100,
+  "scam_type": "digital_arrest",
+  "red_flags": [
+   {
+    "code": "threat_arrest",
+    "label_en": "It threatens you with arrest or a police case. Real police never do this on a call or message."
+   },
+   {
+    "code": "isolation",
+    "label_en": "It tells you to keep it secret or stay on the call, so nobody can warn you."
+   },
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "payment_request",
+    "label_en": "It asks you to pay or transfer money."
+   }
+  ],
+  "explanation_en": "This looks like a fake police / 'digital arrest' scam. It threatens you with arrest or a police case. Real police never do this on a call or message. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": [
+    "Rs 80,000"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Cyber Crime Branch: your mobile number is linked to illegal activity. Your number will be blocked within 2 hours. Press 9 to speak to the investigating officer. Do not disconnect the call.": {
+  "request_id": "s05",
+  "risk_level": "high",
+  "risk_score": 95,
+  "scam_type": "digital_arrest",
+  "red_flags": [
+   {
+    "code": "threat_arrest",
+    "label_en": "It threatens you with arrest or a police case. Real police never do this on a call or message."
+   },
+   {
+    "code": "isolation",
+    "label_en": "It tells you to keep it secret or stay on the call, so nobody can warn you."
+   },
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "authority_claim",
+    "label_en": "It claims to be from police, customs or a government office to scare you."
+   }
+  ],
+  "explanation_en": "This looks like a fake police / 'digital arrest' scam. It threatens you with arrest or a police case. Real police never do this on a call or message. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "சிபிஐ அலுவலகம்: உங்கள் மீது பணமோசடி வழக்கு பதிவு செய்யப்பட்டுள்ளது. கைது தவிர்க்க இன்றே 50,000 ரூபாய் செலுத்தவும். இந்த அழைப்பை துண்டிக்க வேண்டாம்.": {
+  "request_id": "s06",
+  "risk_level": "high",
+  "risk_score": 85,
+  "scam_type": "digital_arrest",
+  "red_flags": [
+   {
+    "code": "threat_arrest",
+    "label_en": "It threatens you with arrest or a police case. Real police never do this on a call or message."
+   },
+   {
+    "code": "isolation",
+    "label_en": "It tells you to keep it secret or stay on the call, so nobody can warn you."
+   },
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "payment_request",
+    "label_en": "It asks you to pay or transfer money."
+   }
+  ],
+  "explanation_en": "This looks like a fake police / 'digital arrest' scam. It threatens you with arrest or a police case. Real police never do this on a call or message. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": [
+    "50,000 ரூபாய்"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Dear SBI customer, your account will be blocked today. Update your KYC now at http://sbi-kyc-update.xyz/login and share the OTP to continue.": {
+  "request_id": "s07",
+  "risk_level": "high",
+  "risk_score": 85,
+  "scam_type": "kyc_update",
+  "red_flags": [
+   {
+    "code": "lookalike_domain",
+    "label_en": "The link sbi-kyc-update.xyz pretends to be sbi.co.in but is not the official site."
+   },
+   {
+    "code": "otp_request",
+    "label_en": "It asks for your OTP or UPI PIN. No bank, police or company ever asks for these."
+   },
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "kyc",
+    "label_en": "Banks never ask you to update KYC or PAN through a message or link."
+   }
+  ],
+  "explanation_en": "This looks like a fake KYC or account-block scam. The link sbi-kyc-update.xyz pretends to be sbi.co.in but is not the official site. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [
+    "http://sbi-kyc-update.xyz/login"
+   ],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [
+   {
+    "url": "http://sbi-kyc-update.xyz/login",
+    "domain": "sbi-kyc-update.xyz",
+    "blocklisted": false,
+    "sources": [],
+    "lookalike_of": "sbi.co.in",
+    "domain_age_days": null
+   }
+  ],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "HDFC Bank: Your PAN is not linked. Netbanking will be suspended within 24 hours. Complete PAN update here: www.hdfc-pan-verify.top/kyc": {
+  "request_id": "s08",
+  "risk_level": "high",
+  "risk_score": 85,
+  "scam_type": "kyc_update",
+  "red_flags": [
+   {
+    "code": "lookalike_domain",
+    "label_en": "The link www.hdfc-pan-verify.top pretends to be hdfcbank.com but is not the official site."
+   },
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "kyc",
+    "label_en": "Banks never ask you to update KYC or PAN through a message or link."
+   }
+  ],
+  "explanation_en": "This looks like a fake KYC or account-block scam. The link www.hdfc-pan-verify.top pretends to be hdfcbank.com but is not the official site. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [
+    "www.hdfc-pan-verify.top/kyc"
+   ],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [
+   {
+    "url": "www.hdfc-pan-verify.top/kyc",
+    "domain": "www.hdfc-pan-verify.top",
+    "blocklisted": false,
+    "sources": [],
+    "lookalike_of": "hdfcbank.com",
+    "domain_age_days": null
+   }
+  ],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "அன்புள்ள வாடிக்கையாளரே, உங்கள் KYC காலாவதியானது. உங்கள் வங்கி கணக்கு இன்று முடக்கப்படும். உடனே இந்த இணைப்பில் புதுப்பிக்கவும்: http://kyc-indianbank.online/update": {
+  "request_id": "s09",
+  "risk_level": "high",
+  "risk_score": 85,
+  "scam_type": "kyc_update",
+  "red_flags": [
+   {
+    "code": "lookalike_domain",
+    "label_en": "The link kyc-indianbank.online pretends to be indianbank.in but is not the official site."
+   },
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "kyc",
+    "label_en": "Banks never ask you to update KYC or PAN through a message or link."
+   }
+  ],
+  "explanation_en": "This looks like a fake KYC or account-block scam. The link kyc-indianbank.online pretends to be indianbank.in but is not the official site. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [
+    "http://kyc-indianbank.online/update"
+   ],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [
+   {
+    "url": "http://kyc-indianbank.online/update",
+    "domain": "kyc-indianbank.online",
+    "blocklisted": false,
+    "sources": [],
+    "lookalike_of": "indianbank.in",
+    "domain_age_days": null
+   }
+  ],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Your Paytm KYC has expired. Call our KYC executive on 9000011122 immediately and share the verification code sent to your phone to avoid account suspension.": {
+  "request_id": "s10",
+  "risk_level": "high",
+  "risk_score": 70,
+  "scam_type": "kyc_update",
+  "red_flags": [
+   {
+    "code": "otp_request",
+    "label_en": "It asks for your OTP or UPI PIN. No bank, police or company ever asks for these."
+   },
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "kyc",
+    "label_en": "Banks never ask you to update KYC or PAN through a message or link."
+   }
+  ],
+  "explanation_en": "This looks like a fake KYC or account-block scam. It asks for your OTP or UPI PIN. No bank, police or company ever asks for these. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [
+    "9000011122"
+   ],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Priya grahak, aapka KYC update nahi hua hai. Aapka account aaj band ho jayega. Abhi link par click karein: http://icici-kyc-help.site/verify aur OTP batayein.": {
+  "request_id": "s11",
+  "risk_level": "high",
+  "risk_score": 85,
+  "scam_type": "kyc_update",
+  "red_flags": [
+   {
+    "code": "lookalike_domain",
+    "label_en": "The link icici-kyc-help.site pretends to be icicibank.com but is not the official site."
+   },
+   {
+    "code": "otp_request",
+    "label_en": "It asks for your OTP or UPI PIN. No bank, police or company ever asks for these."
+   },
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "kyc",
+    "label_en": "Banks never ask you to update KYC or PAN through a message or link."
+   }
+  ],
+  "explanation_en": "This looks like a fake KYC or account-block scam. The link icici-kyc-help.site pretends to be icicibank.com but is not the official site. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [
+    "http://icici-kyc-help.site/verify"
+   ],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [
+   {
+    "url": "http://icici-kyc-help.site/verify",
+    "domain": "icici-kyc-help.site",
+    "blocklisted": false,
+    "sources": [],
+    "lookalike_of": "icicibank.com",
+    "domain_age_days": null
+   }
+  ],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Electricity board: your power connection will be disconnected tonight at 9:30 pm because your last bill was not updated. Contact electricity officer 9000022233 immediately.": {
+  "request_id": "s12",
+  "risk_level": "medium",
+  "risk_score": 50,
+  "scam_type": "kyc_update",
+  "red_flags": [
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "kyc",
+    "label_en": "Banks never ask you to update KYC or PAN through a message or link."
+   },
+   {
+    "code": "authority_claim",
+    "label_en": "It claims to be from police, customs or a government office to scare you."
+   }
+  ],
+  "explanation_en": "This may be a fake KYC or account-block scam. It rushes you so you act before you can think or check. Do not pay, click links or share any code.",
+  "recommended_action": "verify_official",
+  "entities": {
+   "phones": [
+    "9000022233"
+   ],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Hi, I am buying your sofa from OLX. I have sent a payment request of Rs 15,000 to receive the money. Enter your UPI PIN to accept the amount. My UPI is buyer.army@okfake": {
+  "request_id": "s13",
+  "risk_level": "medium",
+  "risk_score": 60,
+  "scam_type": "upi_collect",
+  "red_flags": [
+   {
+    "code": "otp_request",
+    "label_en": "It asks for your OTP or UPI PIN. No bank, police or company ever asks for these."
+   },
+   {
+    "code": "collect_request",
+    "label_en": "To RECEIVE money you never enter a PIN or scan a QR code. This request takes money from you."
+   }
+  ],
+  "explanation_en": "This may be a UPI collect-request scam. It asks for your OTP or UPI PIN. No bank, police or company ever asks for these. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [
+    "buyer.army@okfake"
+   ],
+   "amounts": [
+    "Rs 15,000"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Sorry sir, I sent Rs 5,000 to your number by mistake. Please return it by approving the collect request from refund.help@paytmx. Please do it immediately.": {
+  "request_id": "s14",
+  "risk_level": "medium",
+  "risk_score": 40,
+  "scam_type": "upi_collect",
+  "red_flags": [
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "collect_request",
+    "label_en": "To RECEIVE money you never enter a PIN or scan a QR code. This request takes money from you."
+   }
+  ],
+  "explanation_en": "This may be a UPI collect-request scam. It rushes you so you act before you can think or check. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [
+    "refund.help@paytmx"
+   ],
+   "amounts": [
+    "Rs 5,000"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "உங்களுக்கு 2,000 ரூபாய் கேஷ்பேக் கிடைத்துள்ளது. பணத்தைப் பெற உங்கள் UPI பின் எண்ணை உள்ளிடவும். cashback.reward@ybl": {
+  "request_id": "s15",
+  "risk_level": "high",
+  "risk_score": 80,
+  "scam_type": "upi_collect",
+  "red_flags": [
+   {
+    "code": "otp_request",
+    "label_en": "It asks for your OTP or UPI PIN. No bank, police or company ever asks for these."
+   },
+   {
+    "code": "too_good",
+    "label_en": "The offer is too good to be true: easy money, prizes or guaranteed returns."
+   },
+   {
+    "code": "collect_request",
+    "label_en": "To RECEIVE money you never enter a PIN or scan a QR code. This request takes money from you."
+   }
+  ],
+  "explanation_en": "This looks like a UPI collect-request scam. It asks for your OTP or UPI PIN. No bank, police or company ever asks for these. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [
+    "cashback.reward@ybl"
+   ],
+   "amounts": [
+    "2,000 ரூபாய்"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Army officer here, posted at the airport. I want to rent your flat. To verify your account first pay Rs 1 to scan this QR code, I will return double the amount.": {
+  "request_id": "s16",
+  "risk_level": "medium",
+  "risk_score": 60,
+  "scam_type": "upi_collect",
+  "red_flags": [
+   {
+    "code": "payment_request",
+    "label_en": "It asks you to pay or transfer money."
+   },
+   {
+    "code": "authority_claim",
+    "label_en": "It claims to be from police, customs or a government office to scare you."
+   },
+   {
+    "code": "collect_request",
+    "label_en": "To RECEIVE money you never enter a PIN or scan a QR code. This request takes money from you."
+   }
+  ],
+  "explanation_en": "This may be a UPI collect-request scam. It asks you to pay or transfer money. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": [
+    "Rs 1"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Part-time job! Work from home and earn daily Rs 3000 by liking YouTube videos. No experience needed. Message HR on WhatsApp 9000033344 to join today only.": {
+  "request_id": "s17",
+  "risk_level": "low",
+  "risk_score": 35,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money, an OTP or to click a link, check with the official number first.",
+  "recommended_action": "none",
+  "entities": {
+   "phones": [
+    "9000033344"
+   ],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": [
+    "Rs 3000"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Congratulations, you are selected for Amazon data entry job. Salary Rs 45,000. Pay refundable deposit of Rs 2,500 for ID card and training kit to hr.amazon@okaxis": {
+  "request_id": "s18",
+  "risk_level": "low",
+  "risk_score": 20,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money or an OTP, call Amazon on the number printed on their official website.",
+  "recommended_action": "verify_official",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [
+    "hr.amazon@okaxis"
+   ],
+   "amounts": [
+    "Rs 45,000",
+    "Rs 2,500"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "வீட்டில் இருந்தே வேலை! தினமும் 2000 ரூபாய் சம்பாதிக்கலாம். டெலிகிராம் குழுவில் சேர முதலில் 500 ரூபாய் பதிவு கட்டணம் செலுத்தவும்.": {
+  "request_id": "s19",
+  "risk_level": "medium",
+  "risk_score": 40,
+  "scam_type": "job_offer",
+  "red_flags": [
+   {
+    "code": "payment_request",
+    "label_en": "It asks you to pay or transfer money."
+   },
+   {
+    "code": "too_good",
+    "label_en": "The offer is too good to be true: easy money, prizes or guaranteed returns."
+   }
+  ],
+  "explanation_en": "This may be a fake job or task scam. It asks you to pay or transfer money. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": [
+    "2000 ரூபாய்",
+    "500 ரூபாய்"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Hotel review task: complete 3 prepaid tasks and get 30% commission. Your first task needs a Rs 1,000 deposit. Withdraw anytime. Join https://t.me/fakereviewtasks": {
+  "request_id": "s20",
+  "risk_level": "medium",
+  "risk_score": 40,
+  "scam_type": "job_offer",
+  "red_flags": [
+   {
+    "code": "payment_request",
+    "label_en": "It asks you to pay or transfer money."
+   },
+   {
+    "code": "too_good",
+    "label_en": "The offer is too good to be true: easy money, prizes or guaranteed returns."
+   }
+  ],
+  "explanation_en": "This may be a fake job or task scam. It asks you to pay or transfer money. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [
+    "https://t.me/fakereviewtasks"
+   ],
+   "upi_ids": [],
+   "amounts": [
+    "Rs 1,000"
+   ]
+  },
+  "links": [
+   {
+    "url": "https://t.me/fakereviewtasks",
+    "domain": "t.me",
+    "blocklisted": false,
+    "sources": [],
+    "lookalike_of": null,
+    "domain_age_days": null
+   }
+  ],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Ghar baithe kaam karein aur roz Rs 2500 kamaayein. Registration fee sirf Rs 499. Aaj hi join karein, seats limited hain.": {
+  "request_id": "s21",
+  "risk_level": "medium",
+  "risk_score": 55,
+  "scam_type": "job_offer",
+  "red_flags": [
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "payment_request",
+    "label_en": "It asks you to pay or transfer money."
+   },
+   {
+    "code": "too_good",
+    "label_en": "The offer is too good to be true: easy money, prizes or guaranteed returns."
+   }
+  ],
+  "explanation_en": "This may be a fake job or task scam. It rushes you so you act before you can think or check. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": [
+    "Rs 2500",
+    "Rs 499"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "FedEx: Your parcel to Taiwan has been stopped by customs. It contains 5 passports and MDMA. Press 1 to talk to customs officer now or a police case will be filed.": {
+  "request_id": "s22",
+  "risk_level": "high",
+  "risk_score": 100,
+  "scam_type": "courier_customs",
+  "red_flags": [
+   {
+    "code": "threat_arrest",
+    "label_en": "It threatens you with arrest or a police case. Real police never do this on a call or message."
+   },
+   {
+    "code": "authority_claim",
+    "label_en": "It claims to be from police, customs or a government office to scare you."
+   },
+   {
+    "code": "contraband_claim",
+    "label_en": "It claims a parcel or account in your name is linked to drugs or illegal items. This is a scare tactic: customs and police do not phone you about it."
+   },
+   {
+    "code": "parcel_seized",
+    "label_en": "It says a parcel in your name was stopped or seized. Fake 'customs' calls always start this way."
+   }
+  ],
+  "explanation_en": "This looks like a fake courier or customs scam. It threatens you with arrest or a police case. Real police never do this on a call or message. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "India Post: your package is held at the warehouse due to an incomplete address. Pay Rs 25 redelivery fee within 24 hours at http://indiapost-redelivery.info/pay": {
+  "request_id": "s23",
+  "risk_level": "high",
+  "risk_score": 85,
+  "scam_type": "courier_customs",
+  "red_flags": [
+   {
+    "code": "lookalike_domain",
+    "label_en": "The link indiapost-redelivery.info pretends to be indiapost.gov.in but is not the official site."
+   },
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "payment_request",
+    "label_en": "It asks you to pay or transfer money."
+   },
+   {
+    "code": "parcel_seized",
+    "label_en": "It says a parcel in your name was stopped or seized. Fake 'customs' calls always start this way."
+   }
+  ],
+  "explanation_en": "This looks like a fake courier or customs scam. The link indiapost-redelivery.info pretends to be indiapost.gov.in but is not the official site. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [
+    "http://indiapost-redelivery.info/pay"
+   ],
+   "upi_ids": [],
+   "amounts": [
+    "Rs 25"
+   ]
+  },
+  "links": [
+   {
+    "url": "http://indiapost-redelivery.info/pay",
+    "domain": "indiapost-redelivery.info",
+    "blocklisted": false,
+    "sources": [],
+    "lookalike_of": "indiapost.gov.in",
+    "domain_age_days": null
+   }
+  ],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "உங்கள் பெயரில் அனுப்பப்பட்ட பார்சலில் போதைப்பொருள் இருப்பதாக சுங்கத்துறை கண்டுபிடித்துள்ளது. இப்போதே சுங்க அதிகாரியுடன் பேச 1 அழுத்தவும்.": {
+  "request_id": "s24",
+  "risk_level": "high",
+  "risk_score": 75,
+  "scam_type": "courier_customs",
+  "red_flags": [
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "authority_claim",
+    "label_en": "It claims to be from police, customs or a government office to scare you."
+   },
+   {
+    "code": "contraband_claim",
+    "label_en": "It claims a parcel or account in your name is linked to drugs or illegal items. This is a scare tactic: customs and police do not phone you about it."
+   },
+   {
+    "code": "press_key",
+    "label_en": "Recorded calls asking you to press a key to talk to an 'officer' are a common scam start."
+   }
+  ],
+  "explanation_en": "This looks like a fake courier or customs scam. It rushes you so you act before you can think or check. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 1
+ },
+ "கூரியர் சுங்க வரி: உங்கள் பரிசுப் பொதியைப் பெற 12,500 ரூபாய் சுங்கக் கட்டணம் உடனே செலுத்த வேண்டும். இல்லையெனில் வழக்கு பதிவு செய்யப்படும்.": {
+  "request_id": "s25",
+  "risk_level": "high",
+  "risk_score": 100,
+  "scam_type": "courier_customs",
+  "red_flags": [
+   {
+    "code": "threat_arrest",
+    "label_en": "It threatens you with arrest or a police case. Real police never do this on a call or message."
+   },
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "payment_request",
+    "label_en": "It asks you to pay or transfer money."
+   },
+   {
+    "code": "too_good",
+    "label_en": "The offer is too good to be true: easy money, prizes or guaranteed returns."
+   }
+  ],
+  "explanation_en": "This looks like a fake courier or customs scam. It threatens you with arrest or a police case. Real police never do this on a call or message. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": [
+    "12,500 ரூபாய்"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "DHL Express: a gift parcel from your UK friend is waiting at Delhi customs. Pay customs clearance of Rs 35,000 to the officer's account today to release it.": {
+  "request_id": "s26",
+  "risk_level": "medium",
+  "risk_score": 50,
+  "scam_type": "courier_customs",
+  "red_flags": [
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "payment_request",
+    "label_en": "It asks you to pay or transfer money."
+   },
+   {
+    "code": "authority_claim",
+    "label_en": "It claims to be from police, customs or a government office to scare you."
+   }
+  ],
+  "explanation_en": "This may be a fake courier or customs scam. It rushes you so you act before you can think or check. Do not pay, click links or share any code.",
+  "recommended_action": "verify_official",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": [
+    "Rs 35,000"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Join our stock market VIP group. Guaranteed 300% returns in 1 month. Our expert gives sure-shot tips. Invest minimum Rs 10,000 through our trading app link today.": {
+  "request_id": "s27",
+  "risk_level": "medium",
+  "risk_score": 55,
+  "scam_type": "investment",
+  "red_flags": [
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "payment_request",
+    "label_en": "It asks you to pay or transfer money."
+   },
+   {
+    "code": "too_good",
+    "label_en": "The offer is too good to be true: easy money, prizes or guaranteed returns."
+   }
+  ],
+  "explanation_en": "This may be an investment scam. It rushes you so you act before you can think or check. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": [
+    "Rs 10,000"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Double your money in 15 days with crypto mining. Deposit Rs 5,000 and get Rs 10,000 guaranteed. Limited slots. Send screenshot after payment.": {
+  "request_id": "s28",
+  "risk_level": "medium",
+  "risk_score": 55,
+  "scam_type": "investment",
+  "red_flags": [
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "payment_request",
+    "label_en": "It asks you to pay or transfer money."
+   },
+   {
+    "code": "too_good",
+    "label_en": "The offer is too good to be true: easy money, prizes or guaranteed returns."
+   }
+  ],
+  "explanation_en": "This may be an investment scam. It rushes you so you act before you can think or check. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": [
+    "Rs 5,000",
+    "Rs 10,000"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "பங்குச் சந்தையில் ஒரு மாதத்தில் இரட்டிப்பு லாபம் உறுதி. எங்கள் வாட்ஸ்அப் குழுவில் சேர்ந்து இன்றே முதலீடு செய்யுங்கள்.": {
+  "request_id": "s29",
+  "risk_level": "low",
+  "risk_score": 35,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money, an OTP or to click a link, check with the official number first.",
+  "recommended_action": "none",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "IPO allotment special: institutional account offer for selected clients. Transfer funds to our corporate account and get guaranteed listing gains. Do not share this offer with anyone.": {
+  "request_id": "s30",
+  "risk_level": "medium",
+  "risk_score": 60,
+  "scam_type": "investment",
+  "red_flags": [
+   {
+    "code": "isolation",
+    "label_en": "It tells you to keep it secret or stay on the call, so nobody can warn you."
+   },
+   {
+    "code": "payment_request",
+    "label_en": "It asks you to pay or transfer money."
+   },
+   {
+    "code": "too_good",
+    "label_en": "The offer is too good to be true: easy money, prizes or guaranteed returns."
+   }
+  ],
+  "explanation_en": "This may be an investment scam. It tells you to keep it secret or stay on the call, so nobody can warn you. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "PM Free Laptop Yojana 2026: every student gets a free laptop. Register now with your Aadhaar and bank details at http://pm-free-laptop-yojana.site before the last date today.": {
+  "request_id": "s31",
+  "risk_level": "medium",
+  "risk_score": 55,
+  "scam_type": "fake_scheme",
+  "red_flags": [
+   {
+    "code": "suspicious_domain",
+    "label_en": "The link pm-free-laptop-yojana.site uses a cheap web address often used for scam sites."
+   },
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "too_good",
+    "label_en": "The offer is too good to be true: easy money, prizes or guaranteed returns."
+   },
+   {
+    "code": "personal_data",
+    "label_en": "It asks for Aadhaar, bank or card details."
+   }
+  ],
+  "explanation_en": "This may be a fake government scheme scam. The link pm-free-laptop-yojana.site uses a cheap web address often used for scam sites. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [
+    "http://pm-free-laptop-yojana.site"
+   ],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [
+   {
+    "url": "http://pm-free-laptop-yojana.site",
+    "domain": "pm-free-laptop-yojana.site",
+    "blocklisted": false,
+    "sources": [],
+    "lookalike_of": null,
+    "domain_age_days": null
+   }
+  ],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "அரசு இலவச மிக்சி திட்டம்: பதிவு செய்ய உங்கள் ஆதார் எண் மற்றும் ஓடிபி அனுப்பவும். இன்று மட்டுமே வாய்ப்பு.": {
+  "request_id": "s32",
+  "risk_level": "high",
+  "risk_score": 90,
+  "scam_type": "fake_scheme",
+  "red_flags": [
+   {
+    "code": "otp_request",
+    "label_en": "It asks for your OTP or UPI PIN. No bank, police or company ever asks for these."
+   },
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "too_good",
+    "label_en": "The offer is too good to be true: easy money, prizes or guaranteed returns."
+   },
+   {
+    "code": "personal_data",
+    "label_en": "It asks for Aadhaar, bank or card details."
+   }
+  ],
+  "explanation_en": "This looks like a fake government scheme scam. It asks for your OTP or UPI PIN. No bank, police or company ever asks for these. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Government is giving Rs 5,000 to every woman under the new scheme. Pay a processing fee of Rs 199 to receive the amount in your bank. Share with 10 groups.": {
+  "request_id": "s33",
+  "risk_level": "medium",
+  "risk_score": 45,
+  "scam_type": "fake_scheme",
+  "red_flags": [
+   {
+    "code": "payment_request",
+    "label_en": "It asks you to pay or transfer money."
+   },
+   {
+    "code": "collect_request",
+    "label_en": "To RECEIVE money you never enter a PIN or scan a QR code. This request takes money from you."
+   }
+  ],
+  "explanation_en": "This may be a fake government scheme scam. It asks you to pay or transfer money. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": [
+    "Rs 5,000",
+    "Rs 199"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Congratulations! You have won Rs 25,00,000 in the KBC lucky draw. To claim the prize pay the GST and processing fee of Rs 12,000. Contact manager on 9000044455.": {
+  "request_id": "s34",
+  "risk_level": "medium",
+  "risk_score": 40,
+  "scam_type": "lottery_prize",
+  "red_flags": [
+   {
+    "code": "payment_request",
+    "label_en": "It asks you to pay or transfer money."
+   },
+   {
+    "code": "too_good",
+    "label_en": "The offer is too good to be true: easy money, prizes or guaranteed returns."
+   }
+  ],
+  "explanation_en": "This may be a fake prize or lottery scam. It asks you to pay or transfer money. Do not pay, click links or share any code.",
+  "recommended_action": "verify_official",
+  "entities": {
+   "phones": [
+    "9000044455"
+   ],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": [
+    "Rs 25,00,000",
+    "Rs 12,000"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "வாழ்த்துக்கள்! நீங்கள் லாட்டரியில் 10 லட்சம் ரூபாய் வென்றுள்ளீர்கள். பரிசைப் பெற 5,000 ரூபாய் வரி செலுத்தவும்.": {
+  "request_id": "s35",
+  "risk_level": "medium",
+  "risk_score": 40,
+  "scam_type": "lottery_prize",
+  "red_flags": [
+   {
+    "code": "payment_request",
+    "label_en": "It asks you to pay or transfer money."
+   },
+   {
+    "code": "too_good",
+    "label_en": "The offer is too good to be true: easy money, prizes or guaranteed returns."
+   }
+  ],
+  "explanation_en": "This may be a fake prize or lottery scam. It asks you to pay or transfer money. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": [
+    "5,000 ரூபாய்"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Your mobile number won an iPhone 16 in the Jio anniversary contest. Claim your gift at www.jio-gift-claim.link before it expires today.": {
+  "request_id": "s36",
+  "risk_level": "high",
+  "risk_score": 85,
+  "scam_type": "lottery_prize",
+  "red_flags": [
+   {
+    "code": "lookalike_domain",
+    "label_en": "The link www.jio-gift-claim.link pretends to be jio.com but is not the official site."
+   },
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "too_good",
+    "label_en": "The offer is too good to be true: easy money, prizes or guaranteed returns."
+   }
+  ],
+  "explanation_en": "This looks like a fake prize or lottery scam. The link www.jio-gift-claim.link pretends to be jio.com but is not the official site. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [
+    "www.jio-gift-claim.link"
+   ],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [
+   {
+    "url": "www.jio-gift-claim.link",
+    "domain": "www.jio-gift-claim.link",
+    "blocklisted": false,
+    "sources": [],
+    "lookalike_of": "jio.com",
+    "domain_age_days": null
+   }
+  ],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Instant loan of Rs 50,000 approved without CIBIL check. Download the QuickCash app APK from this link and allow contacts and SMS permission to get money in 5 minutes.": {
+  "request_id": "s37",
+  "risk_level": "medium",
+  "risk_score": 45,
+  "scam_type": "loan_app",
+  "red_flags": [
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "apk_link",
+    "label_en": "It asks you to install an app from a link. Install apps only from the Play Store."
+   }
+  ],
+  "explanation_en": "This may be a loan app scam. It rushes you so you act before you can think or check. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": [
+    "Rs 50,000"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Your loan is overdue. Pay Rs 8,000 today or we will send your morphed photos to all your contacts. Pay at repay.fast@okfake": {
+  "request_id": "s38",
+  "risk_level": "medium",
+  "risk_score": 65,
+  "scam_type": "loan_app",
+  "red_flags": [
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "payment_request",
+    "label_en": "It asks you to pay or transfer money."
+   },
+   {
+    "code": "shame_threat",
+    "label_en": "It threatens to shame you to your contacts. This is extortion; report it."
+   }
+  ],
+  "explanation_en": "This may be a loan app scam. It rushes you so you act before you can think or check. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [
+    "repay.fast@okfake"
+   ],
+   "amounts": [
+    "Rs 8,000"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "RTO e-Challan: you have a pending traffic fine. Pay now to avoid court action. Download the RTO Challan app: http://rto-echallan-pay.xyz/RTO_Challan.apk": {
+  "request_id": "s39",
+  "risk_level": "high",
+  "risk_score": 80,
+  "scam_type": "digital_arrest",
+  "red_flags": [
+   {
+    "code": "suspicious_domain",
+    "label_en": "The link rto-echallan-pay.xyz uses a cheap web address often used for scam sites."
+   },
+   {
+    "code": "threat_arrest",
+    "label_en": "It threatens you with arrest or a police case. Real police never do this on a call or message."
+   },
+   {
+    "code": "payment_request",
+    "label_en": "It asks you to pay or transfer money."
+   },
+   {
+    "code": "apk_link",
+    "label_en": "It asks you to install an app from a link. Install apps only from the Play Store."
+   }
+  ],
+  "explanation_en": "This looks like a fake police / 'digital arrest' scam. The link rto-echallan-pay.xyz uses a cheap web address often used for scam sites. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [
+    "http://rto-echallan-pay.xyz/RTO_Challan.apk"
+   ],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [
+   {
+    "url": "http://rto-echallan-pay.xyz/RTO_Challan.apk",
+    "domain": "rto-echallan-pay.xyz",
+    "blocklisted": false,
+    "sources": [],
+    "lookalike_of": null,
+    "domain_age_days": null
+   }
+  ],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Your Netflix payment failed. Your membership will be suspended. Update your card details at https://netflix-billing-update.online/account": {
+  "request_id": "s40",
+  "risk_level": "high",
+  "risk_score": 85,
+  "scam_type": "phishing_link",
+  "red_flags": [
+   {
+    "code": "lookalike_domain",
+    "label_en": "The link netflix-billing-update.online pretends to be netflix.com but is not the official site."
+   },
+   {
+    "code": "urgency",
+    "label_en": "It rushes you so you act before you can think or check."
+   },
+   {
+    "code": "personal_data",
+    "label_en": "It asks for Aadhaar, bank or card details."
+   }
+  ],
+  "explanation_en": "This looks like a phishing link scam. The link netflix-billing-update.online pretends to be netflix.com but is not the official site. Do not pay, click links or share any code.",
+  "recommended_action": "report_chakshu",
+  "entities": {
+   "phones": [],
+   "urls": [
+    "https://netflix-billing-update.online/account"
+   ],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [
+   {
+    "url": "https://netflix-billing-update.online/account",
+    "domain": "netflix-billing-update.online",
+    "blocklisted": false,
+    "sources": [],
+    "lookalike_of": "netflix.com",
+    "domain_age_days": null
+   }
+  ],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "123456 is your OTP for login to SBI YONO. Do not share it with anyone. SBI never asks for your OTP.": {
+  "request_id": "l01",
+  "risk_level": "low",
+  "risk_score": 0,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money or an OTP, call SBI on the number printed on their official website.",
+  "recommended_action": "verify_official",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Rs 2,450.00 debited from A/c XX1234 on 12-10-26 to Swiggy. Avl Bal Rs 18,320.50. Not you? Call 1800 1234 - HDFC Bank": {
+  "request_id": "l02",
+  "risk_level": "low",
+  "risk_score": 0,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money or an OTP, call HDFC Bank on the number printed on their official website.",
+  "recommended_action": "verify_official",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": [
+    "Rs 2,450.00",
+    "Rs 18,320.50"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Your Amazon order #405-1122334 has been shipped and will arrive by Friday. Track it in the Amazon app.": {
+  "request_id": "l03",
+  "risk_level": "low",
+  "risk_score": 0,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money or an OTP, call Amazon on the number printed on their official website.",
+  "recommended_action": "verify_official",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Hi Amma, I reached the hostel safely. Will call you after dinner.": {
+  "request_id": "l04",
+  "risk_level": "low",
+  "risk_score": 0,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money, an OTP or to click a link, check with the official number first.",
+  "recommended_action": "none",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "அம்மா, நாளை காலை 10 மணிக்கு கோவிலுக்கு போகலாம். நான் வந்து கூட்டிட்டு போறேன்.": {
+  "request_id": "l05",
+  "risk_level": "low",
+  "risk_score": 0,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money, an OTP or to click a link, check with the official number first.",
+  "recommended_action": "none",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Your electricity bill of Rs 1,240 for September is generated. Pay through the official TNEB app or at the counter before the due date of 25 October.": {
+  "request_id": "l06",
+  "risk_level": "low",
+  "risk_score": 20,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money or an OTP, call Electricity board on the number printed on their official website.",
+  "recommended_action": "verify_official",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": [
+    "Rs 1,240"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Dear customer, your Jio recharge of Rs 299 is successful. Validity: 28 days. Thank you.": {
+  "request_id": "l07",
+  "risk_level": "low",
+  "risk_score": 0,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money or an OTP, call Jio on the number printed on their official website.",
+  "recommended_action": "verify_official",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": [
+    "Rs 299"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Reminder: your appointment with Dr. Meena at City Clinic is tomorrow at 11 am. Reply C to cancel.": {
+  "request_id": "l08",
+  "risk_level": "low",
+  "risk_score": 0,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money, an OTP or to click a link, check with the official number first.",
+  "recommended_action": "none",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "உங்கள் மருந்து ஆர்டர் தயாராக உள்ளது. மாலை 6 மணிக்குள் கடையில் வந்து வாங்கிக் கொள்ளவும்.": {
+  "request_id": "l09",
+  "risk_level": "low",
+  "risk_score": 0,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money, an OTP or to click a link, check with the official number first.",
+  "recommended_action": "none",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Swiggy: your order from Annapoorna is out for delivery. Your delivery partner Ravi will reach in 15 minutes.": {
+  "request_id": "l10",
+  "risk_level": "low",
+  "risk_score": 15,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money, an OTP or to click a link, check with the official number first.",
+  "recommended_action": "none",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Rs 500 credited to your account XX5678 by UPI from your son. UPI Ref 123456789012. - Indian Bank": {
+  "request_id": "l11",
+  "risk_level": "low",
+  "risk_score": 0,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money, an OTP or to click a link, check with the official number first.",
+  "recommended_action": "none",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": [
+    "Rs 500"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Team meeting moved to 3 pm today. Please bring the monthly report.": {
+  "request_id": "l12",
+  "risk_level": "low",
+  "risk_score": 15,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money, an OTP or to click a link, check with the official number first.",
+  "recommended_action": "none",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Beta, shaam ko sabzi lete aana. Doodh bhi khatam ho gaya hai.": {
+  "request_id": "l13",
+  "risk_level": "low",
+  "risk_score": 0,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money, an OTP or to click a link, check with the official number first.",
+  "recommended_action": "none",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Your Aadhaar update request has been completed. You can download the updated Aadhaar from the official myAadhaar portal at uidai.gov.in.": {
+  "request_id": "l14",
+  "risk_level": "low",
+  "risk_score": 0,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money, an OTP or to click a link, check with the official number first.",
+  "recommended_action": "none",
+  "entities": {
+   "phones": [],
+   "urls": [
+    "uidai.gov.in"
+   ],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [
+   {
+    "url": "uidai.gov.in",
+    "domain": "uidai.gov.in",
+    "blocklisted": false,
+    "sources": [],
+    "lookalike_of": null,
+    "domain_age_days": null
+   }
+  ],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Happy birthday Lakshmi aunty! Wishing you good health and happiness.": {
+  "request_id": "l15",
+  "risk_level": "low",
+  "risk_score": 0,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money, an OTP or to click a link, check with the official number first.",
+  "recommended_action": "none",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "இன்று மாலை பள்ளியில் பெற்றோர் ஆசிரியர் கூட்டம் நடைபெறும். அனைவரும் கலந்து கொள்ளவும்.": {
+  "request_id": "l16",
+  "risk_level": "low",
+  "risk_score": 0,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money, an OTP or to click a link, check with the official number first.",
+  "recommended_action": "none",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "IRCTC: PNR 4512345678 confirmed. Train 12675 Kovai Express, Coach C2, Seat 45. Happy journey.": {
+  "request_id": "l17",
+  "risk_level": "low",
+  "risk_score": 0,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money, an OTP or to click a link, check with the official number first.",
+  "recommended_action": "none",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Your LIC premium of Rs 4,500 is due on 30 October. Pay through the LIC app or at any LIC branch.": {
+  "request_id": "l18",
+  "risk_level": "low",
+  "risk_score": 20,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money, an OTP or to click a link, check with the official number first.",
+  "recommended_action": "none",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": [
+    "Rs 4,500"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Flipkart: Your refund of Rs 799 for the returned item has been processed to your original payment method.": {
+  "request_id": "l19",
+  "risk_level": "low",
+  "risk_score": 0,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money, an OTP or to click a link, check with the official number first.",
+  "recommended_action": "none",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": [
+    "Rs 799"
+   ]
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ },
+ "Can you send me the photos from the wedding? The ones from the reception.": {
+  "request_id": "l20",
+  "risk_level": "low",
+  "risk_score": 0,
+  "scam_type": "not_scam",
+  "red_flags": [],
+  "explanation_en": "We did not find common scam signs in this message. If it asks for money, an OTP or to click a link, check with the official number first.",
+  "recommended_action": "none",
+  "entities": {
+   "phones": [],
+   "urls": [],
+   "upi_ids": [],
+   "amounts": []
+  },
+  "links": [],
+  "apk": null,
+  "confidence": "lower",
+  "latency_ms": 0
+ }
+}

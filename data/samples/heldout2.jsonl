@@ -1,0 +1,25 @@
+{"id": "k01", "label": "scam", "scam_type": "digital_arrest", "language": "en", "text": "This is the Enforcement Directorate. Your bank account is under investigation for hawala transactions. Remain on this WhatsApp video call; leaving it will be treated as non-cooperation."}
+{"id": "k02", "label": "scam", "scam_type": "kyc_update", "language": "en", "text": "Axis Bank: Dear user, your debit card will be deactivated in 3 hours due to pending re-KYC. Complete it here axis-rekyc-secure.site"}
+{"id": "k03", "label": "scam", "scam_type": "upi_collect", "language": "en", "text": "I am transferring the advance for your bike via PhonePe. You will get a request, just approve it and type your PIN, the money will come to you."}
+{"id": "k04", "label": "scam", "scam_type": "job_offer", "language": "en", "text": "Earn 5000 to 15000 per day from your mobile. Simple rating tasks for hotels. Contact our coordinator on Telegram to get your first task."}
+{"id": "k05", "label": "scam", "scam_type": "courier_customs", "language": "en", "text": "Your international courier contains a foreign currency amount above the limit. Customs duty of Rs 18,000 is pending. Pay it today to avoid legal proceedings."}
+{"id": "k06", "label": "scam", "scam_type": "investment", "language": "en", "text": "Exclusive offer: invest in our gold trading plan and receive 10% weekly profit. Withdraw anytime. Already 2,000 members earning."}
+{"id": "k07", "label": "scam", "scam_type": "fake_scheme", "language": "en", "text": "PM Kisan new installment of Rs 6,000 is released. Check your name and claim the amount by entering your bank details at pmkisan-claim.online"}
+{"id": "k08", "label": "scam", "scam_type": "lottery_prize", "language": "en", "text": "Lucky customer! You are the winner of a Samsung TV in our Diwali giveaway. Pay delivery charges of Rs 1,499 to receive your gift."}
+{"id": "k09", "label": "scam", "scam_type": "loan_app", "language": "en", "text": "Need urgent cash? Get a loan of Rs 30,000 instantly without documents. Install the app from the link below and give all permissions."}
+{"id": "k10", "label": "scam", "scam_type": "phishing_link", "language": "en", "text": "Your DigiLocker documents will be deleted. Log in to keep them safe: digilocker-verify.xyz"}
+{"id": "k11", "label": "scam", "scam_type": "digital_arrest", "language": "ta", "text": "நாங்கள் சிபிஐ அலுவலகத்திலிருந்து அழைக்கிறோம். உங்கள் பெயரில் வழக்கு உள்ளது. இதைப் பற்றி குடும்பத்தினரிடம் கூற வேண்டாம்."}
+{"id": "k12", "label": "scam", "scam_type": "lottery_prize", "language": "ta", "text": "உங்கள் மொபைல் எண்ணுக்கு கார் பரிசு கிடைத்துள்ளது. பரிசைப் பெற பதிவுக் கட்டணம் செலுத்தவும்."}
+{"id": "k13", "label": "scam", "scam_type": "job_offer", "language": "ta", "text": "பகுதி நேர வேலை: தினமும் ஒரு மணி நேரம் வேலை செய்து 3000 ரூபாய் சம்பாதிக்கலாம். முன்பணம் 500 ரூபாய்."}
+{"id": "k14", "label": "scam", "scam_type": "kyc_update", "language": "hi", "text": "Aapka bank khata block kar diya jayega. KYC ke liye is number par turant call karein aur OTP batayen."}
+{"id": "k15", "label": "scam", "scam_type": "lottery_prize", "language": "hi", "text": "Badhai ho! Aapne 25 lakh ka inaam jeeta hai. Inaam paane ke liye Rs 15,000 tax jama karein."}
+{"id": "q01", "label": "legit", "scam_type": "not_scam", "language": "en", "text": "Your Axis Bank debit card ending 4421 was used for Rs 640 at Big Bazaar. If not done by you, block the card in the Axis Mobile app."}
+{"id": "q02", "label": "legit", "scam_type": "not_scam", "language": "en", "text": "Mom, the plumber will come at 4 pm. Please keep 500 rupees ready for him."}
+{"id": "q03", "label": "legit", "scam_type": "not_scam", "language": "en", "text": "Your PM Kisan installment of Rs 2,000 has been credited to your bank account. - PM Kisan"}
+{"id": "q04", "label": "legit", "scam_type": "not_scam", "language": "en", "text": "School fees for the second term are due by 15 November. Pay at the school office or through the school app."}
+{"id": "q05", "label": "legit", "scam_type": "not_scam", "language": "ta", "text": "அப்பா, இன்று மாலை நான் தாமதமாக வருவேன். சாப்பாடு வைத்திருங்கள்."}
+{"id": "q06", "label": "legit", "scam_type": "not_scam", "language": "en", "text": "Your Uber trip receipt: Rs 214 paid by UPI. Thanks for riding with us."}
+{"id": "q07", "label": "legit", "scam_type": "not_scam", "language": "en", "text": "Reminder from the library: the book you borrowed is due tomorrow."}
+{"id": "q08", "label": "legit", "scam_type": "not_scam", "language": "hi", "text": "Bhaiya, kal ki meeting cancel ho gayi hai. Agle hafte milte hain."}
+{"id": "q09", "label": "legit", "scam_type": "not_scam", "language": "en", "text": "Your mutual fund SIP of Rs 2,000 was processed successfully on 05 Oct."}
+{"id": "q10", "label": "legit", "scam_type": "not_scam", "language": "en", "text": "Diwali sale at our store: 20% off on all sarees this week. Visit us at Gandhipuram."}

@@ -1,0 +1,25 @@
+{"id": "h01", "label": "scam", "scam_type": "digital_arrest", "language": "en", "text": "Good afternoon madam, I am calling from the Delhi Crime Branch. Your SIM was used to send threatening messages. Join the Skype call with the DCP now and keep your camera on until the inquiry is complete."}
+{"id": "h02", "label": "scam", "scam_type": "kyc_update", "language": "en", "text": "ALERT: Your YONO account is temporarily restricted. Re-verify your PAN card to restore access: https://yono-sbi-reverify.co/in"}
+{"id": "h03", "label": "scam", "scam_type": "upi_collect", "language": "en", "text": "Hello sir, refund of Rs 3,999 from your electricity board overpayment is ready. Accept the request on GPay and enter PIN to get credit."}
+{"id": "h04", "label": "scam", "scam_type": "job_offer", "language": "en", "text": "Hi! I'm Priya from a recruitment agency. We have a part time role, 20 minutes a day, salary 8000 per day. Interested? Reply YES to start."}
+{"id": "h05", "label": "scam", "scam_type": "courier_customs", "language": "en", "text": "Blue Dart: Shipment AWB 77881 could not be delivered. Confirm your address and pay a Rs 49 handling charge at bluedart-confirm.top/a to reschedule."}
+{"id": "h06", "label": "scam", "scam_type": "investment", "language": "en", "text": "Sir I am from Zerodha premium desk. Our AI trading bot gives 5% profit every day. Minimum capital 25,000. Many retired teachers are already earning."}
+{"id": "h07", "label": "scam", "scam_type": "fake_scheme", "language": "en", "text": "Modi government free recharge: get 3 months unlimited plan free for all Indians. Click to activate before offer ends: free-recharge-2026.online"}
+{"id": "h08", "label": "scam", "scam_type": "lottery_prize", "language": "en", "text": "Dear winner, your number was selected in the Tata Safari car giveaway. Registration charge Rs 6,500 must be paid to deliver the car."}
+{"id": "h09", "label": "scam", "scam_type": "loan_app", "language": "en", "text": "Pre-approved personal loan Rs 2 lakh at 0% interest. Only Aadhaar needed. Install LoanTurbo from this link, approval in 2 minutes."}
+{"id": "h10", "label": "scam", "scam_type": "phishing_link", "language": "en", "text": "Income Tax Department: you are eligible for a refund of Rs 15,490. Submit your account details at incometax-refund-portal.info to receive it."}
+{"id": "h11", "label": "scam", "scam_type": "digital_arrest", "language": "ta", "text": "நான் டெல்லி சைபர் கிரைம் பிரிவிலிருந்து பேசுகிறேன். உங்கள் வங்கி கணக்கு பயங்கரவாத நிதியுடன் தொடர்புடையது. விசாரணை முடியும் வரை வீடியோ அழைப்பில் இருங்கள்."}
+{"id": "h12", "label": "scam", "scam_type": "kyc_update", "language": "ta", "text": "உங்கள் பான் கார்டு இணைக்கப்படவில்லை. இன்று இரவுக்குள் புதுப்பிக்காவிட்டால் கணக்கு நிறுத்தப்படும். இணைப்பு: pan-link-kyc.xyz"}
+{"id": "h13", "label": "scam", "scam_type": "job_offer", "language": "ta", "text": "யூடியூப் வீடியோக்களை லைக் செய்து ஒவ்வொரு நாளும் வருமானம் பெறுங்கள். ஆர்வம் இருந்தால் இந்த எண்ணுக்கு மெசேஜ் செய்யுங்கள்."}
+{"id": "h14", "label": "scam", "scam_type": "courier_customs", "language": "hi", "text": "Aapka parcel customs mein ruka hua hai, usme ganja mila hai. Abhi 1 dabaiye aur officer se baat kijiye warna FIR hogi."}
+{"id": "h15", "label": "scam", "scam_type": "investment", "language": "hi", "text": "Share market tips group join karein. Har mahine 50% return pakka. Pehle 10,000 lagaiye, profit turant milega."}
+{"id": "g01", "label": "legit", "scam_type": "not_scam", "language": "en", "text": "Dear Customer, your KYC is complete. Thank you for banking with us. For queries visit your nearest branch."}
+{"id": "g02", "label": "legit", "scam_type": "not_scam", "language": "en", "text": "Your FASTag has been recharged with Rs 500. Current balance Rs 732."}
+{"id": "g03", "label": "legit", "scam_type": "not_scam", "language": "en", "text": "Hi team, the client call is shifted to Monday 10 am. Please update the deck before that."}
+{"id": "g04", "label": "legit", "scam_type": "not_scam", "language": "en", "text": "Blue Dart: your shipment has been delivered and signed by the receiver. Thank you for choosing Blue Dart."}
+{"id": "g05", "label": "legit", "scam_type": "not_scam", "language": "en", "text": "Uncle, please transfer the rent to the usual account by Friday. I will send the receipt."}
+{"id": "g06", "label": "legit", "scam_type": "not_scam", "language": "ta", "text": "நாளை தண்ணீர் விநியோகம் காலை 6 முதல் 9 மணி வரை மட்டுமே இருக்கும்."}
+{"id": "g07", "label": "legit", "scam_type": "not_scam", "language": "en", "text": "Your gas cylinder booking is confirmed. Delivery expected within 2 days. Pay the delivery person on arrival."}
+{"id": "g08", "label": "legit", "scam_type": "not_scam", "language": "en", "text": "Congratulations on your promotion! We should celebrate this weekend."}
+{"id": "g09", "label": "legit", "scam_type": "not_scam", "language": "hi", "text": "Kal subah 7 baje station pahunch jana, train time par hai."}
+{"id": "g10", "label": "legit", "scam_type": "not_scam", "language": "en", "text": "Police Verification for your passport is scheduled. The officer will visit your address between 10 am and 1 pm tomorrow."}
