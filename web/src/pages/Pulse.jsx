@@ -4,8 +4,11 @@ import 'leaflet/dist/leaflet.css'
 import { pulseAlerts, pulseReplay } from '../api.js'
 import { SCAM_TYPES, alertRadius, districtPos } from '../constants.js'
 import DemoBadge from '../components/DemoBadge.jsx'
+import PageHeader from '../components/PageHeader.jsx'
+import Icon from '../components/Icon.jsx'
 
 const POLL_MS = 5000
+const COLOR = { confirmed: '#b3261e', emerging: '#d98a0b' }
 
 export default function Pulse() {
   const [res, setRes] = useState(null)
@@ -29,46 +32,64 @@ export default function Pulse() {
 
   return (
     <>
-      <h1>Scam Pulse</h1>
-      <p className="muted">Anonymous reports are grouped by wording to spot a scam wave early. <strong>This page runs on a seeded replay, not real national data.</strong></p>
-      {res?.demo && <DemoBadge />}
-      <div className="row" style={{ margin: '.5rem 0' }}>
-        <button onClick={replay}>Replay demo wave</button>
-        {msg && <span role="status">{msg}</span>}
+      <PageHeader icon="pulse" title="Scam Pulse">
+        Anonymous reports are grouped by wording to spot a scam wave early. <strong>This page runs on a seeded replay, not real national data.</strong>
+      </PageHeader>
+
+      <div className="wrap page-body">
+        {res?.demo && <DemoBadge />}
+        {res && !res.ok && <p className="notice notice-error" role="alert"><Icon name="alert" />{res.message}</p>}
+
+        <div className="pulse-bar">
+          <div className="btn-row">
+            <button onClick={replay}><Icon name="replay" />Replay demo wave</button>
+            {msg && <span role="status">{msg}</span>}
+          </div>
+          <div className="legend" aria-label="Map legend">
+            <span><i className="dot dot-emerging" />Emerging wave</span>
+            <span><i className="dot dot-confirmed" />Confirmed by news reports</span>
+          </div>
+        </div>
+
+        <div className="pulse-grid">
+          <div className="map">
+            <MapContainer center={[10.9, 78.4]} zoom={7} style={{ height: '100%', width: '100%' }} scrollWheelZoom={false}>
+              <TileLayer attribution="&copy; OpenStreetMap contributors" url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" />
+              {alerts.map((a) => {
+                const pos = districtPos(a.district)
+                if (!pos) return null
+                const color = COLOR[a.confidence] ?? COLOR.emerging
+                return (
+                  <CircleMarker key={a.cluster_id} center={pos} radius={alertRadius(a.report_count)}
+                    pathOptions={{ color, fillColor: color, fillOpacity: 0.45 }}>
+                    <Tooltip permanent direction="right" offset={[8, 0]}>{a.district}: {a.report_count}</Tooltip>
+                    <Popup>{a.label}<br />{a.district}: {a.report_count} reports</Popup>
+                  </CircleMarker>
+                )
+              })}
+            </MapContainer>
+          </div>
+
+          <section className="panel" aria-labelledby="alerts-h">
+            <h2 id="alerts-h" className="panel-title"><Icon name="alert" />Alerts</h2>
+            {alerts.length === 0 ? <p className="muted">No alerts yet. Press "Replay demo wave".</p> : (
+              <ul className="alerts">
+                {alerts.map((a) => (
+                  <li key={a.cluster_id} className="alert">
+                    <h3>{a.label} in {a.district}</h3>
+                    <div className="tags">
+                      <span className={`tag ${a.confidence === 'confirmed' ? 'tag-red' : 'tag-amber'}`}>{a.confidence === 'confirmed' ? 'Confirmed' : 'Emerging'}</span>
+                      <span className="tag tag-plain">{SCAM_TYPES[a.scam_type] ?? a.scam_type}</span>
+                    </div>
+                    <p className="stat-line">{a.report_count} reports from {a.distinct_reporters} people in {a.window_hours} hours</p>
+                    <blockquote>Example: “{a.sample_text}”</blockquote>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        </div>
       </div>
-      {res && !res.ok && <p className="error" role="alert">{res.message}</p>}
-      <div className="map">
-        <MapContainer center={[10.9, 78.4]} zoom={7} style={{ height: '100%', width: '100%' }} scrollWheelZoom={false}>
-          <TileLayer attribution="&copy; OpenStreetMap contributors" url="https://tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          {alerts.map((a) => {
-            const pos = districtPos(a.district)
-            if (!pos) return null
-            const color = a.confidence === 'confirmed' ? '#b42318' : '#d98a0b'
-            return (
-              <CircleMarker key={a.cluster_id} center={pos} radius={alertRadius(a.report_count)}
-                pathOptions={{ color, fillColor: color, fillOpacity: 0.45 }}>
-                <Tooltip permanent direction="right" offset={[8, 0]}>{a.district} · {a.report_count}</Tooltip>
-                <Popup>{a.label}<br />{a.district}: {a.report_count} reports</Popup>
-              </CircleMarker>
-            )
-          })}
-        </MapContainer>
-      </div>
-      <section className="card">
-        <h2>Alerts</h2>
-        {alerts.length === 0 ? <p className="muted">No alerts yet. Press "Replay demo wave".</p> : (
-          <ul className="alert-list">
-            {alerts.map((a) => (
-              <li key={a.cluster_id}>
-                <strong>{a.label}</strong> in {a.district}{' '}
-                <span className={`pill pill-${a.confidence === 'confirmed' ? 'red' : 'amber'}`}>{a.confidence}</span>
-                <div className="muted">{a.report_count} reports from {a.distinct_reporters} people in {a.window_hours} h · {SCAM_TYPES[a.scam_type] ?? a.scam_type}</div>
-                <div className="muted">Example: “{a.sample_text}”</div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
     </>
   )
 }
