@@ -232,7 +232,7 @@ def main() -> None:
         "- Results for each message are in `eval/results/<set>.jsonl`.",
         "- Without an LLM key every verdict is `confidence: \"lower\"`. Re-run with the LLM configured and "
         "report both modes.",
-        "- The Hindi keyword lists await review by the team's Hindi speaker; the Tamil list was never reviewed, "
+        "- The Hindi keyword lists were reviewed by the team's Hindi speaker (no changes needed); the Tamil list was never reviewed, "
         "and Tamil is no longer offered to users.",
         "- Small sets: one message changes recall by 2.5 to 7 points. Treat these as indicative.",
         "- One author wrote every set, including the sealed one; messages written by other team members "
