@@ -1,6 +1,6 @@
-"""Image -> text with Tesseract (English + Tamil).
+"""Image -> text with Tesseract (English, plus Hindi and Tamil when their packs are installed).
 
-Needs the Tesseract binary with the `tam` language pack (`tesseract --list-langs`). It is
+Needs the Tesseract binary; Hindi screenshots need the `hin` language pack (`tesseract --list-langs`). It is
 found via TESSERACT_CMD, then PATH, then the Windows installer's default folder. If it is
 missing, `read()` raises `OCRUnavailable`; callers fall back to the caption text and mark
 the verdict as lower confidence.
@@ -41,7 +41,7 @@ def _langs() -> str:
         available = set(pytesseract.get_languages(config=""))
     except Exception as e:                                  # binary not installed / not on PATH
         raise OCRUnavailable(str(e)) from e
-    return "+".join(l for l in ("eng", "tam") if l in available) or "eng"
+    return "+".join(l for l in ("eng", "hin", "tam") if l in available) or "eng"
 
 
 def preprocess(img: Image.Image) -> Image.Image:

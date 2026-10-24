@@ -1,5 +1,5 @@
 /* Kavach web: Indian public-service look. Navy for structure, saffron only for the helpline and
-   "you are here" markers, India green for safe, red for high risk. One family: Noto Sans (+ Tamil). */
+   "you are here" markers, India green for safe, red for high risk. One family: Noto Sans (+ Devanagari for Hindi). */
 
 :root {
   --navy: #12305e; --navy-900: #0b1f3f; --navy-700: #0d2547; --navy-50: #e9eef6; --navy-100: #d5deec;
@@ -12,14 +12,14 @@
   --ink: #1a2233; --ink-2: #3a4558; --muted: #5a6577; --line: #d8dee8; --line-2: #e7ebf1;
   --bg: #f3f5f8; --white: #ffffff;
   --r-sm: 6px; --r: 10px;
-  --font: 'Noto Sans', 'Noto Sans Tamil', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --font: 'Noto Sans', 'Noto Sans Devanagari', system-ui, 'Segoe UI', Roboto, sans-serif;
   font: 17px/1.6 var(--font);
   color: var(--ink); background: var(--bg);
   -webkit-text-size-adjust: 100%;
 }
 :root[data-text-size='sm'] { font-size: 15px; }
 :root[data-text-size='lg'] { font-size: 19.5px; }
-:lang(ta) { font-family: 'Noto Sans Tamil', var(--font); }
+:lang(hi) { font-family: 'Noto Sans Devanagari', var(--font); }
 @media (max-width: 700px) { :root { font-size: 16px; } :root[data-text-size='lg'] { font-size: 18px; } }
 
 * { box-sizing: border-box; }
@@ -132,6 +132,7 @@ select { width: auto; min-width: 12rem; }
 .seg label + label { border-left: 2px solid var(--navy); }
 .seg input { position: absolute; opacity: 0; pointer-events: none; }
 .seg label:has(input:checked) { background: var(--navy); color: #fff; }
+.seg label:has(input:disabled) { cursor: not-allowed; color: var(--muted); background: var(--bg); }
 .seg label:has(input:focus-visible) { outline: 3px solid var(--saffron); outline-offset: -3px; }
 
 .drop { display: flex; align-items: center; gap: .9rem; border: 2px dashed #9fb0c8; border-radius: var(--r); padding: 1rem 1.1rem;

@@ -765,6 +765,27 @@ Sealed set 2 and the call set informed the calibration (their false alarms were 
 
 ---
 
+## Step 20: Hindi instead of Tamil
+
+**Why.** Tamil needed a native speaker the team does not have, so its keyword lists, call script
+and notice audio could never be checked before the demo. Hindi has a fluent reviewer (Vani), wider
+reach, and scam messages are often written in Hindi or Hinglish. Tamil is removed from the website
+and moves to the roadmap.
+
+**How.** Hindi and Hinglish phrases live in one `_HINDI` block in `rules.py`, merged into the existing
+keyword lists, so the scoring and weights are unchanged and one person can review them in one place.
+Words common in genuine messages (अभी, पैसे, पुलिस) are only used inside phrases. The Devanagari nukta
+is folded before matching so both spellings of गिरफ़्तार hit. `bait.py` treats Hindi negation that
+comes after the noun ("ओटीपी किसी को न बताएं") as advice. The engine keeps its Tamil words: removing
+them would only let Tamil scams through and would change the sealed evaluation sets.
+
+**What.** `tests/test_hindi.py` (21 tests): 9 Hindi/Hinglish scams flagged and 0 of 8 genuine Hindi
+messages flagged with the LLM off; the offline evaluation is unchanged on every English set. The
+website shows the result card in Hindi using the codes the API already sends. What Members 1 and 3
+still change is in `docs/HINDI_HANDOFF.md`.
+
+---
+
 ## Security self-review (Trail of Bits checklist applied)
 
 | Risk | Mitigation in code |

@@ -14,7 +14,7 @@ function speak(text, lang) {
     if (!('speechSynthesis' in window)) return
     window.speechSynthesis.cancel()
     const u = new SpeechSynthesisUtterance(text)
-    const want = lang === 'ta' ? 'ta-IN' : 'en-IN'
+    const want = lang === 'hi' ? 'hi-IN' : 'en-IN'
     u.lang = want
     const voices = window.speechSynthesis.getVoices()
     u.voice = voices.find((v) => v.lang === want) ?? voices.find((v) => v.lang.startsWith(lang)) ?? null
@@ -95,7 +95,7 @@ export default function Simulator() {
   const listen = () => {
     if (!SR || listening) return
     const rec = new SR()
-    rec.lang = language === 'ta' ? 'ta-IN' : 'en-IN'
+    rec.lang = language === 'hi' ? 'hi-IN' : 'en-IN'
     rec.onresult = (e) => setDraft(e.results[0][0].transcript)
     rec.onend = () => setListening(false)
     rec.onerror = () => setListening(false)
@@ -139,7 +139,10 @@ export default function Simulator() {
                   <legend className="label">Language</legend>
                   <div className="seg">
                     <label><input type="radio" name="sl" value="en" checked={language === 'en'} onChange={() => setLanguage('en')} />English</label>
-                    <label lang="ta"><input type="radio" name="sl" value="ta" checked={language === 'ta'} onChange={() => setLanguage('ta')} />தமிழ்</label>
+                    {/* Hindi needs a Hindi call script on the server first, so it is shown but not yet selectable. */}
+                    <label lang="hi" title="Hindi practice calls are coming soon">
+                      <input type="radio" name="sl" value="hi" disabled />हिंदी <span className="small muted" lang="en">(coming soon)</span>
+                    </label>
                   </div>
                 </fieldset>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '.5rem', fontWeight: 600 }}>
@@ -178,7 +181,7 @@ export default function Simulator() {
                 {phase === 'call' && (
                   <form className="composer" onSubmit={(e) => { e.preventDefault(); send(draft) }}>
                     <input type="text" aria-label="Your reply" value={draft} maxLength={500} onChange={(e) => setDraft(e.target.value)}
-                      placeholder={language === 'ta' ? 'உங்கள் பதிலை எழுதுங்கள்' : 'Type your reply'} />
+                      placeholder={language === 'hi' ? 'अपना जवाब लिखें' : 'Type your reply'} />
                     <div className="btn-row">
                       <button type="submit" disabled={busy || !draft.trim()}><Icon name="send" size={18} />Reply</button>
                       {SR && <button type="button" className="btn-ghost" onClick={listen} disabled={busy}><Icon name="mic" size={18} />{listening ? 'Listening…' : 'Speak'}</button>}
