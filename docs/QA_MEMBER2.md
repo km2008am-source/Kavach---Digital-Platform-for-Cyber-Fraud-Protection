@@ -35,4 +35,11 @@ Guide sections 13 and 15 list the questions Member 2 answers. Each answer is sho
 
 ---
 
-**Limits to admit if asked:** see `docs/LIMITATIONS.md`. The main ones: small test sets, numbers measured without the LLM, spoken numbers missed, Tamil keywords not yet reviewed by a native speaker.
+**Limits to admit if asked:** see `docs/LIMITATIONS.md`. The main ones: small test sets, numbers measured without the LLM, spoken numbers missed, Hindi keyword lists written by Member 2 and checked by one team member (Vani), not by a linguist; Tamil is no longer offered.
+
+
+**Q: Why Hindi and not Tamil?**
+A: We could only ship a language we could check. A team member is fluent in Hindi and checks every line; nobody on the team could check Tamil. On a sealed Hindi test set, written before its first run, Kavach caught 12 of 12 scams with 1 false alarm in 12 genuine messages. Tamil is on the roadmap.
+
+**Q: What if Tesseract isn't installed, or reads Hindi badly?**
+A: Screenshots fall back to a vision model on the same provider as the LLM. It read a Hindi SMS screenshot exactly in under a second. Tesseract is still tried first, because then the image never leaves the machine.

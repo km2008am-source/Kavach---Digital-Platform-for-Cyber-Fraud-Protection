@@ -41,9 +41,10 @@ SAMPLES = ROOT / "data" / "samples"
 sys.path.insert(0, str(ROOT / "eval"))
 import dashboard                                           # noqa: E402
 RESULTS = ROOT / "eval" / "results"
-SETS = {"sealed_v3": ["heldout3.jsonl"], "sealed": ["heldout2.jsonl"], "sealed_calls": ["heldout_calls.jsonl"], "heldout1": ["heldout.jsonl"],
+SETS = {"sealed_hindi": ["heldout_hindi.jsonl"], "sealed_v3": ["heldout3.jsonl"], "sealed": ["heldout2.jsonl"], "sealed_calls": ["heldout_calls.jsonl"], "heldout1": ["heldout.jsonl"],
         "development": ["scams.jsonl", "legit.jsonl"]}
 INPUT_TYPE = {"sealed_calls": "transcript"}               # spoken Call Shield transcripts; the rest are text
+LANGUAGE = {"sealed_hindi": "hi"}                         # asked as the Hindi website asks; older sets stay English
 
 
 def load(names: list[str]) -> list[dict]:
@@ -61,14 +62,14 @@ def sha256_file(name: str) -> str:
 PACE_S = 0.0     # seconds between messages; --pace keeps a free-tier LLM under its requests-per-minute limit
 
 
-async def run(rows: list[dict], input_type: str = "text") -> list[dict]:
+async def run(rows: list[dict], input_type: str = "text", language: str = "en") -> list[dict]:
     out = []
     for row in rows:
         if PACE_S and out:
             await asyncio.sleep(PACE_S)                     # not counted in latency
         t0 = time.perf_counter()
         r = await scam_check.analyze(AnalysisRequest(request_id=row["id"], channel="web",
-                                                     input_type=input_type, text=row["text"]))
+                                                     input_type=input_type, text=row["text"], language=language))
         ms = (time.perf_counter() - t0) * 1000              # sub-millisecond precision
         out.append({**row, "score": r.risk_score, "level": r.risk_level, "pred_type": r.scam_type.value,
                     "latency_ms": ms, "confidence": r.confidence, "result": r.model_dump(mode="json")})
@@ -204,7 +205,8 @@ def main() -> None:
     PACE_S = args.pace
 
     settings.DEMO_MODE = False                               # cached answers would make the evaluation circular
-    res = {name: asyncio.run(run(load(files), INPUT_TYPE.get(name, "text"))) for name, files in SETS.items()}
+    res = {name: asyncio.run(run(load(files), INPUT_TYPE.get(name, "text"), LANGUAGE.get(name, "en")))
+           for name, files in SETS.items()}
     lines = [
         "# Kavach Scam Check: evaluation report", "",
         f"Generated {datetime.now():%Y-%m-%d %H:%M} by `eval/evaluate.py`. Owner: Member 2. "
@@ -214,6 +216,8 @@ def main() -> None:
         "(heldout2 and the call set informed the LLM calibration), and the development sets were used to write "
         "the rules, so their numbers are optimistic.", "",
         *services(),
+        *section("Sealed Hindi set (`heldout_hindi.jsonl`, committed before its first run; never tuned on)",
+                 res["sealed_hindi"], sweep=False),
         *section("Sealed test set 3 (`heldout3.jsonl`, committed before the LLM calibration)", res["sealed_v3"],
                  sweep=False),
         *section("Sealed test set 2 (`heldout2.jsonl`, never tuned on by the rules)", res["sealed"], sweep=False),
@@ -228,7 +232,8 @@ def main() -> None:
         "- Results for each message are in `eval/results/<set>.jsonl`.",
         "- Without an LLM key every verdict is `confidence: \"lower\"`. Re-run with the LLM configured and "
         "report both modes.",
-        "- Tamil and Hindi keyword lists need review by a native speaker.",
+        "- The Hindi keyword lists were reviewed by the team's Hindi speaker (no changes needed); the Tamil list was never reviewed, "
+        "and Tamil is no longer offered to users.",
         "- Small sets: one message changes recall by 2.5 to 7 points. Treat these as indicative.",
         "- One author wrote every set, including the sealed one; messages written by other team members "
         "would be a fairer test.", "",
@@ -250,4 +255,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    sys.stdout.reconfigure(encoding="utf-8")                 # Windows consoles: Hindi and the ≥ sign
     main()

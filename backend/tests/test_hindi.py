@@ -61,3 +61,27 @@ def test_hindi_rupee_amount_extracted():
 def test_hindi_warning_is_advice_not_an_ask():
     assert bait.follow_the_ask("सरकारी योजना के नाम पर किसी को अपना ओटीपी न बताएं।") == []
     assert "ask_otp" in bait.follow_the_ask("योजना का लाभ पाने के लिए अपना ओटीपी भेजें।")
+
+
+async def test_llm_writes_for_the_reader_in_hindi_only_when_asked(request_factory, monkeypatch):
+    prompts = []
+
+    async def spy(system, user, timeout=12):
+        prompts.append(system)
+        return {"scam_type": "kyc_update", "risk_score": 60}
+
+    monkeypatch.setattr(scam_check, "complete_json", spy)
+    await scam_check.analyze(request_factory("केवाईसी अपडेट करें", language="hi"))
+    await scam_check.analyze(request_factory("Update your KYC", language="en"))
+    assert "simple Hindi" in prompts[0] and "simple Hindi" not in prompts[1]
+
+
+async def test_llm_code_in_capitals_is_not_shown_twice(request_factory, monkeypatch):
+    async def llm(system, user, timeout=12):
+        return {"scam_type": "kyc_update", "risk_score": 80,
+                "red_flags": [{"code": "OTP_REQUEST", "label_en": "ओटीपी माँगना"}]}
+
+    monkeypatch.setattr(scam_check, "complete_json", llm)
+    r = await scam_check.analyze(request_factory("तुरंत अपना ओटीपी बताएं, खाता आज ही बंद हो जाएगा", language="hi"))
+    codes = [f.code for f in r.red_flags]
+    assert codes.count("otp_request") == 1 and r.red_flags[0].label_en == "ओटीपी माँगना"

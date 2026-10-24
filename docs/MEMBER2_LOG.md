@@ -786,6 +786,16 @@ still change is in `docs/HINDI_HANDOFF.md`.
 
 ---
 
+## Step 21: Screenshots without Tesseract, Hindi answers, and a sealed Hindi set
+
+**Why.** Tesseract was not installed on the team machines, so every screenshot was judged on its caption alone. The LLM's reasons and explanation were English even when the user chose Hindi. And the Hindi rules had only been checked on messages written while building them.
+
+**How.** `ocr.read()` still tries Tesseract first (screenshots stay on the machine); when it is missing and `OCR_VISION_MODEL` is set, the image (EXIF stripped, at most 1600 px) goes to a vision model on the same provider as the LLM. On Groq that is `qwen/qwen3.8-27b`: it transcribed a Hindi SMS screenshot exactly in 0.8 s. When the request language is Hindi, the LLM is asked to write `label_en` and `explanation_en` in Hindi (keys and codes stay English); LLM flag codes are lower-cased so they de-duplicate against the rules. Vani (fluent in Hindi) reviewed the Hindi keyword lists, the website's Hindi text and the labels of the new test set, and changed nothing. A new set, `heldout_hindi.jsonl` (12 scams, 12 genuine, including a delivery-OTP message and a police awareness message), was committed before its first run.
+
+**What.** With `openai/gpt-oss-120b`: Hindi set **12/12 scams caught, 1/12 false alarms** (the delivery-OTP message, scored medium). Sealed set 3 read 9/10 in this run because one LLM call did not return (`confidence: lower`); asked again three times, the LLM gave the correct HIGH each time. That is a real risk, kept in the report rather than re-run away: when the LLM fails, the rules alone score that lottery message 35. 185 backend tests pass.
+
+---
+
 ## Security self-review (Trail of Bits checklist applied)
 
 | Risk | Mitigation in code |
@@ -823,7 +833,7 @@ Not covered yet: rate limiting per user (Member 1's webhook), and deleting uploa
 | Gives | To | Ready? |
 | --- | --- | --- |
 | `analysis.stub.analyze` → `analysis.scam_check.analyze` | M1 flows, M3 Call Shield + `/api/analyze` | ✔ |
-| `analysis.evidence.extract_evidence(image_paths)` | M1 Golden Hour | ✔ (needs Tesseract on the VM: `apt install tesseract-ocr tesseract-ocr-tam`) |
+| `analysis.evidence.extract_evidence(image_paths)` | M1 Golden Hour | ✔ (Tesseract with `tesseract-ocr-hin` on the VM, or `OCR_VISION_MODEL` set) |
 | `analysis.bait.verify(req)` | M1 flows (`verify ...`, `news ...`) | ✔ |
 | `analysis.pulse.ingest(result, text, district, reporter_hash)` | M1 flows, after every verdict | ✔ |
 | `analysis.pulse.alerts(hours)`, `replay()` | M3 `/api/pulse/alerts`, `/api/pulse/replay` | ✔ |
@@ -836,6 +846,5 @@ Not covered yet: rate limiting per user (Member 1's webhook), and deleting uploa
 | --- | --- |
 | LLM provider key and model name in `backend/.env` | Team |
 | Safe Browsing and VirusTotal keys (optional; checks are skipped without them) | Team |
-| Tesseract with Tamil on the VM | M1 (deployment) |
+| Tesseract with Hindi on the VM, or `OCR_VISION_MODEL` in `.env` | M1 (deployment) |
 | Call transcripts from test calls, to add to the dataset | M3 (H16) |
-| Native Tamil/Hindi review of keyword lists | Team |

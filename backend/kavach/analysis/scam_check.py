@@ -73,7 +73,9 @@ class LLMVerdict(BaseModel):
     @field_validator("red_flags", mode="before")
     @classmethod
     def _flags(cls, v):
-        return [f for f in (v or []) if isinstance(f, dict) and f.get("code") and f.get("label_en")][:3]
+        # Codes are lower-cased so "OTP_REQUEST" from the LLM de-duplicates against the rule's "otp_request".
+        return [{**f, "code": str(f["code"]).strip().lower()}
+                for f in (v or []) if isinstance(f, dict) and f.get("code") and f.get("label_en")][:3]
 
 
 def link_signal(checks: list[LinkCheck]) -> tuple[int, list[RedFlag]]:
@@ -147,9 +149,15 @@ def _explain(level: str, scam_type: ScamType, flags: list[RedFlag], org: str | N
     return (lead + reason + " Do not pay, click links or share any code.").strip()
 
 
-async def _llm_verdict(text: str) -> LLMVerdict | None:
+# The JSON keys stay English; only what the user reads is written in Hindi.
+HINDI_OUTPUT = ("\nThe reader chose Hindi: write every label_en and the explanation_en in simple Hindi "
+                "(Devanagari script). Keep the JSON keys, codes and scam_type values in English.")
+
+
+async def _llm_verdict(text: str, language: str = "en") -> LLMVerdict | None:
+    system = SYSTEM + (HINDI_OUTPUT if language == "hi" else "")
     try:
-        raw = await complete_json(SYSTEM, quote_untrusted(text[:3000]), timeout=LLM_TIMEOUT_S)
+        raw = await complete_json(system, quote_untrusted(text[:3000]), timeout=LLM_TIMEOUT_S)
         return LLMVerdict.model_validate(raw)
     except (LLMError, ValidationError, ValueError, TypeError):
         return None
@@ -211,7 +219,7 @@ async def analyze(req: AnalysisRequest) -> AnalysisResult:
     ents = rules.extract_entities(text)
     rule_score, codes = rules.rule_flags(text)
     # Links and LLM are independent: run them together so the slowest, not the sum, sets latency.
-    checks, llm = await asyncio.gather(linkmod.check_links(ents["urls"]), _llm_verdict(text))
+    checks, llm = await asyncio.gather(linkmod.check_links(ents["urls"]), _llm_verdict(text, req.language))
     link_score, link_flags = link_signal(checks)
 
     signals = [rule_score, link_score] + ([llm.risk_score] if llm else [])
