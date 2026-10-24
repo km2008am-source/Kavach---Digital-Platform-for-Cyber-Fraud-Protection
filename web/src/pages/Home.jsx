@@ -113,7 +113,7 @@ export default function Home() {
           </div>
           <div>
             <Icon name="globe" size={22} />
-            <div><strong>English and தமிழ்</strong><p>Check messages and practise calls in Tamil or English.</p></div>
+            <div><strong>English and हिंदी</strong><p>Check messages written in Hindi, English or Hinglish, and get the result in Hindi.</p></div>
           </div>
         </div>
       </section>

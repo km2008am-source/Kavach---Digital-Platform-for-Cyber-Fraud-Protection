@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { analyzeFile, analyzeText } from '../api.js'
-import { SAMPLE_KYC } from '../constants.js'
+import { SAMPLE_HI, SAMPLE_KYC } from '../constants.js'
 import VerdictCard from '../components/VerdictCard.jsx'
 import DemoBadge from '../components/DemoBadge.jsx'
 import PageHeader from '../components/PageHeader.jsx'
@@ -42,7 +42,8 @@ export default function Analyze() {
     }
     setBusy(true)
     setOut(null)
-    setOut(file ? await analyzeFile(file, text.trim(), language) : await analyzeText(text.trim(), language))
+    const res = file ? await analyzeFile(file, text.trim(), language) : await analyzeText(text.trim(), language)
+    setOut({ ...res, lang: language })        // the card keeps the language it was checked in
     setBusy(false)
   }
 
@@ -88,7 +89,7 @@ export default function Analyze() {
                 <legend className="label">Language of the result</legend>
                 <div className="seg">
                   <label><input type="radio" name="lang" value="en" checked={language === 'en'} onChange={() => setLanguage('en')} />English</label>
-                  <label lang="ta"><input type="radio" name="lang" value="ta" checked={language === 'ta'} onChange={() => setLanguage('ta')} />தமிழ்</label>
+                  <label lang="hi"><input type="radio" name="lang" value="hi" checked={language === 'hi'} onChange={() => setLanguage('hi')} />हिंदी</label>
                 </div>
               </fieldset>
 
@@ -96,6 +97,10 @@ export default function Analyze() {
                 <button type="submit" disabled={busy}><Icon name="shield" />{busy ? 'Checking…' : 'Check it'}</button>
                 <button type="button" className="btn-ghost" onClick={() => { setText(SAMPLE_KYC); clearFile(); setOut(null) }}>
                   Try a sample scam
+                </button>
+                <button type="button" className="btn-ghost" lang="hi"
+                  onClick={() => { setText(SAMPLE_HI); setLanguage('hi'); clearFile(); setOut(null) }}>
+                  हिंदी उदाहरण
                 </button>
               </div>
             </form>
@@ -105,7 +110,7 @@ export default function Analyze() {
               {out?.ok && (
                 <div style={{ marginTop: '1.25rem' }}>
                   {out.demo && <DemoBadge>Example only: the server could not be reached, so this is a sample result, not a check of what you entered.</DemoBadge>}
-                  <VerdictCard result={out.data} />
+                  <VerdictCard result={out.data} lang={out.lang} />
                 </div>
               )}
             </div>
@@ -114,7 +119,7 @@ export default function Analyze() {
           <aside className="panel aside">
             <h2 className="panel-title"><Icon name="info" />What Kavach checks</h2>
             <ul>
-              <li>Pressure words: arrest threats, “today only”, OTP or PIN requests</li>
+              <li>Pressure words in English, Hindi or Hinglish: arrest threats, “today only”, OTP or PIN requests</li>
               <li>Links that pretend to be your bank or a government site</li>
               <li>Screenshots, read the same way as text</li>
               <li>Android apps that can read your SMS and steal OTPs</li>

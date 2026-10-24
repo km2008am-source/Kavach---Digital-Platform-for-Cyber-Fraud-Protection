@@ -59,7 +59,7 @@ export default function App() {
             <span className="brand-text">
               <span className="brand-name">Kavach</span>
               <span className="brand-sub">Cyber fraud help for every Indian</span>
-              <span className="brand-sub ta" lang="ta">இணைய மோசடியிலிருந்து பாதுகாப்பு</span>
+              <span className="brand-sub hi" lang="hi">साइबर धोखाधड़ी से सुरक्षा</span>
             </span>
           </Link>
           <a className="helpline" href="tel:1930">

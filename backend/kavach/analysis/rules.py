@@ -1,9 +1,9 @@
 """Regex entities and keyword red flags: instant, explainable, and working when the LLM is down.
 
 English keywords match on word boundaries (so "pay" does not fire on "Paytm").
-Tamil and romanised-Hindi keywords match as substrings, because Tamil words take
-suffixes (கைது -> கைது செய்யப்பட்டுள்ளீர்கள்). Tamil and Hindi lists need a native
-speaker's review before the demo.
+Tamil, Hindi and Hinglish keywords match as substrings, because these words take
+suffixes (கைது -> கைது செய்யப்பட்டுள்ளீர்கள், गिरफ्तार -> गिरफ्तारी). The Hindi lists are
+kept together in `_HINDI` so a Hindi speaker can review them in one place.
 """
 import re
 import unicodedata
@@ -19,6 +19,12 @@ def clean_text(text: str) -> str:
     """NFC-normalise and drop invisible joiners so keywords match what a person sees."""
     return unicodedata.normalize("NFC", text).translate(_INVISIBLE)
 
+
+def _fold(text: str) -> str:
+    """Matching form: cleaned, lower-case, and without the Devanagari nukta, so "गिरफ़्तार"
+    and "गिरफ्तार" (both common spellings) match the same keyword."""
+    return clean_text(text).lower().replace("़", "")
+
 PHONE = re.compile(r"(?<![\d+])(?:\+91[\s-]?)?[6-9]\d{9}(?!\d)")
 UPI = re.compile(r"\b[\w.\-]{2,}@[a-zA-Z]{2,}\b(?!\.[a-zA-Z])")       # skip e-mail addresses
 _TLDS = r"xyz|top|in|com|co|info|link|online|site|me|ly|net|org|live|shop|click|icu|buzz|app"
@@ -26,7 +32,7 @@ _TLDS = r"xyz|top|in|com|co|info|link|online|site|me|ly|net|org|live|shop|click|
 # look-behind stops e-mail domains ("ravi@gmail.com") being read as links.
 URL = re.compile(r"(?:https?://|www\.)\S+"
                  r"|(?<![@\w.-])[a-z0-9][\w-]*(?:\.[\w-]+)*\.(?:" + _TLDS + r")\b(?:/\S*)?", re.I)
-AMOUNT = re.compile(r"(?:₹|\brs\.?|\binr)\s?\d[\d,]*(?:\.\d+)?|\d[\d,]*\s?(?:ரூபாய்|rupees)", re.I)
+AMOUNT = re.compile(r"(?:₹|\brs\.?|\binr)\s?\d[\d,]*(?:\.\d+)?|\d[\d,]*\s?(?:ரூபாய்|रुपये|रुपए|rupees)", re.I)
 UPI_REF = re.compile(r"(?<!\d)\d{12}(?!\d)")
 
 # code: (weight, English keywords, Tamil / romanised-Hindi substrings, plain-English label)
@@ -113,6 +119,40 @@ KEYWORDS: dict[str, tuple[int, list[str], list[str], str]] = {
         "Recorded calls asking you to press a key to talk to an 'officer' are a common scam start."),
 }
 
+# Hindi (Devanagari) and Hinglish (Hindi in Latin letters) phrasings, merged into the local lists
+# above. Imperatives and threats only: words common in genuine messages ("अभी", "पैसे", "पुलिस")
+# are left out on their own, and bank warnings ("ओटीपी किसी को न बताएं") contain none of these.
+_HINDI: dict[str, list[str]] = {
+    "otp_request": ["ओटीपी बताएं", "ओटीपी बताइए", "ओटीपी बता दें", "ओटीपी बता दो", "ओटीपी भेजें", "ओटीपी भेजिए",
+                    "यूपीआई पिन डालें", "पिन डालें", "पिन दर्ज करें", "otp bata do", "otp bhejo", "otp bhejiye",
+                    "pin daalein", "pin daliye"],
+    "threat_arrest": ["गिरफ्तार", "वारंट", "पुलिस केस", "एफआईआर", "सीबीआई", "मनी लॉन्ड्रिंग", "कानूनी कार्रवाई",
+                      "डिजिटल अरेस्ट", "केस दर्ज", "जेल", "warrant jaari", "kanooni karwai", "case darj", "jail ho"],
+    "isolation": ["किसी को मत बता", "किसी को न बता", "किसी को भी न बता", "कॉल मत काट", "कॉल न काट", "फोन मत काट",
+                  "फोन न काट", "कैमरा चालू रख", "वीडियो कॉल पर बने", "call mat kaat", "phone mat kaat",
+                  "camera on rakh"],
+    "urgency": ["तुरंत", "आज ही", "अभी तुरंत", "अभी के अभी", "घंटे में", "बंद हो जाएगा", "बंद कर दिया जाएगा",
+                "ब्लॉक हो जाएगा", "काट दिया जाएगा", "आज रात", "अंतिम तारीख", "आखिरी मौका", "jaldi karein", "jaldi kariye", "aakhri mauka"],
+    "payment_request": ["भुगतान करें", "पैसे भेजें", "पैसे भेजिए", "पैसे भेजो", "पैसे दो", "पैसे ट्रांसफर", "शुल्क", "फीस भरें", "जमा करें",
+                        "जमा करना होगा", "paise bhejo", "paise bhejiye", "paise transfer", "payment karein",
+                        "fees bhariye"],
+    "kyc": ["केवाईसी", "पैन कार्ड", "खाता बंद", "खाता ब्लॉक", "अकाउंट ब्लॉक", "अकाउंट बंद", "बिजली कनेक्शन", "khata band",
+            "account band ho"],
+    "too_good": ["लॉटरी", "इनाम", "जीत लिया", "जीते हैं", "मुफ्त", "घर बैठे", "रोज कमाएं", "रोज़ कमाएं", "दोगुना",
+                 "गारंटी", "कैशबैक", "lottery lagi", "paisa double", "free mein", "roz kamaye"],
+    "authority_claim": ["अधिकारी", "कस्टम्स", "सीमा शुल्क", "साइबर क्राइम", "इंस्पेक्टर", "क्राइम ब्रांच",
+                        "afsar se baat"],
+    "personal_data": ["आधार नंबर", "आधार कार्ड नंबर", "बैंक डिटेल", "कार्ड डिटेल", "खाता संख्या", "खाता नंबर"],
+    "collect_request": ["पैसे पाने के लिए", "पेमेंट रिक्वेस्ट", "क्यूआर कोड स्कैन", "paise lene ke liye"],
+    "apk_link": ["एपीके", "लिंक से ऐप डाउनलोड"],
+    "shame_threat": ["फोटो वायरल", "सभी कॉन्टैक्ट्स को", "photo viral kar"],
+    "contraband_claim": ["ड्रग्स", "नशीले पदार्थ", "अवैध सामान", "नकली पासपोर्ट"],
+    "parcel_seized": ["पार्सल जब्त", "पार्सल पकड़ा", "पार्सल रोक", "जब्त कर लिया"],
+    "press_key": ["1 दबाएं", "1 दबाइए", "9 दबाएं"],
+}
+for _code, _words in _HINDI.items():
+    KEYWORDS[_code][2].extend(_words)
+
 # Regex patterns per code, for phrasings a fixed keyword list cannot enumerate.
 PATTERNS: dict[str, list[re.Pattern]] = {code: [re.compile(p, re.I) for p in pats] for code, pats in {
     "too_good": [r"\d[\d,]*\s*(?:to\s*\d[\d,]*\s*)?(?:per|a|every)\s+(?:day|week)\b",
@@ -156,6 +196,21 @@ _TYPE_HINTS: list[tuple[ScamType, list[str]]] = [
     (ScamType.kyc_update, ["kyc", "pan", "electricity", "account will be blocked"]),
 ]
 
+# Hindi hints per type, appended in place so the order above still decides.
+_HINDI_TYPE_HINTS: dict[ScamType, list[str]] = {
+    ScamType.digital_arrest: ["डिजिटल अरेस्ट"],
+    ScamType.loan_app: ["लोन"],
+    ScamType.courier_customs: ["पार्सल", "कूरियर", "कस्टम्स", "सीमा शुल्क"],
+    ScamType.fake_scheme: ["योजना", "सरकार दे रही"],
+    ScamType.lottery_prize: ["लॉटरी", "इनाम", "जीत लिया", "जीते हैं"],
+    ScamType.investment: ["निवेश", "मुनाफा", "शेयर बाजार", "क्रिप्टो"],
+    ScamType.job_offer: ["नौकरी", "घर बैठे काम", "पार्ट टाइम"],
+    ScamType.upi_collect: ["यूपीआई पिन", "क्यूआर कोड"],
+    ScamType.kyc_update: ["केवाईसी", "पैन", "बिजली"],
+}
+for _type, _hints in _TYPE_HINTS:
+    _hints.extend(_HINDI_TYPE_HINTS.get(_type, []))
+
 
 def _matches(keyword: str, text_lower: str) -> bool:
     if keyword.startswith("."):          # ".apk": suffix match, no leading word boundary
@@ -171,9 +226,9 @@ def extract_entities(text: str) -> dict[str, list[str]]:
 
 def rule_flags(text: str) -> tuple[int, list[str]]:
     text = clean_text(text)
-    t, score, codes = text.lower(), 0, []
+    t, score, codes = _fold(text), 0, []
     for code, (w, en, local, _label) in KEYWORDS.items():
-        if any(_matches(k, t) for k in en) or any(k.lower() in t for k in local) \
+        if any(_matches(k, t) for k in en) or any(_fold(k) in t for k in local) \
                 or any(p.search(text) for p in PATTERNS.get(code, [])):
             score += w
             codes.append(code)
@@ -186,12 +241,12 @@ def red_flag(code: str) -> RedFlag:
 
 def infer_scam_type(text: str, codes: list[str], has_url: bool) -> ScamType:
     """Rules-only scam type, used when the LLM is unavailable."""
-    t = text.lower()
+    t = _fold(text)
     if "threat_arrest" in codes and ("isolation" in codes or "authority_claim" in codes) \
-            and not any(k in t for k in ("parcel", "customs", "fedex", "dhl", "சுங்க", "பார்சல்")):
+            and not any(k in t for k in ("parcel", "customs", "fedex", "dhl", "சுங்க", "பார்சல்", "पार्सल", "कस्टम्स")):
         return ScamType.digital_arrest
     for scam_type, hints in _TYPE_HINTS:
-        if any(h in t for h in hints):
+        if any(_fold(h) in t for h in hints):
             return scam_type
     if "threat_arrest" in codes:
         return ScamType.digital_arrest
