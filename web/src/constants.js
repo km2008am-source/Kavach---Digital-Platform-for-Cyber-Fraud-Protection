@@ -129,3 +129,28 @@ export const SAMPLE_KYC =
 
 export const SAMPLE_HI =
   'प्रिय ग्राहक, आपका एसबीआई खाता आज ही ब्लॉक हो जाएगा। केवाईसी अपडेट करने के लिए http://sbi-kyc-update.example पर जाएं और तुरंत अपना ओटीपी बताएं।'
+
+// Person 1's /api/services sends { name, situation (sentence), description, official_url };
+// the demo file uses { situation (key), what, when, link }. Accept both shapes.
+const SITUATION_WORDS = [
+  ['lost_money', /lost money|paid|fraud|scam/i],
+  ['lost_phone', /phone was lost|lost my phone|stolen/i],
+  ['id_misuse', /identity|my id|aadhaar|pan/i],
+  ['investment', /investment|deposit|scheme/i],
+  ['suspicious', /suspicious|call|sms|message/i],
+]
+
+export function normalizeService(item) {
+  if (!item || typeof item !== 'object') return null
+  const known = SITUATIONS.some(([k]) => k === item.situation)
+  const situation = known
+    ? item.situation
+    : (SITUATION_WORDS.find(([, re]) => re.test(item.situation || ''))?.[0] ?? 'other')
+  return {
+    ...item,
+    situation,
+    what: item.what ?? item.description ?? '',
+    when: item.when ?? (known ? '' : item.situation ?? ''),
+    link: item.link ?? item.official_url,
+  }
+}

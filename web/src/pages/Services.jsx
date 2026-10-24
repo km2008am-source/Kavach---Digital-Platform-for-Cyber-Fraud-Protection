@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getServices, safeHref } from '../api.js'
-import { SITUATIONS } from '../constants.js'
+import { SITUATIONS, normalizeService } from '../constants.js'
 import DemoBadge from '../components/DemoBadge.jsx'
 import PageHeader from '../components/PageHeader.jsx'
 import Icon from '../components/Icon.jsx'
@@ -24,7 +24,7 @@ export default function Services() {
   if (!res) return <>{header}<div className="wrap page-body"><p className="skeleton">Loading…</p></div></>
   if (!res.ok) return <>{header}<div className="wrap page-body"><p className="notice notice-error" role="alert"><Icon name="alert" />{res.message}</p></div></>
 
-  const items = Array.isArray(res.data) ? res.data : []
+  const items = (Array.isArray(res.data) ? res.data : []).map(normalizeService).filter(Boolean)
   const known = new Set(SITUATIONS.map(([k]) => k))
   const groups = [...SITUATIONS, ...(items.some((i) => !known.has(i.situation)) ? [['other', 'Other']] : [])]
     .map(([key, title]) => [key, title, items.filter((i) => (key === 'other' ? !known.has(i.situation) : i.situation === key))])
@@ -57,7 +57,7 @@ export default function Services() {
                     <div>
                       <h3>{s.name}</h3>
                       <p>{s.what}</p>
-                      <p className="when"><strong>Use it when:</strong> {s.when}</p>
+                      {s.when && <p className="when"><strong>Use it when:</strong> {s.when}</p>}
                     </div>
                     {href && (
                       <div>
