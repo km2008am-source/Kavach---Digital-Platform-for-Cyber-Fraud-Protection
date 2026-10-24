@@ -57,3 +57,28 @@ export const alertRadius = (count) => Math.min(60, 12 + Math.sqrt(Math.max(0, co
 
 export const SAMPLE_KYC =
   'Dear customer, your SBI account will be blocked today. Update KYC immediately at http://sbi-kyc-update.example and share the OTP you receive.'
+
+// Person 1's /api/services sends { name, situation (sentence), description, official_url };
+// the demo file uses { situation (key), what, when, link }. Accept both shapes.
+const SITUATION_WORDS = [
+  ['lost_money', /lost money|paid|fraud|scam/i],
+  ['lost_phone', /phone was lost|lost my phone|stolen/i],
+  ['id_misuse', /identity|my id|aadhaar|pan/i],
+  ['investment', /investment|deposit|scheme/i],
+  ['suspicious', /suspicious|call|sms|message/i],
+]
+
+export function normalizeService(item) {
+  if (!item || typeof item !== 'object') return null
+  const known = SITUATIONS.some(([k]) => k === item.situation)
+  const situation = known
+    ? item.situation
+    : (SITUATION_WORDS.find(([, re]) => re.test(item.situation || ''))?.[0] ?? 'other')
+  return {
+    ...item,
+    situation,
+    what: item.what ?? item.description ?? '',
+    when: item.when ?? (known ? '' : item.situation ?? ''),
+    link: item.link ?? item.official_url,
+  }
+}

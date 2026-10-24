@@ -32,3 +32,14 @@
 - No request-size cap at the app level except 20 MB uploads and per-field limits; put a body limit on Caddy.
 - Sessions, rate limits and Twilio call IDs live in process memory: a restart mid-demo loses an in-progress simulation (the page offers "Start over") but nothing else.
 - Twilio's own console shows recognised speech for trial calls. Kavach stores no audio and logs no transcripts.
+
+## Notes for Member 1's integration (checked against `backend/` on 2026-10-24)
+Member 3's code stays in `backend-mem3/` until Member 1 integrates it. Checked against the real `backend/`:
+- **Contracts:** `backend/kavach/contracts.py` does not follow section 5 (e.g. `AnalysisRequest` has `source`/`media_path`, `RedFlag` has `label`/`explanation`). Member 2's `backend/kavach/analysis/models.py` does, and `analysis.scam_check.analyze()` takes those models. So in Member 3's files, change `from kavach.contracts import` to `from kavach.analysis.models import`. No other change is needed.
+- **Config / DB:** Member 1's `config.py` uses lowercase names (`settings.dry_run`) and `db.py` is plain sqlite3. Member 3 needs `PUBLIC_BASE_URL`, `TWILIO_*`, `DEMO_USER_NUMBER`, `DEMO_USER_LANG`, `CALL_SPEECH_LANG`, `NEWS_FEEDS`, `WEB_ORIGINS`, `DEMO_MODE`, `HASH_SALT` and the SQLModel tables `sim_session`, `news_item`. The simplest route is to keep `backend-mem3/kavach/config.py` and `db.py` as `kavach/m3_config.py` and `kavach/m3_db.py` (Member 2 did the same with `analysis/settings.py`). Point `DB_URL` at the same `DATABASE_PATH` file.
+- **main.py:** add the routers and setup from `backend-mem3/kavach/main.py`: twilio, analyze, sim, pulse, news; `errors.install(app)`; CORS; `/static`; `web/dist` mounted last; `init_db()` and `refresh_news()` in the lifespan.
+- **WhatsApp client:** Member 1's `send_text`/`send_buttons` match the frozen signatures and work as-is. Member 3's tests read the stub's `OUTBOX`, so they need a fixture that records sends instead.
+- **Dependencies:** add `sqlmodel`, `twilio`, `feedparser`, `python-multipart`, `python-dotenv` to `backend/pyproject.toml`.
+- **Tested:** done this way, all 262 tests (Members 1+2+3) pass together and every route answers on one app.
+- **Demo line:** Member 2 must say the full call line with "or face arrest". Without it, the real engine scores the call MEDIUM when the LLM is off.
+- **Services page:** now accepts both Member 1's `/api/services` shape (`description`, `official_url`, sentence `situation`) and the demo file's shape.

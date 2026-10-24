@@ -7,7 +7,9 @@ from kavach.calls.screening import claimed_org, check_identity, same_number
 from kavach.whatsapp import client as wa
 from tests.conftest import signed_post, DEMO
 
-CUSTOMS = "I am calling from the customs office, your parcel has drugs, pay a fine"
+# Exact line Member 2 says in the demo (pitch/demo_script.md). With Member 2's real engine and the
+# LLM off, the shorter "customs... drugs... pay a fine" scores only MEDIUM; this full line scores HIGH.
+CUSTOMS = "I am calling from the customs office, your parcel has illegal items, pay a fine or face arrest"
 
 
 # ---- signature -------------------------------------------------------------------------
