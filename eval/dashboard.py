@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "eval" / "results"
 SAMPLES = ROOT / "data" / "samples"
 SETS = [  # (results file stem, label, dataset files, note)
+    ("sealed_hindi", "Sealed Hindi set", ["heldout_hindi.jsonl"], "Hindi and Hinglish, never tuned on"),
     ("sealed_v3", "Sealed set 3", ["heldout3.jsonl"], "Newest sealed set: quote this one"),
     ("sealed", "Sealed text set", ["heldout2.jsonl"], "Never tuned on by the rules"),
     ("sealed_calls", "Sealed call transcripts", ["heldout_calls.jsonl"], "Spoken Call Shield text"),
