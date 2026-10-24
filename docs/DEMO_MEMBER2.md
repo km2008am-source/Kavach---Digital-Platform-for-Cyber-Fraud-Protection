@@ -39,6 +39,12 @@ They're stored in `data/samples/demo_inputs.jsonl`. `DEMO_MODE` only recognises 
 | Bait | "verify PM Free Laptop Yojana 2026 …" | HIGH (90), points to PIB Fact Check |
 | 3 | `data/samples/apks/rto_challan_test.apk` | HIGH (90), "Do not install" |
 | 4 | `data/samples/receipts/r01.png` and `r02.png` | Transaction ID and amount read by OCR |
+| Hindi | On the website's Check a message page, press **हिंदी उदाहरण**, then **Check it** | HIGH; the whole result card in Hindi |
+| Hindi screenshot | A screenshot of the same Hindi SMS | Same verdict as the text; read by Tesseract, or by the vision model if Tesseract is missing |
+
+Screenshots need one of these on the demo machine: Tesseract with the Hindi pack, or
+`OCR_VISION_MODEL=qwen/qwen3.8-27b` in `backend/.env`. Check which one is active:
+`python -c "from kavach.analysis import ocr; print(ocr.engine())"` prints `tesseract`, `vision` or `none`.
 
 ## Step 1: the customs-officer call (Member 2 speaks)
 

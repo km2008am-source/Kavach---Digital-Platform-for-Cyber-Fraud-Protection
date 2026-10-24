@@ -8,11 +8,11 @@ The guide's definition of done asks for known limitations to be written down. Th
 - **Reply time measured on a laptop** (median about 1.2 s, p95 about 4 s with the LLM and network checks); not yet on the demo server. Groq's free tier limits requests per minute.
 - **Spoken numbers.** Speech-to-text writes "press nine" or "thirty minutes" as words, and the urgency, press-key and OTP patterns only match digits (2 of the 10 sealed calls were missed this way).
 - **Without the LLM**, job-offer scams that do not ask for money yet ("reply YES to start") score low; with the LLM they are caught.
-- **Tamil and Hindi keyword lists** have not been reviewed by a native speaker.
+- **Hindi keyword lists** were written by Member 2 and are checked by one team member (Vani), not by a linguist. The engine still has its Tamil words (so Tamil scams are caught), but they were never reviewed and Tamil is not offered to users.
 
 ## OCR and evidence
 - **Tesseract reads the ₹ sign as "=", "~" or "7".** The first two are recovered; a leading "7" is ambiguous, so that amount is left for the user to type rather than guessed.
-- **Tamil OCR** needs the Tamil language pack installed with Tesseract (`tesseract --list-langs` must show `tam`). Measured on a browser-rendered Tamil screenshot: one character wrong in a 30-word message, verdict HIGH. Blurry phone photos will do worse.
+- **Screenshots** are read by Tesseract when it is installed (Hindi needs its `hin` pack). Without it, a vision model on Groq (`OCR_VISION_MODEL`) reads them: a Hindi SMS screenshot was transcribed exactly in 0.8 s. That sends the image to Groq, as the message text already is; EXIF data such as GPS is stripped first. With neither, a screenshot is judged on its caption only and the verdict says so (lower confidence).
 
 ## Link and file checks
 - **WHOIS, Safe Browsing and VirusTotal** are skipped without keys or internet; the offline lookalike, suspicious-TLD and local URLhaus checks still run.
