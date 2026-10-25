@@ -44,7 +44,7 @@ From the repository root, create and activate a virtual environment, install the
 ~~~powershell
 cd backend
 py -3.11 -m venv .venv
-..venvScriptsActivate.ps1
+.\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 python -m pip install -e .
 Copy-Item .env.example .env
