@@ -69,7 +69,7 @@ def _input_type(req: team.AnalysisRequest) -> InputType:
 
 def to_engine(req: team.AnalysisRequest) -> AnalysisRequest:
     """Team request -> engine request. The user ID is deliberately not passed on."""
-    channel = req.source if req.source in ("whatsapp", "call", "web") else "whatsapp"
+    channel = req.source if req.source in ("whatsapp", "telegram", "call", "web") else "whatsapp"
     language = req.language if req.language in ("ta", "en", "hi") else "en"
     input_type = _input_type(req)
     return AnalysisRequest(request_id=uuid.uuid4().hex, channel=channel, input_type=input_type,
