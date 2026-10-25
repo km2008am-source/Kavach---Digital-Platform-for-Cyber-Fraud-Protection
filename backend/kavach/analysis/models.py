@@ -56,7 +56,7 @@ class ApkReport(BaseModel):
 
 class AnalysisRequest(BaseModel):
     request_id: str
-    channel: Literal["whatsapp", "call", "web"]
+    channel: Literal["whatsapp", "telegram", "call", "web"]
     input_type: InputType
     text: Optional[str] = None         # message text, OCR output is added by M2
     file_path: Optional[str] = None    # image or APK on local disk
