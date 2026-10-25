@@ -1,22 +1,28 @@
-"""Language helpers with Tamil and English support."""
+"""English and Hindi language helpers, speech-to-text, and text-to-speech."""
+
+import asyncio
+import os
+import uuid
+from functools import lru_cache
+from pathlib import Path
 
 from deep_translator import GoogleTranslator
 from langdetect import DetectorFactory, LangDetectException, detect
 
 DetectorFactory.seed = 0
 
-SUPPORTED_LANGUAGES = {"en", "ta"}
+SUPPORTED_LANGUAGES = {"en", "hi"}
 
 
 def detect_language(text: str, default: str = "en") -> str:
-    """Return 'en' or 'ta'; use default when detection is uncertain."""
+    """Detect English or Hindi; use default when detection is uncertain."""
     cleaned = text.strip()
     if not cleaned:
         return default
 
-    # Tamil Unicode block: Tamil characters are U+0B80 through U+0BFF.
-    if any("\u0b80" <= char <= "\u0bff" for char in cleaned):
-        return "ta"
+    # Hindi uses the Devanagari Unicode block.
+    if any("\u0900" <= char <= "\u097f" for char in cleaned):
+        return "hi"
 
     try:
         detected = detect(cleaned)
@@ -34,21 +40,60 @@ async def translate(text: str, source: str, target: str) -> str:
     if source not in SUPPORTED_LANGUAGES or target not in SUPPORTED_LANGUAGES:
         raise ValueError(f"Unsupported language pair: {source} -> {target}")
 
-    # deep-translator's GoogleTranslator call is synchronous.
-    return GoogleTranslator(source=source, target=target).translate(text)
+    return await asyncio.to_thread(
+        GoogleTranslator(source=source, target=target).translate,
+        text,
+    )
+
+
+@lru_cache(maxsize=1)
+def _whisper_model():
+    from faster_whisper import WhisperModel
+
+    return WhisperModel("base", device="cpu", compute_type="int8")
+
+
+def _transcribe(audio_path: str, language: str) -> str:
+    # faster-whisper detects the spoken language when language=None.
+    whisper_language = None if language == "auto" else language
+    segments, _ = _whisper_model().transcribe(
+        audio_path,
+        language=whisper_language,
+        beam_size=5,
+        vad_filter=True,
+    )
+
+    return " ".join(
+        segment.text.strip()
+        for segment in segments
+        if segment.text.strip()
+    ).strip()
 
 
 async def stt(audio_path: str, language: str = "en") -> str:
-    """Speech-to-text placeholder; connect a provider before voice-note use."""
-    raise NotImplementedError(
-        "Speech-to-text provider is not configured yet "
-        f"(audio={audio_path!r}, language={language!r})"
-    )
+    """Transcribe an English or Hindi voice note."""
+    if language != "auto" and language not in SUPPORTED_LANGUAGES:
+        language = "en"
+
+    return await asyncio.to_thread(_transcribe, audio_path, language)
+
+
+def _tts_sync(text: str, language: str) -> str:
+    from gtts import gTTS
+
+    if language not in SUPPORTED_LANGUAGES:
+        raise ValueError(f"Unsupported speech language: {language}")
+    if not text.strip():
+        raise ValueError("Text for speech cannot be empty")
+
+    output_dir = Path(os.getenv("FILES_DIR", "files"))
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_path = output_dir / f"reply-{uuid.uuid4().hex}.mp3"
+
+    gTTS(text=text[:1500], lang=language).save(str(output_path))
+    return str(output_path)
 
 
 async def tts(text: str, language: str = "en") -> str:
-    """Text-to-speech placeholder; connect a provider before voice replies."""
-    raise NotImplementedError(
-        "Text-to-speech provider is not configured yet "
-        f"(language={language!r})"
-    )
+    """Create an MP3 speech reply in English or Hindi."""
+    return await asyncio.to_thread(_tts_sync, text, language)

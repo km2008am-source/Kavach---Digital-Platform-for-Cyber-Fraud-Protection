@@ -56,3 +56,15 @@ GENERIC_ERROR = (
     "Something went wrong while handling that message. Type “menu” to restart. "
     "If money may be at risk, call 1930 now."
 )
+EVIDENCE_FIELD_PROMPTS = {
+    "transaction_id": "Enter the transaction or UPI reference ID, or tap Skip.",
+    "amount": "Enter the amount lost, or tap Skip.",
+    "transaction_time": "Enter the transaction date and time, or tap Skip.",
+    "payee_upi": "Enter the recipient UPI ID, if known, or tap Skip.",
+    "scammer_number": "Enter the scammer's phone number, if known, or tap Skip.",
+}
+
+EVIDENCE_REVIEW = (
+    "Thank you. I’ll include the details you provided in the evidence pack. "
+    "If a detail is missing, it will be marked as not provided."
+)

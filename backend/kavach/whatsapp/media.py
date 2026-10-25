@@ -8,8 +8,12 @@ import httpx
 
 from kavach.config import settings
 
+from kavach.whatsapp.client import _download_telegram_media
+
 
 async def download_media(media_id: str, filename: str | None = None) -> Path:
+    if settings.whatsapp_provider.strip().lower() == "telegram":
+        return await _download_telegram_media(media_id, filename)
     if not settings.wa_token:
         raise RuntimeError("WA_TOKEN must be configured to download media")
 

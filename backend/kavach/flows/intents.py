@@ -3,16 +3,28 @@
 from kavach.contracts import IncomingMessage
 
 
-MENU_WORDS = {"menu", "hi", "hello", "start", "வணக்கம்"}
+MENU_WORDS = {
+    "menu",
+    "hi",
+    "hello",
+    "start",
+    "मेन्यू",
+    "नमस्ते",
+    "नमस्कार",
+    "शुरू",
+}
+
 LOST_MONEY_PHRASES = (
     "lost money",
     "i paid",
     "already paid",
     "money gone",
     "fraud happened",
-    "பணம் போச்சு",
-    "பணம் இழந்தேன்",
-    "ஏமாந்துவிட்டேன்",
+    "मेरे पैसे चले गए",
+    "मेरे पैसे खो गए",
+    "मैंने पैसे गंवा दिए",
+    "मेरे साथ धोखाधड़ी हुई",
+    "मैं ठगी का शिकार हुआ",
 )
 
 
@@ -41,6 +53,16 @@ def detect(message: IncomingMessage, state: str) -> str:
 
     if any(phrase in text for phrase in LOST_MONEY_PHRASES):
         return "gh_start"
+
+    evidence_states = {
+    "GH_TRANSACTION_ID",
+    "GH_AMOUNT",
+    "GH_TRANSACTION_TIME",
+    "GH_PAYEE_UPI",
+    "GH_SCAMMER_NUMBER",
+    }
+    if state in evidence_states and text in {"skip", "छोड़ें", "छोड़ दो", "छोड़ना"}:
+        return "gh_skip"
 
     if state.startswith("GH_"):
         return "gh_continue"
