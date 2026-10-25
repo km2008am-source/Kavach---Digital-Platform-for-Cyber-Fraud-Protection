@@ -32,6 +32,7 @@ class AnalysisRequest(BaseModel):
     media_path: str | None = None
     media_type: str | None = None
     user_id: str | None = None
+    district: str | None = None  # explicitly user-selected; never GPS
 
 
 class RedFlag(BaseModel):
