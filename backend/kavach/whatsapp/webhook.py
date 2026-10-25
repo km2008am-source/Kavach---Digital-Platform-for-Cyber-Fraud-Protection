@@ -224,6 +224,8 @@ async def receive_telegram_webhook(
         return {"ok": True}
 
     photo_sizes = message_data.get("photo") or []
+    voice = message_data.get("voice") or {}
+    audio = message_data.get("audio") or {}
     document = message_data.get("document") or {}
     text = message_data.get("text") or message_data.get("caption") or ""
 
@@ -242,6 +244,14 @@ async def receive_telegram_webhook(
         media_id = photo.get("file_id")
         mime_type = "image/jpeg"
         filename = f"telegram-{message_id}.jpg"
+
+    elif voice or audio:
+        media = voice or audio
+        kind = "audio"
+        media_id = media.get("file_id")
+        mime_type = media.get("mime_type") or ("audio/ogg" if voice else "audio/mpeg")
+        suffix = ".ogg" if voice else ".mp3"
+        filename = media.get("file_name") or f"telegram-{message_id}{suffix}"
 
     elif document:
         kind = "document"

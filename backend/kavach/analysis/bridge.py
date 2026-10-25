@@ -1,7 +1,7 @@
 """Bridge between Person 1's team contract (`kavach.contracts`) and the analysis engine.
 
-The WhatsApp layer builds `kavach.contracts.AnalysisRequest` (text, language, source,
-media_path, media_type, user_id) and formats `kavach.contracts.AnalysisResult` (risk_level,
+The messaging layer builds `kavach.contracts.AnalysisRequest` (text, language, source,
+media_path, media_type, user_id, optional user-selected district) and formats `kavach.contracts.AnalysisResult` (risk_level,
 scam_type, explanation, red_flags[label, explanation], recommended_action, ...). The engine
 works on the richer models in `kavach.analysis.models`. Everything is converted here, so
 neither side has to change.
@@ -69,7 +69,7 @@ def _input_type(req: team.AnalysisRequest) -> InputType:
 
 def to_engine(req: team.AnalysisRequest) -> AnalysisRequest:
     """Team request -> engine request. The user ID is deliberately not passed on."""
-    channel = req.source if req.source in ("whatsapp", "call", "web") else "whatsapp"
+    channel = req.source if req.source in ("whatsapp", "telegram", "call", "web") else "whatsapp"
     language = req.language if req.language in ("ta", "en", "hi") else "en"
     input_type = _input_type(req)
     return AnalysisRequest(request_id=uuid.uuid4().hex, channel=channel, input_type=input_type,
@@ -106,11 +106,11 @@ async def analyze_team(req: team.AnalysisRequest) -> team.AnalysisResult:
 
 
 async def _report_to_pulse(req: team.AnalysisRequest, result: AnalysisResult) -> None:
-    """Integration point I4 (owned by Person 2): every risky verdict feeds Scam Pulse.
+    """Send opted-in, risky reports to Scam Pulse using the user's chosen district.
 
-    Needs a user-chosen district. The team request has no `district` field yet; once Person 1
-    adds one, reports flow in with no other change. Pulse stores only normalised text and an
-    HMAC of the user ID, and ignores low-risk verdicts. A Pulse failure never affects the reply.
+    The bot collects the district explicitly; it never reads GPS. Pulse stores normalised text
+    and a salted HMAC of the user ID, and ignores low-risk verdicts. A Pulse failure never
+    affects the user's safety-check reply.
     """
     district = getattr(req, "district", None)
     if not (district and req.user_id and req.text.strip()):

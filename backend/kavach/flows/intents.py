@@ -42,6 +42,9 @@ def detect(message: IncomingMessage, state: str) -> str:
     if text.startswith("guardian "):
         return "set_guardian"
 
+    if text.startswith("district "):
+        return "set_district"
+
     if text in {"dns", "protect"}:
         return "dns_guide"
 
@@ -55,11 +58,11 @@ def detect(message: IncomingMessage, state: str) -> str:
         return "gh_start"
 
     evidence_states = {
-    "GH_TRANSACTION_ID",
-    "GH_AMOUNT",
-    "GH_TRANSACTION_TIME",
-    "GH_PAYEE_UPI",
-    "GH_SCAMMER_NUMBER",
+        "GH_TRANSACTION_ID",
+        "GH_AMOUNT",
+        "GH_TRANSACTION_TIME",
+        "GH_PAYEE_UPI",
+        "GH_SCAMMER_NUMBER",
     }
     if state in evidence_states and text in {"skip", "छोड़ें", "छोड़ दो", "छोड़ना"}:
         return "gh_skip"

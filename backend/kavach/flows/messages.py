@@ -2,7 +2,8 @@
 
 WELCOME = (
     "Welcome to Kavach. Send a suspicious message, link, screenshot, or APK "
-    "for a safety check. If you have already lost money, say “I lost money”."
+    "for a safety check. If you have already lost money, say “I lost money”. "
+    "To opt in to anonymous Scam Pulse reports, send district followed by your district name."
 )
 
 UNSUPPORTED = (

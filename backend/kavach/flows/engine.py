@@ -6,6 +6,7 @@ import json
 import re
 from pathlib import Path
 
+from kavach.config import settings
 from kavach.contracts import (
     AnalysisRequest,
     AnalysisResult,
@@ -28,6 +29,11 @@ from kavach.whatsapp.client import (
 from kavach.whatsapp.media import download_media
 import logging
 logger = logging.getLogger(__name__)
+
+def _analysis_source() -> str:
+    """Return the active messaging channel for analytics."""
+    return "telegram" if settings.whatsapp_provider == "telegram" else "whatsapp"
+
 
 _EVIDENCE_FIELDS = (
     ("GH_TRANSACTION_ID", "transaction_id"),
@@ -161,6 +167,16 @@ def _get_guardian_number(user_id: str) -> str | None:
 
     return row["guardian_number"] if row else None
 
+
+def _get_district(user_id: str) -> str | None:
+    with session() as connection:
+        row = connection.execute(
+            "SELECT district FROM users WHERE user_id = ?",
+            (user_id,),
+        ).fetchone()
+
+    return row["district"] if row else None
+
 def _format_verdict(result) -> str:
     red_flags = [
         f"• {flag.label}: {flag.explanation}"
@@ -187,6 +203,7 @@ async def _analyze(request: AnalysisRequest):
 async def _handle_check(message: IncomingMessage, language: str) -> None:
     language = language if language in {"en", "hi"} else "en"
     text = message.text
+    district = _get_district(message.sender)
 
     if message.kind == "audio" and message.media_id:
         try:
@@ -217,8 +234,9 @@ async def _handle_check(message: IncomingMessage, language: str) -> None:
         request = AnalysisRequest(
             text=text,
             language=language,
-            source="whatsapp",
+            source=_analysis_source(),
             user_id=message.sender,
+            district=district,
         )
 
     elif message.media_id:
@@ -226,18 +244,20 @@ async def _handle_check(message: IncomingMessage, language: str) -> None:
         request = AnalysisRequest(
             text=text or "",
             language=language,
-            source="whatsapp",
+            source=_analysis_source(),
             media_path=str(path),
             media_type=message.mime_type or message.kind,
             user_id=message.sender,
+            district=district,
         )
 
     else:
         request = AnalysisRequest(
             text=text,
             language=language,
-            source="whatsapp",
+            source=_analysis_source(),
             user_id=message.sender,
+            district=district,
         )
 
     try:
@@ -434,7 +454,7 @@ async def _handle_golden_hour(
                 f"{bank['freeze_steps']}\n\n"
                 f"Official information: {bank['official_url']}\n\n"
                 "Call 1930 now if you have not already."
-                )
+            )
         else:
             bank_reply = (
                 "Use the phone number in your bank's official app or website "
@@ -444,12 +464,12 @@ async def _handle_golden_hour(
                 "Call 1930 now if you have not already."
             )
 
-            conversation.data["bank_name"] = bank_name
-            conversation.state = "GH_ACK"
-            golden_hour.save_conversation(message.sender, conversation)
-            await _reply(message.sender, bank_reply, language)
-            await _reply(message.sender, messages.GOLDEN_HOUR_ACK, language)
-            return
+        conversation.data["bank_name"] = bank_name
+        conversation.state = "GH_ACK"
+        golden_hour.save_conversation(message.sender, conversation)
+        await _reply(message.sender, bank_reply, language)
+        await _reply(message.sender, messages.GOLDEN_HOUR_ACK, language)
+        return
     if conversation.state == "GH_ACK":
         acknowledgement = message.text.strip()
 
@@ -513,6 +533,26 @@ async def _handle_golden_hour(
         )
         return
 
+async def _handle_bait(message: IncomingMessage, language: str) -> None:
+    from kavach.analysis.bridge import verify_bait
+
+    request = AnalysisRequest(
+        text=message.text,
+        language=language,
+        source=_analysis_source(),
+        user_id=message.sender,
+        district=_get_district(message.sender),
+    )
+    try:
+        result = await verify_bait(request)
+    except Exception:
+        logger.exception("Scam Bait verification failed")
+        await _reply(message.sender, messages.ANALYSIS_UNAVAILABLE, language)
+        return
+
+    await _reply(message.sender, _format_verdict(result), language)
+
+
 async def _set_guardian(message: IncomingMessage, language: str) -> None:
     match = re.fullmatch(
         r"\s*guardian\s+(\+?\d{10,15})\s*",
@@ -541,6 +581,46 @@ async def _set_guardian(message: IncomingMessage, language: str) -> None:
     )
 
 
+async def _set_district(message: IncomingMessage, language: str) -> None:
+    raw_district = message.text.partition(" ")[2].strip()
+    if raw_district.casefold() in {"off", "clear", "remove"}:
+        district = None
+        reply = "Scam Pulse sharing is off. No new reports will be linked to a district."
+    else:
+        district = " ".join(raw_district.split())
+        if (
+            len(district) < 2
+            or len(district) > 60
+            or not any(character.isalpha() for character in district)
+            or any(character.isdigit() for character in district)
+        ):
+            await _reply(
+                message.sender,
+                "To opt in, send district followed by your district name, such as district Pune. "
+                "Send district off to opt out.",
+                language,
+            )
+            return
+
+        reply = (
+            f"District saved as {district}. New medium- and high-risk text checks may be "
+            "included in anonymous Scam Pulse reports. No GPS is collected. "
+            "Send district off to opt out."
+        )
+
+    with session() as connection:
+        connection.execute(
+            "INSERT OR IGNORE INTO users (user_id) VALUES (?)",
+            (message.sender,),
+        )
+        connection.execute(
+            "UPDATE users SET district = ? WHERE user_id = ?",
+            (district, message.sender),
+        )
+
+    await _reply(message.sender, reply, language)
+
+
 async def handle_message(message: IncomingMessage) -> None:
     """Entry point used by the WhatsApp webhook background task."""
     try:
@@ -563,6 +643,10 @@ async def handle_message(message: IncomingMessage) -> None:
             await _reply(message.sender, messages.WELCOME, language)
             return
 
+        if intent == "set_district":
+            await _set_district(message, language)
+            return
+
         if intent == "gh_start" or conversation.state.startswith("GH_"):
             await _handle_golden_hour(message, intent, language)
             return
@@ -576,12 +660,7 @@ async def handle_message(message: IncomingMessage) -> None:
             return
 
         if intent == "check_bait":
-            await _reply(
-                message.sender,
-                "Scam Bait verification is being connected. For now, send the "
-                "link or message for a Scam Check.",
-                language,
-            )
+            await _handle_bait(message, language)
             return
 
         if intent == "check_apk" or intent == "check":

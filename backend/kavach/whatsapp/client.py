@@ -129,6 +129,38 @@ async def _telegram_post(method: str, payload: dict) -> dict:
     return result["result"]
 
 
+async def _telegram_upload(
+    method: str,
+    media_field: str,
+    to: str,
+    file_path: Path,
+    filename: str,
+) -> dict:
+    if settings.dry_run:
+        print(f"[TELEGRAM DRY RUN] {method} chat_id={to} path={file_path}")
+        return {"dry_run": True}
+
+    if not settings.telegram_bot_token:
+        raise RuntimeError("TELEGRAM_BOT_TOKEN is required")
+
+    mime_type = mimetypes.guess_type(filename)[0] or "application/octet-stream"
+    url = f"https://api.telegram.org/bot{settings.telegram_bot_token}/{method}"
+
+    async with httpx.AsyncClient(timeout=30) as client:
+        with file_path.open("rb") as file_handle:
+            response = await client.post(
+                url,
+                data={"chat_id": to},
+                files={media_field: (filename, file_handle, mime_type)},
+            )
+
+    response.raise_for_status()
+    result = response.json()
+    if not result.get("ok"):
+        raise RuntimeError(result.get("description", "Telegram media upload failed"))
+    return result["result"]
+
+
 async def _send_twilio_text(to: str, body: str) -> dict:
     return await asyncio.to_thread(_twilio_send_sync, to, body)
 
@@ -237,6 +269,15 @@ async def send_audio(to: str, path: str | Path) -> dict:
     if not file_path.is_file():
         raise FileNotFoundError(file_path)
 
+    if _uses_telegram():
+        return await _telegram_upload(
+            "sendAudio",
+            "audio",
+            to,
+            file_path,
+            file_path.name,
+        )
+
     if _uses_twilio():
         # Twilio needs a public HTTPS media URL; this text-first adapter
         # doesn't publish local audio files yet.
@@ -280,6 +321,15 @@ async def send_document(to: str, path: str | Path, filename: str) -> dict:
     file_path = Path(path)
     if not file_path.is_file():
         raise FileNotFoundError(file_path)
+
+    if _uses_telegram():
+        return await _telegram_upload(
+            "sendDocument",
+            "document",
+            to,
+            file_path,
+            filename,
+        )
 
     if _uses_twilio():
         # Twilio needs a public HTTPS media URL to deliver local PDFs.

@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS users (
     user_id TEXT PRIMARY KEY,
     language TEXT NOT NULL DEFAULT 'en',
     guardian_number TEXT,
+    district TEXT,
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -58,6 +59,12 @@ def connect(database_path: str | Path | None = None) -> sqlite3.Connection:
 def initialize(database_path: str | Path | None = None) -> None:
     with connect(database_path) as connection:
         connection.executescript(SCHEMA)
+        user_columns = {
+            row["name"]
+            for row in connection.execute("PRAGMA table_info(users)")
+        }
+        if "district" not in user_columns:
+            connection.execute("ALTER TABLE users ADD COLUMN district TEXT")
 
 
 @contextmanager
