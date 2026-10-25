@@ -6,6 +6,7 @@ import json
 import re
 from pathlib import Path
 
+from kavach.config import settings
 from kavach.contracts import (
     AnalysisRequest,
     AnalysisResult,
@@ -28,6 +29,11 @@ from kavach.whatsapp.client import (
 from kavach.whatsapp.media import download_media
 import logging
 logger = logging.getLogger(__name__)
+
+def _analysis_source() -> str:
+    """Return the active messaging channel for analytics."""
+    return "telegram" if settings.whatsapp_provider == "telegram" else "whatsapp"
+
 
 _EVIDENCE_FIELDS = (
     ("GH_TRANSACTION_ID", "transaction_id"),
@@ -228,7 +234,7 @@ async def _handle_check(message: IncomingMessage, language: str) -> None:
         request = AnalysisRequest(
             text=text,
             language=language,
-            source="whatsapp",
+            source=_analysis_source(),
             user_id=message.sender,
             district=district,
         )
@@ -238,7 +244,7 @@ async def _handle_check(message: IncomingMessage, language: str) -> None:
         request = AnalysisRequest(
             text=text or "",
             language=language,
-            source="whatsapp",
+            source=_analysis_source(),
             media_path=str(path),
             media_type=message.mime_type or message.kind,
             user_id=message.sender,
@@ -249,7 +255,7 @@ async def _handle_check(message: IncomingMessage, language: str) -> None:
         request = AnalysisRequest(
             text=text,
             language=language,
-            source="whatsapp",
+            source=_analysis_source(),
             user_id=message.sender,
             district=district,
         )
@@ -533,7 +539,7 @@ async def _handle_bait(message: IncomingMessage, language: str) -> None:
     request = AnalysisRequest(
         text=message.text,
         language=language,
-        source="whatsapp",
+        source=_analysis_source(),
         user_id=message.sender,
         district=_get_district(message.sender),
     )
