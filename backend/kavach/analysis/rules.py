@@ -34,15 +34,47 @@ URL = re.compile(r"(?:https?://|www\.)\S+"
                  r"|(?<![@\w.-])[a-z0-9][\w-]*(?:\.[\w-]+)*\.(?:" + _TLDS + r")\b(?:/\S*)?", re.I)
 AMOUNT = re.compile(r"(?:₹|\brs\.?|\binr)\s?\d[\d,]*(?:\.\d+)?|\d[\d,]*\s?(?:ரூபாய்|रुपये|रुपए|rupees)", re.I)
 UPI_REF = re.compile(r"(?<!\d)\d{12}(?!\d)")
+_CREDENTIAL_TERM = (
+    r"(?:one[-\s]?time(?:\s+password)?|otp|verification\s+code|"
+    r"(?:upi|atm|card)\s+pin|pin|cvv|password|passcode)"
+)
+
+_CREDENTIAL_REQUEST = re.compile(
+    r"\b(?:share|send|reply\s+with|provide|tell|give|enter|type|"
+    r"submit|forward|text|message|disclose|confirm)\b"
+    r".{0,60}\b(?:your\s+)?"
+    + _CREDENTIAL_TERM
+    + r"\b",
+    re.I | re.S,
+)
+
+_CREDENTIAL_WARNING = re.compile(
+    r"\b(?:never|don'?t|do\s+not|should\s+not|must\s+not)\b"
+    r".{0,20}\b(?:share|send|reply\s+with|provide|tell|give|enter|"
+    r"type|submit|forward|disclose)\b.{0,60}\b(?:your\s+)?"
+    + _CREDENTIAL_TERM
+    + r"\b"
+    r"|\bno\s+bank\b.{0,60}\b(?:never|will\s+not|won't|would\s+not)\b"
+    r".{0,25}\b(?:ask|request)\b.{0,60}\b"
+    + _CREDENTIAL_TERM
+    + r"\b",
+    re.I | re.S,
+)
+
+
+def _credential_request(text: str) -> bool:
+    if _CREDENTIAL_WARNING.search(text):
+        return False
+    return _CREDENTIAL_REQUEST.search(text) is not None
 
 # code: (weight, English keywords, Tamil / romanised-Hindi substrings, plain-English label)
 KEYWORDS: dict[str, tuple[int, list[str], list[str], str]] = {
-    "otp_request": (35,
+    "otp_request": (50,
         ["share the otp", "share otp", "send the otp", "send otp", "tell the otp", "otp to continue",
          "share the verification code", "verification code sent", "enter your upi pin", "upi pin"],
         ["ஓடிபி அனுப்ப", "ஓடிபி சொல்", "பின் எண்ணை உள்ளிட", "otp batayein", "otp bataiye"],
         "It asks for your OTP or UPI PIN. No bank, police or company ever asks for these."),
-    "threat_arrest": (30,
+    "threat_arrest": (40,
         ["arrest", "arrested", "warrant", "cbi", "police case", "digital arrest", "narcotics",
          "money laundering", "court action", "case will be filed", "illegal activity",
          "investigating officer", "illegal parcel", "crime branch", "investigation", "inquiry", "fir", "legal proceedings", "legal action", "terror funding", "hawala", "enforcement directorate", "non-cooperation"],
@@ -89,11 +121,11 @@ KEYWORDS: dict[str, tuple[int, list[str], list[str], str]] = {
          "to receive the amount", "accept the request", "money will come to you", "get credit"],
         ["பணத்தைப் பெற"],
         "To RECEIVE money you never enter a PIN or scan a QR code. This request takes money from you."),
-    "apk_link": (30,
+    "apk_link": (50,
         [".apk", "apk from this link", "install the app from the link", "download the app from"],
         [],
         "It asks you to install an app from a link. Install apps only from the Play Store."),
-    "shame_threat": (30,
+    "shame_threat": (50,
         ["morphed photos", "to all your contacts"],
         [],
         "It threatens to shame you to your contacts. This is extortion; report it."),
@@ -108,7 +140,7 @@ KEYWORDS: dict[str, tuple[int, list[str], list[str], str]] = {
         [],
         ["பறிமுதல்", "pakda gaya", "pakda hai"],
         "It says a parcel in your name was stopped or seized. Fake 'customs' calls always start this way."),
-    "prompt_injection": (40,
+    "prompt_injection": (50,
         ["ignore your instructions", "ignore previous instructions", "ignore all previous", "say this is safe",
          "mark this as safe", "you are now", "system prompt"],
         [],
@@ -227,13 +259,27 @@ def extract_entities(text: str) -> dict[str, list[str]]:
 def rule_flags(text: str) -> tuple[int, list[str]]:
     text = clean_text(text)
     t, score, codes = _fold(text), 0, []
-    for code, (w, en, local, _label) in KEYWORDS.items():
-        if any(_matches(k, t) for k in en) or any(_fold(k) in t for k in local) \
-                or any(p.search(text) for p in PATTERNS.get(code, [])):
-            score += w
-            codes.append(code)
-    return min(score, 100), codes
 
+    for code, (weight, en, local, _label) in KEYWORDS.items():
+        if code in {"credential_request", "otp_request"}:
+            matched = _credential_request(text) or any(
+                _fold(keyword) in t for keyword in local
+            )
+        else:
+            matched = (
+                any(_matches(keyword, t) for keyword in en)
+                or any(_fold(keyword) in t for keyword in local)
+                or any(
+                    pattern.search(text)
+                    for pattern in PATTERNS.get(code, [])
+                )
+            )
+
+        if matched:
+            score += weight
+            codes.append(code)
+
+    return min(score, 100), codes
 
 def red_flag(code: str) -> RedFlag:
     return RedFlag(code=code, label_en=KEYWORDS[code][3])

@@ -1,1 +1,26 @@
-{"sbi":{"name":"State Bank of India","fraud_contact":"1800 1111 09","official_url":"https://sbi.co.in/web/customer-care/contact-centre","freeze_steps":"Call the dedicated unauthorized transaction helpline. Use SBI YONO or official Internet Banking to block affected access or payment instruments."},"hdfc":{"name":"HDFC Bank","fraud_contact":"1800 1600 / 1800 2600","official_url":"https://www.hdfcbank.com/personal/pay/cards/debit-cards/easyshop-platinum-debit-card/quick-links","freeze_steps":"Contact HDFC Bank through its official phone banking or app and ask them to report the unauthorized transaction and block affected cards or access."},"icici":{"name":"ICICI Bank","fraud_contact":"1800 2662","official_url":"https://www.icicibank.com/online-safe-banking/report-unauthorized-transaction","freeze_steps":"Call ICICI Bank to report the unauthorized transaction. Use the official app or Internet Banking to block affected cards or access."},"axis":{"name":"Axis Bank","fraud_contact":"1800 103 5577 / 1800 209 5577","official_url":"https://www.axisbank.com/support/report-a-fraud","freeze_steps":"Contact Axis Bank through official fraud reporting or phone banking channels. Ask them to report the transaction and block affected cards or access."}}
+{
+  "sbi": {
+    "name": "State Bank of India",
+    "fraud_contact": "1800 1111 09",
+    "official_url": "https://sbi.co.in/web/customer-care/contact-centre",
+    "freeze_steps": "Call the dedicated unauthorized transaction helpline. You can also use SBI YONO or official Internet Banking to block affected access or payment instruments."
+  },
+  "hdfc": {
+    "name": "HDFC Bank",
+    "fraud_contact": "1800 1600 / 1800 2600",
+    "official_url": "https://www.hdfcbank.com/personal/pay/cards/debit-cards/easyshop-platinum-debit-card/quick-links",
+    "freeze_steps": "Contact HDFC Bank through its official phone banking or app and ask them to report the unauthorized transaction and block affected cards or access."
+  },
+  "icici": {
+    "name": "ICICI Bank",
+    "fraud_contact": "1800 2662",
+    "official_url": "https://www.icicibank.com/online-safe-banking/report-unauthorized-transaction",
+    "freeze_steps": "Call ICICI Bank to report the unauthorized transaction. Use the official app or Internet Banking to block affected cards or access."
+  },
+  "axis": {
+    "name": "Axis Bank",
+    "fraud_contact": "1800 103 5577 / 1800 209 5577",
+    "official_url": "https://www.axisbank.com/support/report-a-fraud",
+    "freeze_steps": "Contact Axis Bank through its official fraud reporting or phone banking channels. Ask them to report the transaction and block affected cards or access."
+  }
+}

@@ -94,9 +94,28 @@ def add_evidence(user_id: str, file_path: str) -> Conversation:
 def finish_evidence(user_id: str) -> Conversation:
     conversation = get_conversation(user_id)
     if conversation.state == "GH_WAIT_EVIDENCE":
-        conversation.state = "GH_BANK"
+        conversation.state = "GH_TRANSACTION_ID"
+        conversation.data.setdefault("evidence", {})
         save_conversation(user_id, conversation)
     return conversation
+
+def save_case_evidence(user_id: str, evidence: dict) -> None:
+    conversation = get_conversation(user_id)
+    case_id = conversation.data.get("case_id")
+
+    if not case_id:
+        raise ValueError("No active Golden Hour case for this user")
+
+    with session() as connection:
+        connection.execute(
+            """
+            UPDATE cases
+            SET evidence_json = ?,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE case_id = ? AND user_id = ?
+            """,
+            (json.dumps(evidence, ensure_ascii=False), case_id, user_id),
+        )
 
 
 def save_acknowledgement(user_id: str, acknowledgement_number: str) -> None:
