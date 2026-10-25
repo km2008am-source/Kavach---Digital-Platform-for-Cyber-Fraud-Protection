@@ -69,7 +69,7 @@ TELEGRAM_BOT_TOKEN=your-telegram-bot-token
 TELEGRAM_WEBHOOK_SECRET=your-random-webhook-secret
 ~~~
 
-The current .env.example may not include the Telegram settings, so add them to your private .env file. Do not commit .env or real credentials. Configure analysis-provider keys from .env.example if you want those optional checks; the rule-based checks can run without an LLM key.
+The .env.example includes these settings. Set WHATSAPP_PROVIDER=telegram and fill in TELEGRAM_BOT_TOKEN and TELEGRAM_WEBHOOK_SECRET in your private .env file. Do not commit .env or real credentials. Configure analysis-provider keys from .env.example if you want those optional checks; the rule-based checks can run without an LLM key.
 
 Start the API from the backend directory:
 
