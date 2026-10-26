@@ -1,0 +1,31 @@
+# Render blueprint for the Kavach backend (website API, simulator, Pulse, news).
+# Render: New > Blueprint > pick this repo. It asks once for LLM_API_KEY (the Groq key).
+# The website itself is hosted on Vercel (web/vercel.json) and forwards /api/* here.
+services:
+  - type: web
+    name: kavach-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -e .
+    startCommand: uvicorn kavach.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: APP_ENV
+        value: production
+      - key: DRY_RUN            # no Telegram or WhatsApp messages are sent from this demo server
+        value: "1"
+      - key: DEMO_MODE          # instant verdicts for the scripted demo inputs, Pulse replay on
+        value: "1"
+      - key: HASH_SALT
+        generateValue: true
+      - key: LLM_BASE_URL
+        value: https://api.groq.com/openai/v1
+      - key: LLM_MODEL
+        value: openai/gpt-oss-120b
+      - key: OCR_VISION_MODEL   # reads screenshots (Tesseract is not installed on Render)
+        value: qwen/qwen3.8-27b
+      - key: LLM_API_KEY        # entered in the Render dashboard, never committed
+        sync: false
