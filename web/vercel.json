@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/api/:path*", "destination": "https://kavach-api.onrender.com/api/:path*" },
-    { "source": "/health", "destination": "https://kavach-api.onrender.com/health" }
+    { "source": "/api/:path*", "destination": "https://kavach-api-leb9.onrender.com/api/:path*" },
+    { "source": "/health", "destination": "https://kavach-api-leb9.onrender.com/health" }
   ]
 }
