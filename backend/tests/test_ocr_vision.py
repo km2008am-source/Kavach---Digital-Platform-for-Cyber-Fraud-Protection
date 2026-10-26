@@ -67,3 +67,32 @@ async def test_hindi_screenshot_gets_the_same_verdict_as_its_text(shot, no_tesse
     monkeypatch.setattr(settings, "LLM_MODEL", "")             # verdict from rules only, LLM off
     r = await scam_check.analyze(request_factory("", input_type="image", file_path=shot, language="hi"))
     assert r.risk_level == "high" and {"otp_request", "kyc", "urgency"} <= {f.code for f in r.red_flags}
+
+
+@respx.mock
+def test_vision_retries_once_after_a_rate_limit(shot, no_tesseract, vision_on, llm_reply, monkeypatch):
+    monkeypatch.setattr(ocr.time, "sleep", lambda s: None)
+    route = respx.post(vision_on).mock(side_effect=[httpx.Response(429, headers={"retry-after": "1"}),
+                                                    httpx.Response(200, json=llm_reply(HINDI_SMS))])
+    assert "ओटीपी बताएं" in ocr.read(shot) and route.call_count == 2
+
+
+@respx.mock
+async def test_unreadable_screenshot_without_caption_is_never_called_safe(shot, no_tesseract, vision_on,
+                                                                         request_factory, monkeypatch):
+    monkeypatch.setattr(ocr.time, "sleep", lambda s: None)
+    respx.post(vision_on).mock(return_value=httpx.Response(429))
+    r = await scam_check.analyze(request_factory("", input_type="image", file_path=shot))
+    assert r.risk_level == "medium" and r.confidence == "lower"
+    assert [f.code for f in r.red_flags] == ["unreadable_image"] and "paste" in r.explanation_en
+
+
+@respx.mock
+async def test_unreadable_screenshot_with_caption_is_judged_on_the_caption(shot, no_tesseract, vision_on,
+                                                                          request_factory, monkeypatch):
+    monkeypatch.setattr(ocr.time, "sleep", lambda s: None)
+    monkeypatch.setattr(settings, "LLM_MODEL", "")
+    respx.post(vision_on).mock(return_value=httpx.Response(429))
+    r = await scam_check.analyze(request_factory("Share the OTP to continue, your account will be blocked today",
+                                                 input_type="image", file_path=shot))
+    assert r.risk_level == "high" and r.confidence == "lower"

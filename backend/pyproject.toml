@@ -39,6 +39,7 @@ test = ["pytest>=8", "pytest-asyncio>=0.24", "hypothesis>=6.100", "respx>=0.21",
 e5 = ["sentence-transformers>=3.0"]
 voice = [
     "faster-whisper>=1.0",
+    "av>=11,<17",  # faster-whisper 1.2 passes metadata_errors, which PyAV 17+ removed
     "gTTS>=2.5",
 ]
 

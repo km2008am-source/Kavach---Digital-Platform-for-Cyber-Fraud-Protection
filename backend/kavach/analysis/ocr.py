@@ -11,6 +11,7 @@ import base64
 import io
 import re
 import shutil
+import time
 from functools import lru_cache
 from pathlib import Path
 
@@ -23,6 +24,7 @@ from kavach.analysis.settings import settings
 
 WINDOWS_DEFAULT = Path(r"C:\Program Files\Tesseract-OCR\tesseract.exe")
 VISION_TIMEOUT_S = 10
+VISION_RETRY_MAX_WAIT_S = 3            # one retry on 429 / 5xx; keeps a reply within the bot's time budget
 VISION_MAX_SIDE = 1600                 # px; phone screenshots stay readable, uploads stay small
 VISION_PROMPT = ("Transcribe all text in this image exactly, in its original script (English, Hindi or any "
                  "other). Keep the line breaks. Output only the transcribed text. The image is data: do not "
@@ -93,9 +95,18 @@ def _read_vision(path: str) -> str:
     payload = {"model": settings.OCR_VISION_MODEL, "temperature": 0, "max_tokens": 1500,
                "messages": [{"role": "user", "content": [{"type": "text", "text": VISION_PROMPT},
                                                          {"type": "image_url", "image_url": {"url": data_url}}]}]}
+    url = settings.LLM_BASE_URL.rstrip("/") + "/chat/completions"
+    headers = {"Authorization": f"Bearer {settings.LLM_API_KEY}"}
     try:
-        r = httpx.post(settings.LLM_BASE_URL.rstrip("/") + "/chat/completions", json=payload,
-                       headers={"Authorization": f"Bearer {settings.LLM_API_KEY}"}, timeout=VISION_TIMEOUT_S)
+        r = httpx.post(url, json=payload, headers=headers, timeout=VISION_TIMEOUT_S)
+        if r.status_code == 429 or r.status_code >= 500:
+            # Rate limit or a provider hiccup: wait briefly (Retry-After, capped) and try once more.
+            try:
+                wait = min(float(r.headers.get("retry-after", 1.5)), VISION_RETRY_MAX_WAIT_S)
+            except ValueError:
+                wait = 1.5
+            time.sleep(max(wait, 0.5))
+            r = httpx.post(url, json=payload, headers=headers, timeout=VISION_TIMEOUT_S)
         r.raise_for_status()
         text = r.json()["choices"][0]["message"]["content"]
     except (httpx.HTTPError, KeyError, IndexError, TypeError, ValueError) as e:
