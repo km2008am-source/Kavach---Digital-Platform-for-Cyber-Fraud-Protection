@@ -2,7 +2,7 @@
 
 Kavach is a hackathon prototype that helps people assess suspicious digital messages and find practical next steps when they encounter or experience cyber fraud.
 
-The project includes a React web interface and a FastAPI backend. The current messaging demo uses a Telegram bot.
+The project includes a React web interface and a FastAPI backend. The current messaging demo runs through a Telegram bot, with English and Hindi replies.
 
 > **Prototype notice:** Kavach is not a bank, police service, or Government of India service. Its risk assessments can be wrong and must not be treated as proof that a message or link is safe. Never share an OTP, PIN, password, or full payment credentials with the bot.
 
@@ -24,7 +24,7 @@ APK scanning is a prototype feature; it was checked with the safe test APKs in `
 backend/                 FastAPI application, analysis pipeline, messaging flows
   kavach/analysis/        Scam analysis, rules, OCR, links, and related modules
   kavach/flows/           Conversation and incident-response flows (Golden Hour, Scam Bait, Pulse opt-in)
-  kavach/whatsapp/        Messaging clients (Telegram, WhatsApp), webhooks, media handling, cleanup
+  kavach/whatsapp/        Messaging adapters (Telegram for the current demo; Meta/Twilio for WhatsApp), webhooks, media handling, cleanup
   kavach/api/             Website API: check, simulator, Pulse, news, services
   kavach/simulator/       Scam-call training simulator and scoring
   kavach/calls/           Call Shield: Twilio call screening and official-number checks
@@ -121,7 +121,7 @@ All settings go in `backend/.env` (copy `backend/.env.example`). Only the Telegr
 
 | Variable | Needed for | Default / example | What it does |
 |---|---|---|---|
-| `WHATSAPP_PROVIDER` | Bot | `telegram` | Messaging adapter: `telegram` (current demo), `meta` or `twilio` (WhatsApp, future work) |
+| `WHATSAPP_PROVIDER` | Bot | `telegram` | Messaging adapter selector: `telegram` for the current demo; `meta` or `twilio` for WhatsApp |
 | `TELEGRAM_BOT_TOKEN` | Bot | from @BotFather | Telegram bot token |
 | `TELEGRAM_WEBHOOK_SECRET` | Bot | random string | Checked on every Telegram webhook call |
 | `APP_ENV` | All | `development` | `demo` or `production` refuse a weak `HASH_SALT` |
