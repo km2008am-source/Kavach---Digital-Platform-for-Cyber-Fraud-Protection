@@ -12,10 +12,11 @@ The project includes a React web interface and a FastAPI backend. The current me
 - **Explain risk signals:** combine explainable rules with optional language-model and reputation checks.
 - **Read screenshots:** extract text with OCR; an optional vision provider can be configured when local Tesseract is unavailable.
 - **Support a reported-loss flow:** guide a user who says they lost money through evidence collection and next steps.
-- **Offer safety resources:** the web prototype includes training, Scam Pulse, services, and news sections.
-- **Provide a Telegram demo:** send text or a screenshot to the configured bot to receive a check.
+- **Website, connected to the backend:** Check a message (text, links, screenshots, APK files), the scam-call Training simulator, Scam Pulse (alerts and a demo replay with `DEMO_MODE=1`), Get help, and News. News shows hand-picked articles, labelled as demo, until `NEWS_FEEDS` is set.
+- **Provide a Telegram demo:** send text, a screenshot, an APK or a voice note to the configured bot to receive a check.
+- **Call Shield (Twilio):** screens an unknown call by asking the caller's reason, checks the claimed organisation against official numbers, and alerts the user on the bot. Point a Twilio number's voice webhook at `/twilio/voice` and set `PUBLIC_BASE_URL`, `TWILIO_AUTH_TOKEN` and `DEMO_USER_NUMBER`.
 
-The backend also contains experimental analysis capabilities, including APK scanning. Treat these as prototype features and follow the documented limitations.
+APK scanning is a prototype feature; it was checked with the safe test APKs in `data/samples/apks/`. Follow the documented limitations.
 
 ## Project layout
 

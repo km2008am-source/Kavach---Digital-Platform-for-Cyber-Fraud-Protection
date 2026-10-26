@@ -1,4 +1,7 @@
 """Shared fixtures. Unit tests never touch the network: every external source is off or mocked."""
+
+# Website API, simulator and Call Shield fixtures (web_env, client).
+pytest_plugins = ["tests.web_support"]
 import json
 from pathlib import Path
 

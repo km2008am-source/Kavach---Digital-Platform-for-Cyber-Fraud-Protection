@@ -28,6 +28,9 @@ dependencies = [
     "numpy>=1.26",
     "python-dotenv>=1.0",
     "twilio>=9.0",
+    # Person 3: website API (file uploads) and the scam-news fetcher
+    "python-multipart>=0.0.9",
+    "feedparser>=6.0",
 ]
 
 [project.optional-dependencies]
