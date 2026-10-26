@@ -1,0 +1,52 @@
+{
+  "_note": "Fill ONLY from each organisation's official website and keep the source URL. These are numbers customers dial; banks may also call from other numbers, so a mismatch is a warning, not proof. Entries with an empty list are agencies that never need to phone you about money.",
+  "SBI": {
+    "aliases": ["sbi", "state bank", "state bank of india"],
+    "numbers": ["18001234", "18002100", "1800112211", "18004253800", "08026599990", "1800111109", "9449112211"],
+    "source": "https://sbi.bank.in/web/customer-care/contact-us/",
+    "retrieved": "2026-10-20",
+    "note": ""
+  },
+  "CBI": {
+    "aliases": ["cbi", "central bureau of investigation"],
+    "numbers": [],
+    "source": "",
+    "retrieved": "",
+    "note": "Real officers do not ask for money or video-call 'arrests' over the phone."
+  },
+  "Police": {
+    "aliases": ["police", "cyber cell", "cyber crime branch", "crime branch"],
+    "numbers": [],
+    "source": "",
+    "retrieved": "",
+    "note": "Real officers do not ask for money or video-call 'arrests' over the phone."
+  },
+  "Customs": {
+    "aliases": ["customs", "customs office", "customs department"],
+    "numbers": [],
+    "source": "",
+    "retrieved": "",
+    "note": "Customs duty is never collected through a phone call or a personal UPI ID."
+  },
+  "Narcotics": {
+    "aliases": ["narcotics", "ncb", "drug enforcement"],
+    "numbers": [],
+    "source": "",
+    "retrieved": "",
+    "note": "Real officers do not ask for money or video-call 'arrests' over the phone."
+  },
+  "TRAI": {
+    "aliases": ["trai", "telecom authority"],
+    "numbers": [],
+    "source": "",
+    "retrieved": "",
+    "note": "TRAI does not disconnect your SIM through a phone call."
+  },
+  "Courier": {
+    "aliases": ["fedex", "dhl", "blue dart", "india post", "courier"],
+    "numbers": [],
+    "source": "",
+    "retrieved": "",
+    "note": "Couriers do not ask you to pay a fine to a personal account to release a parcel."
+  }
+}

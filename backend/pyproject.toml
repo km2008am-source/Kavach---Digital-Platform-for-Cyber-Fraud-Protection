@@ -28,6 +28,9 @@ dependencies = [
     "numpy>=1.26",
     "python-dotenv>=1.0",
     "twilio>=9.0",
+    # Person 3: website API (file uploads) and the scam-news fetcher
+    "python-multipart>=0.0.9",
+    "feedparser>=6.0",
 ]
 
 [project.optional-dependencies]
@@ -36,6 +39,7 @@ test = ["pytest>=8", "pytest-asyncio>=0.24", "hypothesis>=6.100", "respx>=0.21",
 e5 = ["sentence-transformers>=3.0"]
 voice = [
     "faster-whisper>=1.0",
+    "av>=11,<17",  # faster-whisper 1.2 passes metadata_errors, which PyAV 17+ removed
     "gTTS>=2.5",
 ]
 

@@ -21,6 +21,7 @@ APK_MIME = "application/vnd.android.package-archive"
 
 # Short titles for the "• {label}: {explanation}" lines in Person 1's verdict message.
 FLAG_TITLES = {
+    "unreadable_image": "Unreadable screenshot",
     "otp_request": "Asks for OTP or PIN", "threat_arrest": "Arrest or police threat",
     "isolation": "Keep-it-secret pressure", "urgency": "Rushing you", "payment_request": "Asks for money",
     "kyc": "Fake KYC or account block", "too_good": "Too good to be true",

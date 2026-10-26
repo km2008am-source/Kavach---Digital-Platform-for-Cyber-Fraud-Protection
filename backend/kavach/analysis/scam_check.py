@@ -190,6 +190,19 @@ def _demo_cached(req: AnalysisRequest, kind: str = "check") -> AnalysisResult | 
     return AnalysisResult.model_validate({**hit, "request_id": req.request_id, "latency_ms": 0})
 
 
+def _unreadable_image(req: AnalysisRequest, t0: float) -> AnalysisResult:
+    """A screenshot we could not read and that came with no caption. Saying "low risk" here would be
+    false reassurance, so the verdict is medium with a plain request to paste the text instead."""
+    return AnalysisResult(
+        request_id=req.request_id, risk_level="medium", risk_score=MEDIUM, scam_type=ScamType.unknown,
+        red_flags=[RedFlag(code="unreadable_image",
+                           label_en="We could not read the text in this screenshot, so we could not check it.")],
+        explanation_en="We could not read this screenshot. Please paste or type the message text and send it "
+                       "again. Until then, do not pay, click links or share any code because of it.",
+        recommended_action="verify_official", confidence="lower",
+        latency_ms=int((time.perf_counter() - t0) * 1000))
+
+
 async def analyze(req: AnalysisRequest) -> AnalysisResult:
     """Verdict for one message.
 
@@ -214,6 +227,9 @@ async def analyze(req: AnalysisRequest) -> AnalysisResult:
             text = (text + "\n" + await asyncio.to_thread(ocr.read, req.file_path)).strip()
         except Exception:
             ocr_failed = True                               # judge the caption alone, lower confidence
+        if ocr_failed and not text.strip():
+            # Nothing to judge: never call an unread screenshot safe.
+            return _unreadable_image(req, t0)
 
     text = rules.clean_text(text)                           # invisible joiners break keyword matches
     ents = rules.extract_entities(text)
